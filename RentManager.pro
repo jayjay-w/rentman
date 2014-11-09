@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        rentmanagermainwindow.cpp
+        rentmanagermainwindow.cpp \
+    publics.cpp
 
-HEADERS  += rentmanagermainwindow.h
+HEADERS  += rentmanagermainwindow.h \
+    publics.h
 
 FORMS    += rentmanagermainwindow.ui
