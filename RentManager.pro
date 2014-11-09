@@ -14,9 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         rentmanagermainwindow.cpp \
-    publics.cpp
+    publics.cpp \
+    companyinitializationdialog.cpp
 
 HEADERS  += rentmanagermainwindow.h \
-    publics.h
+    publics.h \
+    companyinitializationdialog.h
 
-FORMS    += rentmanagermainwindow.ui
+FORMS    += rentmanagermainwindow.ui \
+    companyinitializationdialog.ui

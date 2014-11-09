@@ -29,8 +29,8 @@ public:
 	};
 
 	static QString lastPath();
-	static QString getOpenFile(QWidget *parent = 0, QString filter = "Payroll Files (*.pay)");
-	static QString getSaveFile(QWidget *parent = 0, QString filter = "Payroll Files (*.pay)");
+	static QString getOpenFile(QWidget *parent = 0, QString filter = "Rent Manager Files (*.rmf)");
+	static QString getSaveFile(QWidget *parent = 0, QString filter = "Rent Manager Files (*.rmf)");
 	static void saveSetting(QString settingName = "", QVariant value = 0);
 	static QVariant getSetting(QString settingName = "", QVariant defaultValue = 0);
 	static QString getSql(SQL_STRING sqlString);
