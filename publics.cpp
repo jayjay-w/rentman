@@ -151,3 +151,8 @@ void Publics::clearTextBoxes(QWidget *parent)
 		}
 	}
 }
+
+void Publics::showError(QString message, QString title)
+{
+	QMessageBox::critical(0, title, message);
+}

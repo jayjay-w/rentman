@@ -5,6 +5,7 @@
 #include <QtSql>
 
 class QActionGroup;
+class CompaniesDialog;
 
 namespace Ui {
 class RentManagerMainWindow;
@@ -43,7 +44,7 @@ private:
 	bool initializeCompanyFile();
 	static RentManagerMainWindow *m_instance;
 	//Dialogs
-
+	CompaniesDialog *m_companiesDialog;
 private slots:
 	void openRecentFile();
 	void startNewFile();

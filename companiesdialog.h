@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+class QTreeWidgetItem;
+
 namespace Ui {
 class CompaniesDialog;
 }
@@ -14,9 +16,21 @@ class CompaniesDialog : public QDialog
 public:
 	explicit CompaniesDialog(QWidget *parent = 0);
 	~CompaniesDialog();
+public slots:
+	void reloadCompanies();
+	void editCompany();
+private slots:
+	void on_cmdNewCompany_clicked();
+
+	void on_trvCompanies_itemClicked(QTreeWidgetItem *item, int column);
+
+	void on_cmdSaveChanges_clicked();
+
+	void on_cmdDeleteCompany_clicked();
 
 private:
 	Ui::CompaniesDialog *ui;
+	QString m_currentCompany;
 };
 
 #endif // COMPANIESDIALOG_H

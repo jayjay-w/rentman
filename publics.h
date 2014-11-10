@@ -39,6 +39,7 @@ public:
 				     QVariant userData = 0);
 	static void setComboBoxText(QComboBox *cbo, QString text);
 	static void clearTextBoxes(QWidget *parent);
+	static void showError(QString message = "An error has occured.", QString title = "Error");
 signals:
 
 public slots:

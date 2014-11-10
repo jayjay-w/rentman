@@ -12,6 +12,7 @@ RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	QMainWindow(),
 	actionsToDisable(0),
+	m_companiesDialog(0),
 	ui(new Ui::RentManagerMainWindow)
 {
 	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -238,8 +239,12 @@ void RentManagerMainWindow::startNewFile()
 
 void RentManagerMainWindow::on_actionCompanies_triggered()
 {
-	CompaniesDialog *cmp = new CompaniesDialog(this);
-	cmp->exec();
+	if (!m_companiesDialog)
+		m_companiesDialog = new CompaniesDialog(this);
+
+	m_companiesDialog->reloadCompanies();
+	m_companiesDialog->exec();
+	reloadBrowser();
 }
 
 void RentManagerMainWindow::on_actionProperties_triggered()
