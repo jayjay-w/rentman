@@ -36,20 +36,6 @@
        </property>
       </spacer>
      </item>
-     <item>
-      <widget class="QPushButton" name="cmdAddProperty">
-       <property name="text">
-        <string>Add Property</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cmdRemoveProperty">
-       <property name="text">
-        <string>Remove Property</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item row="0" column="0" rowspan="3">
@@ -123,7 +109,7 @@
      </column>
      <column>
       <property name="text">
-       <string>Description</string>
+       <string>Code</string>
       </property>
      </column>
      <column>
@@ -235,8 +221,6 @@
   <tabstop>txtMobileNo</tabstop>
   <tabstop>txtTelNo</tabstop>
   <tabstop>txtEmail</tabstop>
-  <tabstop>cmdAddProperty</tabstop>
-  <tabstop>cmdRemoveProperty</tabstop>
   <tabstop>trvProperties</tabstop>
  </tabstops>
  <resources/>

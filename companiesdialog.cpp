@@ -49,6 +49,16 @@ void CompaniesDialog::editCompany()
 	ui->txtMobileNo->setText(qu.record().value("Mobile").toString());
 	ui->txtEmail->setText(qu.record().value("Email").toString());
 	ui->txtTelNo->setText(qu.record().value("Tel1").toString());
+	ui->trvProperties->invisibleRootItem()->takeChildren();
+	qu = QSqlDatabase::database().exec("SELECT * FROM property WHERE CompanyID = '" + m_currentCompany + "'");
+	while (qu.next()) {
+		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvProperties);
+		it->setText(99, qu.record().value("PropertyID").toString());
+		it->setText(0, qu.record().value("PropertyName").toString());
+		it->setText(1, qu.record().value("PropertyCode").toString());
+		it->setText(2, qu.record().value("Location").toString());
+		it->setText(3, qu.record().value("UnitCount").toString());
+	}
 }
 
 void CompaniesDialog::on_cmdNewCompany_clicked()

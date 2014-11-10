@@ -6,6 +6,7 @@
 
 class QActionGroup;
 class CompaniesDialog;
+class PropertiesDialog;
 
 namespace Ui {
 class RentManagerMainWindow;
@@ -45,6 +46,7 @@ private:
 	static RentManagerMainWindow *m_instance;
 	//Dialogs
 	CompaniesDialog *m_companiesDialog;
+	PropertiesDialog *m_propertiesDialog;
 private slots:
 	void openRecentFile();
 	void startNewFile();
