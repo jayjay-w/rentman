@@ -42,12 +42,19 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 		ui->menuRecent_Files->addAction(recentFileActs[i]);
 	}
 	updateRecentFileActions();
-
+	//connects
 	connect (ui->action_Open, SIGNAL(triggered()), SLOT(startOpenFile()));
+	connect (ui->action_New, SIGNAL(triggered()), SLOT(startNewFile()));
+
+	//ui restore
+	ui->splitter->restoreState(Publics::getSetting("MainSplitter",
+						       ui->splitter->saveState()).toByteArray());
 }
 
 RentManagerMainWindow::~RentManagerMainWindow()
 {
+	//ui save state
+	Publics::saveSetting("MainSplitter", ui->splitter->saveState());
 	delete ui;
 }
 
@@ -167,10 +174,13 @@ void RentManagerMainWindow::updateRecentFileActions()
 
 }
 
-void RentManagerMainWindow::initializeCompanyFile()
+bool RentManagerMainWindow::initializeCompanyFile()
 {
 	CompanyInitializationDialog *init = new CompanyInitializationDialog(this);
-	init->exec();
+	if (init->exec() == QDialog::Accepted)
+		return true;
+
+	return false;
 }
 
 void RentManagerMainWindow::openRecentFile()
@@ -182,5 +192,24 @@ void RentManagerMainWindow::openRecentFile()
 
 void RentManagerMainWindow::startNewFile()
 {
-
+	QString fileName = Publics::getSaveFile(this);
+	if (fileName.length() > 0) {
+		QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+		db.setDatabaseName(fileName);
+		if (!db.open()) {
+			QMessageBox::critical(this, "Error", QString("The following error occurred while creating your company file:\n%1.\nPlease contact your administrator.")
+					      .arg(db.lastError().text()));
+			return;
+		}
+		if (initializeCompanyFile()) {
+			closeFile();
+			loadFile(fileName);
+		} else {
+			QMessageBox::critical(this, "Error", "An error occurred during the file initialization. Please try again.");
+			return;
+		}
+	} else {
+		QMessageBox::critical(this, "Error", "Please specify a valid file.");
+		return;
+	}
 }

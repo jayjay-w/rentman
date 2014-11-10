@@ -65,17 +65,17 @@ QString Publics::getSql(SQL_STRING sqlString)
 				"'Email' Text, 'Website' Text, 'appName' Text DEFAULT('rentman'), 'CurrentMonth' Integer, 'dbVersion' TEXT DEFAULT('1.0'))";
 	case SQL_PROPERTIES:
 		return "CREATE TABLE IF NOT EXISTS 'property' ('PropertyID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-				"'Code' TEXT, PropertyName' TEXT, 'Location' TEXT, 'Description' TEXT, 'DateBuilt' TEXT, 'DateBought' TEXT,"
-				"'UnitCount' INTEGET DEFAULT('0')";
+				"'Code' TEXT, 'PropertyName' TEXT, 'Location' TEXT, 'Description' TEXT, 'DateBuilt' TEXT, 'DateBought' TEXT,"
+				"'UnitCount' INTEGER DEFAULT('0'))";
 	case SQL_UNITS:
 		return "CREATE TABLE IF NOT EXISTS 'unit' ('UnitID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
 				"'PropertyID' INTEGER, 'CompanyID' INTEGER,"
 				"'UnitCode' TEXT, 'BedroomCount' INTEGER DEFAULT('1'), 'MonthlyRent' INTEGER DEFAULT('10000'),"
-				"'CurrentTenantID' INTEGER";
+				"'CurrentTenantID' INTEGER DEFAULT('0'))";
 	case SQL_TENANTS:
-		return "CREATE TABLE IF NOT EXISTS 'tenants' ('UnitID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-				"'Name' TEXT, 'Sex' TEXT Default('Male'), 'Tel' TEXT, 'Email' TEXT, 'Address' TEXT,"
-				"";
+		return "CREATE TABLE IF NOT EXISTS 'tenant' ('UnitID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+				"'Name' TEXT, 'Sex' TEXT Default('Male'), 'Tel' TEXT, 'Email' TEXT, 'Address' TEXT"
+				")";
 	default:
 		return "";
 	}

@@ -43,6 +43,7 @@ void DatabaseInitThread::run()
 	executeInitSql(Publics::getSql(Publics::SQL_COMPANY));
 	executeInitSql(Publics::getSql(Publics::SQL_PROPERTIES));
 	executeInitSql(Publics::getSql(Publics::SQL_TENANTS));
+	executeInitSql(Publics::getSql(Publics::SQL_UNITS));
 	emit progress(100);
 
 

@@ -39,7 +39,7 @@ private:
 	enum { MaxRecentFiles = 5 };
 	QAction *recentFileActs[MaxRecentFiles];
 	QActionGroup *actionsToDisable;
-	void initializeCompanyFile();
+	bool initializeCompanyFile();
 	static RentManagerMainWindow *m_instance;
 	//Dialogs
 
