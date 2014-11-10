@@ -7,6 +7,8 @@
 class QActionGroup;
 class CompaniesDialog;
 class PropertiesDialog;
+class TenantsDialog;
+class AssignUnitToTenantDialog;
 
 namespace Ui {
 class RentManagerMainWindow;
@@ -26,6 +28,8 @@ public:
 	//Dialogs
 	CompaniesDialog *m_companiesDialog;
 	PropertiesDialog *m_propertiesDialog;
+	TenantsDialog *m_tenants;
+	AssignUnitToTenantDialog *m_assign;
 public slots:
 	void startOpenFile();
 	void closeFile();
@@ -53,6 +57,9 @@ private slots:
 
 	void on_actionCompanies_triggered();
 	void on_actionProperties_triggered();
+	void on_actionTenants_triggered();
+	void on_actionAssign_Unit_To_Tenant_triggered();
+	void on_actionReceive_Payments_triggered();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

@@ -73,20 +73,25 @@ QString Publics::getSql(SQL_STRING sqlString)
 	case SQL_UNITS:
 		return "CREATE TABLE IF NOT EXISTS 'unit' ('UnitID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
 				"'PropertyID' INTEGER, 'CompanyID' INTEGER,"
-				"'UnitNo' TEXT, 'RoomCount' INTEGER DEFAULT('1'), 'MonthlyRent' INTEGER DEFAULT('10000'),"
+				"'UnitNo' TEXT, 'RoomCount' INTEGER DEFAULT('1'), 'MonthlyRent' REAL DEFAULT('10000'),"
 				"'PremiseType' TEXT, 'SQFT' TEXT, 'WaterBillAc' TEXT, 'ElecBillAcc' TEXT,"
-				"'CurrentTenantID' INTEGER DEFAULT('0'))";
+				"'CurrentTenantID' INTEGER DEFAULT('0'), Occupied TEXT DEFAULT('No'))";
 	case SQL_TENANTS:
-		return "CREATE TABLE IF NOT EXISTS 'tenant' ('UnitID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+		return "CREATE TABLE IF NOT EXISTS 'tenant' ('TenantID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
 				"'Name' TEXT, 'Sex' TEXT Default('Male'), 'Tel' TEXT, 'Email' TEXT"
 				")";
 
 	case SQL_TENANT_UNITS:
-		return "CREATE TABLE IF NOT EXISTS 'tenant_units' ('EntryID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-				"'UnitID' INTEGER, 'TenantID' INTEGER,"
-				"'DateOfOccupation' TEXT, 'Monthlyrent' TEXT, 'Deposit' TEXT)";
+		return "CREATE TABLE IF NOT EXISTS 'leases' ('EntryID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+				"'UnitID' INTEGER, 'TenantID' INTEGER, 'IsOngoing' TEXT DEFAULT('Yes'),"
+				"'DateOfOccupation' TEXT, 'ExitDate' TEXT, 'Monthlyrent' REAL DEFAULT('0'), 'Deposit' REAL DEFAULT('0'))";
+
+	case SQL_PAYMENTS:
+		return "CREATE TABLE IF NOT EXISTS 'payments' ('EntryID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+				"'UnitID' TEXT, 'TenantID' TEXT, 'ReceiptNo' TEXT, 'DateReceived' TEXT, 'UnitName' TEXT,"
+				"'TennantName' TEXT, 'AmountReceived' TEXT, 'PaymentFor' TEXT, 'PayMode' TEXT)";
 	default:
-		return "";
+		return "SELECT NOW()";
 	}
 }
 

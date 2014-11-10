@@ -14,6 +14,15 @@ class UnitsDialog : public QDialog
 public:
 	explicit UnitsDialog(QWidget *parent = 0);
 	~UnitsDialog();
+	QString m_propertyID;
+	QString m_unitID;
+	bool isAdding;
+	void edit(QString id);
+	void addNew(QString propertyID);
+private slots:
+	void on_cmdSave_clicked();
+
+	void on_cmdEndOccupation_clicked();
 
 private:
 	Ui::UnitsDialog *ui;

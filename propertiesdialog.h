@@ -4,6 +4,8 @@
 #include <QDialog>
 
 class QTreeWidgetItem;
+class UnitsDialog;
+
 
 namespace Ui {
 class PropertiesDialog;
@@ -26,9 +28,14 @@ private slots:
 	void saveChanges();
 	void deleteProperty();
 	void itemChanged(QTreeWidgetItem *item, int column);
+	void on_cmdAddUnit_clicked();
+	void reloadUnits();
+	void on_trvUnits_itemDoubleClicked(QTreeWidgetItem *item, int column);
+
 private:
 	Ui::PropertiesDialog *ui;
 	QString m_currentProperty;
+	UnitsDialog *m_units;
 };
 
 #endif // PROPERTIESDIALOG_H

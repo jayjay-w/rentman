@@ -2,12 +2,14 @@
 #include "ui_propertiesdialog.h"
 
 #include "publics.h"
+#include "unitsdialog.h"
 #include <QTreeWidgetItem>
 #include <QtSql>
 #include <QInputDialog>
 
 PropertiesDialog::PropertiesDialog(QWidget *parent) :
 	QDialog(parent),
+	m_units(0),
 	ui(new Ui::PropertiesDialog)
 {
 	ui->setupUi(this);
@@ -65,7 +67,7 @@ void PropertiesDialog::editProperty()
 	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM property  WHERE PropertyID = '"
 						     + m_currentProperty + "'");
 	qu.first();
-
+	reloadUnits();
 	ui->txtCode->setText(qu.record().value("PropertyCode").toString());
 	ui->txtPropertyName->setText(qu.record().value("PropertyName").toString());
 	ui->txtLocation->setText(qu.record().value("Location").toString());
@@ -92,14 +94,14 @@ void PropertiesDialog::saveChanges()
 {
 	QString companyID = Publics::getDbValue("SELECT * FROM company WHERE CompanyName = '" + ui->cboCompany->currentText() + "'", "CompanyID").toString();
 	QString sql = "UPDATE property SET "
-			"PropertyCode = '" + ui->txtCode->text() + "', "
-			"PropertyName = '" + ui->txtPropertyName->text() + "', "
-			"Location = '" + ui->txtLocation->text() + "', "
-			"LRNumber = '" + ui->txtLRNo->text() + "', "
-			"Street = '" + ui->txtStreet->text() + "', "
-			"CompanyID = '" + companyID + "', "
-			"UnitCount = '" + ui->txtNoOfUnits->text() + "' WHERE "
-			"PropertyID = '" + m_currentProperty + "'";
+		      "PropertyCode = '" + ui->txtCode->text() + "', "
+								 "PropertyName = '" + ui->txtPropertyName->text() + "', "
+														    "Location = '" + ui->txtLocation->text() + "', "
+																			       "LRNumber = '" + ui->txtLRNo->text() + "', "
+																								      "Street = '" + ui->txtStreet->text() + "', "
+																													     "CompanyID = '" + companyID + "', "
+																																	   "UnitCount = '" + ui->txtNoOfUnits->text() + "' WHERE "
+																																							"PropertyID = '" + m_currentProperty + "'";
 
 	QSqlDatabase::database().exec(sql);
 	reloadProperties();
@@ -124,4 +126,41 @@ void PropertiesDialog::itemChanged(QTreeWidgetItem *item, int column)
 	QString c_id = item->text(99);
 	m_currentProperty = c_id;
 	editProperty();
+}
+
+void PropertiesDialog::on_cmdAddUnit_clicked()
+{
+	if (!m_units)
+		m_units = new UnitsDialog(this);
+
+	m_units->addNew(m_currentProperty);
+	m_units->exec();
+	reloadUnits();
+}
+
+void PropertiesDialog::reloadUnits()
+{
+	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit WHERE PropertyID = '" + m_currentProperty + "'");
+	ui->trvUnits->invisibleRootItem()->takeChildren();
+	while (qu.next()) {
+		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits);
+		it->setText(99, qu.record().value("UnitID").toString());
+		it->setText(0, qu.record().value("UnitNo").toString());
+		it->setText(1, qu.record().value("RoomCount").toString());
+		it->setText(2, qu.record().value("SQFT").toString());
+		it->setText(3, qu.record().value("MonthlyRent").toString());
+	}
+}
+
+void PropertiesDialog::on_trvUnits_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+	Q_UNUSED(column);
+
+	if (!m_units)
+		m_units = new UnitsDialog(this);
+
+	m_units->edit(item->text(99));
+	m_units->exec();
+
+	reloadUnits();
 }

@@ -6,6 +6,9 @@
 #include "companyinitializationdialog.h"
 #include "companiesdialog.h"
 #include "propertiesdialog.h"
+#include "tenantsdialog.h"
+#include "assignunittotenantdialog.h"
+#include "receivepaymentdialog.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -14,6 +17,8 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	actionsToDisable(0),
 	m_companiesDialog(0),
 	m_propertiesDialog(0),
+	m_tenants(0),
+	m_assign(0),
 	ui(new Ui::RentManagerMainWindow)
 {
 	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -256,4 +261,28 @@ void RentManagerMainWindow::on_actionProperties_triggered()
 	m_propertiesDialog->reloadProperties();
 	m_propertiesDialog->exec();
 	reloadBrowser();
+}
+
+void RentManagerMainWindow::on_actionTenants_triggered()
+{
+    if (!m_tenants)
+	    m_tenants = new TenantsDialog(this);
+
+    m_tenants->reloadTenants();
+    m_tenants->exec();
+}
+
+void RentManagerMainWindow::on_actionAssign_Unit_To_Tenant_triggered()
+{
+    if (!m_assign)
+	    m_assign = new AssignUnitToTenantDialog(this);
+
+    m_assign->reloadLists();
+    m_assign->exec();
+}
+
+void RentManagerMainWindow::on_actionReceive_Payments_triggered()
+{
+    ReceivePaymentDialog *rec = new ReceivePaymentDialog(this);
+    rec->exec();
 }

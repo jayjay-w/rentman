@@ -162,14 +162,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="cmdAddUnit">
        <property name="text">
         <string>Add Unit</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="cmdRemoveUnit">
        <property name="text">
         <string>Remove Unit</string>
        </property>
@@ -178,7 +178,7 @@
     </layout>
    </item>
    <item row="2" column="1">
-    <widget class="QTreeWidget" name="treeWidget_2">
+    <widget class="QTreeWidget" name="trvUnits">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -192,32 +192,17 @@
      </column>
      <column>
       <property name="text">
-       <string>Current Tenant</string>
+       <string>No. Of Rooms</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>Code</string>
+       <string>Sq. Ft.</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>Description</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Sq. Ft</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>No. Of Bedrooms</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Monthly Rent</string>
+       <string>Rent / Month</string>
       </property>
      </column>
     </widget>
@@ -236,9 +221,9 @@
   <tabstop>txtStreet</tabstop>
   <tabstop>txtNoOfUnits</tabstop>
   <tabstop>txtLRNo</tabstop>
-  <tabstop>pushButton</tabstop>
-  <tabstop>pushButton_2</tabstop>
-  <tabstop>treeWidget_2</tabstop>
+  <tabstop>cmdAddUnit</tabstop>
+  <tabstop>cmdRemoveUnit</tabstop>
+  <tabstop>trvUnits</tabstop>
  </tabstops>
  <resources/>
  <connections/>

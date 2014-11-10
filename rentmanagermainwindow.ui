@@ -256,7 +256,6 @@
    <addaction name="actionCompanies"/>
    <addaction name="actionProperties"/>
    <addaction name="separator"/>
-   <addaction name="actionUnites"/>
    <addaction name="actionTenants"/>
    <addaction name="separator"/>
    <addaction name="actionCreate_Invoice"/>

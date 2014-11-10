@@ -18,17 +18,29 @@ SOURCES += main.cpp\
     companyinitializationdialog.cpp \
     companiesdialog.cpp \
     propertiesdialog.cpp \
-    unitsdialog.cpp
+    unitsdialog.cpp \
+    tenantsdialog.cpp \
+    assignunittotenantdialog.cpp \
+    terminateoccupationdialog.cpp \
+    receivepaymentdialog.cpp
 
 HEADERS  += rentmanagermainwindow.h \
     publics.h \
     companyinitializationdialog.h \
     companiesdialog.h \
     propertiesdialog.h \
-    unitsdialog.h
+    unitsdialog.h \
+    tenantsdialog.h \
+    assignunittotenantdialog.h \
+    terminateoccupationdialog.h \
+    receivepaymentdialog.h
 
 FORMS    += rentmanagermainwindow.ui \
     companyinitializationdialog.ui \
     companiesdialog.ui \
     propertiesdialog.ui \
-    unitsdialog.ui
+    unitsdialog.ui \
+    tenantsdialog.ui \
+    assignunittotenantdialog.ui \
+    terminateoccupationdialog.ui \
+    receivepaymentdialog.ui
