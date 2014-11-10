@@ -17,15 +17,18 @@ SOURCES += main.cpp\
     publics.cpp \
     companyinitializationdialog.cpp \
     companiesdialog.cpp \
-    propertiesdialog.cpp
+    propertiesdialog.cpp \
+    unitsdialog.cpp
 
 HEADERS  += rentmanagermainwindow.h \
     publics.h \
     companyinitializationdialog.h \
     companiesdialog.h \
-    propertiesdialog.h
+    propertiesdialog.h \
+    unitsdialog.h
 
 FORMS    += rentmanagermainwindow.ui \
     companyinitializationdialog.ui \
     companiesdialog.ui \
-    propertiesdialog.ui
+    propertiesdialog.ui \
+    unitsdialog.ui
