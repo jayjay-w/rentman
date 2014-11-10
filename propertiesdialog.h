@@ -16,6 +16,7 @@ class PropertiesDialog : public QDialog
 public:
 	explicit PropertiesDialog(QWidget *parent = 0);
 	~PropertiesDialog();
+	void publicEdit(QString id);
 public slots:
 	void reloadProperties();
 	void editProperty();

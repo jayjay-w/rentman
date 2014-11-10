@@ -21,7 +21,22 @@ PropertiesDialog::PropertiesDialog(QWidget *parent) :
 
 PropertiesDialog::~PropertiesDialog()
 {
+	if (m_currentProperty.length() > 0) {
+		saveChanges();
+	}
 	delete ui;
+}
+
+void PropertiesDialog::publicEdit(QString id)
+{
+	reloadProperties();
+	m_currentProperty = id;
+	editProperty();
+	ui->trvProperties->setVisible(false);
+
+	ui->cmdDeleteProperty->setVisible(false);
+	ui->cmdNewProperty->setVisible(false);
+	ui->cmdSaveChanges->setVisible(false);
 }
 
 void PropertiesDialog::reloadProperties()

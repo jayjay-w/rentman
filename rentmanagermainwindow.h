@@ -23,6 +23,9 @@ public:
 
 	void showQueryError(QSqlQuery qu, QString title = "Error", QString textBefore = "Ther following error has occured:", QString textAfter = "Please contact your administrator.");
 
+	//Dialogs
+	CompaniesDialog *m_companiesDialog;
+	PropertiesDialog *m_propertiesDialog;
 public slots:
 	void startOpenFile();
 	void closeFile();
@@ -44,9 +47,6 @@ private:
 	QActionGroup *actionsToDisable;
 	bool initializeCompanyFile();
 	static RentManagerMainWindow *m_instance;
-	//Dialogs
-	CompaniesDialog *m_companiesDialog;
-	PropertiesDialog *m_propertiesDialog;
 private slots:
 	void openRecentFile();
 	void startNewFile();

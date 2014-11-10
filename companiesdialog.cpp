@@ -5,6 +5,9 @@
 #include <QTreeWidgetItem>
 #include "publics.h"
 
+#include "rentmanagermainwindow.h"
+#include "propertiesdialog.h"
+
 CompaniesDialog::CompaniesDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::CompaniesDialog)
@@ -85,27 +88,35 @@ void CompaniesDialog::on_trvCompanies_itemClicked(QTreeWidgetItem *item, int col
 
 void CompaniesDialog::on_cmdSaveChanges_clicked()
 {
-    QString sql = "UPDATE company SET "
-		    "Code = '" + ui->txtCode->text() + "', "
-		    "PhysicalAddress = '" + ui->txtPhysicalAddress->text() + "', "
-		    "PostalAddress = '" + ui->txtPostalAddress->text() + "', "
-		    "ContactPerson = '" + ui->txtContactPerson->text() + "', "
-		    "Mobile = '" + ui->txtMobileNo->text() + "', "
-		    "Email = '" + ui->txtEmail->text() + "', "
-		    "CompanyName = '" + ui->txtCompanyName->text() + "', "
-		    "Tel1 = '" + ui->txtTelNo->text() + "' WHERE "
-		    "CompanyID = '" + m_currentCompany + "'";
+	QString sql = "UPDATE company SET "
+		      "Code = '" + ui->txtCode->text() + "', "
+							 "PhysicalAddress = '" + ui->txtPhysicalAddress->text() + "', "
+														  "PostalAddress = '" + ui->txtPostalAddress->text() + "', "
+																				       "ContactPerson = '" + ui->txtContactPerson->text() + "', "
+																											    "Mobile = '" + ui->txtMobileNo->text() + "', "
+																																     "Email = '" + ui->txtEmail->text() + "', "
+																																					  "CompanyName = '" + ui->txtCompanyName->text() + "', "
+																																											   "Tel1 = '" + ui->txtTelNo->text() + "' WHERE "
+																																															       "CompanyID = '" + m_currentCompany + "'";
 
-    QSqlDatabase::database().exec(sql);
-    reloadCompanies();
+	QSqlDatabase::database().exec(sql);
+	reloadCompanies();
 }
 
 void CompaniesDialog::on_cmdDeleteCompany_clicked()
 {
-    if (QMessageBox::question(this, "Confirm Delete", "Are you sure you want to delete this company?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-	    QSqlDatabase::database().exec("DELETE FROM company WHERE CompanyID = '" + m_currentCompany + "'");
-	    m_currentCompany = "";
-	    Publics::clearTextBoxes(this);
-	    reloadCompanies();
-    }
+	if (QMessageBox::question(this, "Confirm Delete", "Are you sure you want to delete this company?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+		QSqlDatabase::database().exec("DELETE FROM company WHERE CompanyID = '" + m_currentCompany + "'");
+		m_currentCompany = "";
+		Publics::clearTextBoxes(this);
+		reloadCompanies();
+	}
+}
+
+void CompaniesDialog::on_trvProperties_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+	PropertiesDialog *prg = new PropertiesDialog(this);
+	prg->publicEdit(item->text(99));
+	prg->exec();
+	editCompany();
 }

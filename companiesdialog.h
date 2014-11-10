@@ -28,6 +28,8 @@ private slots:
 
 	void on_cmdDeleteCompany_clicked();
 
+	void on_trvProperties_itemDoubleClicked(QTreeWidgetItem *item, int column);
+
 private:
 	Ui::CompaniesDialog *ui;
 	QString m_currentCompany;
