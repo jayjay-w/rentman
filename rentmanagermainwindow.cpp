@@ -4,6 +4,8 @@
 #include "publics.h"
 #include <QActionGroup>
 #include "companyinitializationdialog.h"
+#include "companiesdialog.h"
+#include "propertiesdialog.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -81,11 +83,30 @@ void RentManagerMainWindow::closeFile()
 	actionsToDisable->setEnabled(false);
 
 	ui->trvBrowser->invisibleRootItem()->takeChildren();
-	ui->tblUnits->clearContents();
+	//ui->tblUnits->clearContents();
 
 	curFile = "";
 	if (db.isOpen())
 		db.close();
+}
+
+void RentManagerMainWindow::reloadBrowser()
+{
+	ui->trvBrowser->invisibleRootItem()->takeChildren();
+	QSqlQuery qu = db.exec("SELECT * FROM company");
+	while (qu.next()) {
+		QString companyName = qu.record().value("CompanyName").toString();
+		QString companyID = qu.record().value("CompanyID").toString();
+
+		QTreeWidgetItem *companyItem = new QTreeWidgetItem(ui->trvBrowser->invisibleRootItem());
+		companyItem->setText(0, companyName);
+		companyItem->setText(99, companyID);
+		QSqlQuery propQu = db.exec("SELECT * FROM property WHERE CompanyID = '" + companyID + "'");
+		while (propQu.next()) {
+			QTreeWidgetItem *propIt = new QTreeWidgetItem(companyItem);
+			propIt->setText(0, propQu.record().value("PropertyName").toString());
+		}
+	}
 }
 
 void RentManagerMainWindow::loadFile(const QString &fileName)
@@ -127,6 +148,7 @@ void RentManagerMainWindow::loadFile(const QString &fileName)
 	updateRecentFileActions();
 	//Enable employee related widgets and actions
 	actionsToDisable->setEnabled(true);
+	reloadBrowser();
 }
 
 bool RentManagerMainWindow::saveFile(const QString &fileName)
@@ -212,4 +234,16 @@ void RentManagerMainWindow::startNewFile()
 		QMessageBox::critical(this, "Error", "Please specify a valid file.");
 		return;
 	}
+}
+
+void RentManagerMainWindow::on_actionCompanies_triggered()
+{
+	CompaniesDialog *cmp = new CompaniesDialog(this);
+	cmp->exec();
+}
+
+void RentManagerMainWindow::on_actionProperties_triggered()
+{
+	PropertiesDialog *cmp = new PropertiesDialog(this);
+	cmp->exec();
 }

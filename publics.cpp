@@ -60,22 +60,31 @@ QString Publics::getSql(SQL_STRING sqlString)
 {
 	switch (sqlString) {
 	case SQL_COMPANY:
-		return "CREATE TABLE IF NOT EXISTS 'company' ('CompanyID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, CompanyName' Text,"
-				"'Code' TEXT, Address' Text, 'PostCode' Text, 'Town' Text, 'Mobile' Text, 'Tel1' Text, 'Tel2' Text, 'Fax' Text,"
-				"'Email' Text, 'Website' Text, 'appName' Text DEFAULT('rentman'), 'CurrentMonth' Integer, 'dbVersion' TEXT DEFAULT('1.0'))";
+		return "CREATE TABLE IF NOT EXISTS 'company' ('CompanyID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'CompanyName' Text,"
+				"'Code' TEXT, 'PhysicalAddress' Text, 'PostalAddress' Text, 'ContactPerson' Text,"
+				"'Mobile' Text, 'Tel1' Text,'Tel2' Text,"
+				"'Fax' Text, 'Email' Text, 'appName' Text DEFAULT('rentman'),"
+				"'CurrentMonth' Integer, 'dbVersion' TEXT DEFAULT('1.0'))";
 	case SQL_PROPERTIES:
 		return "CREATE TABLE IF NOT EXISTS 'property' ('PropertyID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-				"'Code' TEXT, 'PropertyName' TEXT, 'Location' TEXT, 'Description' TEXT, 'DateBuilt' TEXT, 'DateBought' TEXT,"
+				"'CompanyID' INTEGER,"
+				"'PropertyCode' TEXT, 'PropertyName' TEXT, 'Location' TEXT, 'Street' TEXT, 'LRNumber' TEXT, 'DateBought' TEXT,"
 				"'UnitCount' INTEGER DEFAULT('0'))";
 	case SQL_UNITS:
 		return "CREATE TABLE IF NOT EXISTS 'unit' ('UnitID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
 				"'PropertyID' INTEGER, 'CompanyID' INTEGER,"
-				"'UnitCode' TEXT, 'BedroomCount' INTEGER DEFAULT('1'), 'MonthlyRent' INTEGER DEFAULT('10000'),"
+				"'UnitNo' TEXT, 'RoomCount' INTEGER DEFAULT('1'), 'MonthlyRent' INTEGER DEFAULT('10000'),"
+				"'PremiseType' TEXT, 'SQFT' TEXT, 'WaterBillAc' TEXT, 'ElecBillAcc' TEXT,"
 				"'CurrentTenantID' INTEGER DEFAULT('0'))";
 	case SQL_TENANTS:
 		return "CREATE TABLE IF NOT EXISTS 'tenant' ('UnitID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-				"'Name' TEXT, 'Sex' TEXT Default('Male'), 'Tel' TEXT, 'Email' TEXT, 'Address' TEXT"
+				"'Name' TEXT, 'Sex' TEXT Default('Male'), 'Tel' TEXT, 'Email' TEXT"
 				")";
+
+	case SQL_TENANT_UNITS:
+		return "CREATE TABLE IF NOT EXISTS 'tenant_units' ('EntryID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+				"'UnitID' INTEGER, 'TenantID' INTEGER,"
+				"'DateOfOccupation' TEXT, 'Monthlyrent' TEXT, 'Deposit' TEXT)";
 	default:
 		return "";
 	}

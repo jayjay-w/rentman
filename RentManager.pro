@@ -16,13 +16,16 @@ SOURCES += main.cpp\
         rentmanagermainwindow.cpp \
     publics.cpp \
     companyinitializationdialog.cpp \
-    companiesdialog.cpp
+    companiesdialog.cpp \
+    propertiesdialog.cpp
 
 HEADERS  += rentmanagermainwindow.h \
     publics.h \
     companyinitializationdialog.h \
-    companiesdialog.h
+    companiesdialog.h \
+    propertiesdialog.h
 
 FORMS    += rentmanagermainwindow.ui \
     companyinitializationdialog.ui \
-    companiesdialog.ui
+    companiesdialog.ui \
+    propertiesdialog.ui

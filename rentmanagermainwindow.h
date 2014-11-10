@@ -24,6 +24,7 @@ public:
 public slots:
 	void startOpenFile();
 	void closeFile();
+	void reloadBrowser();
 private:
 	Ui::RentManagerMainWindow *ui;
 	QSqlDatabase db;
@@ -47,6 +48,8 @@ private slots:
 	void openRecentFile();
 	void startNewFile();
 
+	void on_actionCompanies_triggered();
+	void on_actionProperties_triggered();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H
