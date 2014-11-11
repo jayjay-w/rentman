@@ -47,3 +47,13 @@ FORMS    += rentmanagermainwindow.ui \
     terminateoccupationdialog.ui \
     receivepaymentdialog.ui \
     paymentsdialog.ui
+
+RESOURCES += \
+    res.qrc
+
+RC_FILE = Windows.rc
+
+ICON = Cottage.icns
+
+OTHER_FILES += \
+    Windows.rc

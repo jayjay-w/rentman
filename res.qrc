@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/Button-Close-icon.png</file>
+        <file>images/company-building-icon.png</file>
+        <file>images/cottage.icns</file>
+        <file>images/cottage.ico</file>
+        <file>images/cottage.png</file>
+        <file>images/Files-New-File-icon.png</file>
+        <file>images/Home-icon.png</file>
+        <file>images/invoice-icon.png</file>
+        <file>images/open-file-icon.png</file>
+        <file>images/Preppy-icon.png</file>
+        <file>images/Sales-by-payment-method-icon.png</file>
+        <file>images/Save-icon.png</file>
+    </qresource>
+</RCC>
