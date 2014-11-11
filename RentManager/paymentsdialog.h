@@ -4,6 +4,7 @@
 #include <QDialog>
 
 class QSqlQueryModel;
+class QModelIndex;
 
 namespace Ui {
 class PaymentsDialog;
