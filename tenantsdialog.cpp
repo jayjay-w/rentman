@@ -16,6 +16,8 @@ TenantsDialog::TenantsDialog(QWidget *parent) :
 	connect (ui->cmdDelete, SIGNAL(clicked()), SLOT(deleteTenant()));
 	connect (ui->cmdSave, SIGNAL(clicked()), SLOT(saveChanges()));
 	connect (ui->cmdExit, SIGNAL(clicked()), this, SLOT(reject()));
+
+	connect (ui->trvTenants, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SLOT(tenantChanged(QTreeWidgetItem*,int)));
 }
 
 TenantsDialog::~TenantsDialog()
