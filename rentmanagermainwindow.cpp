@@ -10,6 +10,7 @@
 #include "assignunittotenantdialog.h"
 #include "receivepaymentdialog.h"
 #include "paymentsdialog.h"
+#include <QTableWidgetItem>
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -43,6 +44,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	actionsToDisable->addAction(ui->actionView_Tenan_Accounts);
 	actionsToDisable->addAction(ui->action_Save);
 	actionsToDisable->addAction(ui->actionSave_As);
+	actionsToDisable->addAction(ui->actionReceive_Payments);
 
 	actionsToDisable->setDisabled(true);
 	ui->menuRecent_Files->clear();
@@ -117,6 +119,29 @@ void RentManagerMainWindow::reloadBrowser()
 			propIt->setText(0, propQu.record().value("PropertyName").toString());
 			propIt->setText(99, propQu.record().value("PropertyID").toString());
 			propIt->setText(98, "property");
+		}
+	}
+}
+
+void RentManagerMainWindow::showCalendar()
+{
+	//Go through the units table and show the calendar
+	for (int i = 0; i < ui->tblUnits->rowCount(); i++) {
+		int month = i;
+		for (int c = 0; c < ui->tblUnits->columnCount(); c++) {
+			QString unitName = ui->tblUnits->horizontalHeaderItem(c)->text();
+			QString unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitName + "'", "UnitID").toString();
+			QString sql = "SELECT * FROM payments WHERE UnitID = '" + unitID + "' AND MonthNo = '" + QString::number(month) + "'";
+
+			QSqlQuery itemQu = db.exec(sql);
+			QString itemText = "";
+			while (itemQu.next()) {
+				QString receiptNo = itemQu.record().value("ReceiptNo").toString();
+				itemText.append(receiptNo);
+			}
+
+			QTableWidgetItem *newItem = new QTableWidgetItem(itemText);
+			ui->tblUnits->setItem(i, c, newItem);
 		}
 	}
 }
@@ -299,6 +324,7 @@ void RentManagerMainWindow::on_trvBrowser_itemClicked(QTreeWidgetItem *item, int
 		QString propertyID = item->text(99);
 		QSqlQuery unitQu = db.exec("SELECT * FROM unit WHERE PropertyID = '" + propertyID + "'");
 		QStringList headers;
+		ui->tblUnits->clearContents();
 		for (int i = 0; i < ui->tblUnits->columnCount(); i++) {
 			ui->tblUnits->removeColumn(i);
 		}
@@ -307,6 +333,7 @@ void RentManagerMainWindow::on_trvBrowser_itemClicked(QTreeWidgetItem *item, int
 			headers.append(unitQu.record().value("UnitNo").toString());
 		}
 		ui->tblUnits->setHorizontalHeaderLabels(headers);
+		showCalendar();
 	}
 }
 
