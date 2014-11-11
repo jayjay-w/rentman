@@ -96,96 +96,6 @@
          <string>Dec</string>
         </property>
        </row>
-       <column>
-        <property name="text">
-         <string>Unit 1</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Unit 2</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Unit 3</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Unit 4</string>
-        </property>
-       </column>
-       <item row="0" column="0">
-        <property name="text">
-         <string>TENANT 1</string>
-        </property>
-       </item>
-       <item row="1" column="0">
-        <property name="text">
-         <string>TENANT 1</string>
-        </property>
-       </item>
-       <item row="1" column="1">
-        <property name="text">
-         <string/>
-        </property>
-       </item>
-       <item row="2" column="0">
-        <property name="text">
-         <string>TENANT 1</string>
-        </property>
-       </item>
-       <item row="3" column="0">
-        <property name="text">
-         <string>TENANT 1</string>
-        </property>
-       </item>
-       <item row="4" column="0">
-        <property name="text">
-         <string>TENANT 1</string>
-        </property>
-       </item>
-       <item row="5" column="0">
-        <property name="text">
-         <string>TENANT 1</string>
-        </property>
-       </item>
-       <item row="6" column="0">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="background">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>234</red>
-           <green>45</green>
-           <blue>7</blue>
-          </color>
-         </brush>
-        </property>
-       </item>
-       <item row="7" column="0">
-        <property name="background">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>245</red>
-           <green>70</green>
-           <blue>11</blue>
-          </color>
-         </brush>
-        </property>
-       </item>
-       <item row="8" column="0">
-        <property name="text">
-         <string>TENANT 3</string>
-        </property>
-       </item>
-       <item row="9" column="0">
-        <property name="text">
-         <string>TENANT 3</string>
-        </property>
-       </item>
       </widget>
      </widget>
     </item>
@@ -197,7 +107,7 @@
      <x>0</x>
      <y>0</y>
      <width>855</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

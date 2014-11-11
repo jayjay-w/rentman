@@ -90,7 +90,7 @@ void RentManagerMainWindow::closeFile()
 	actionsToDisable->setEnabled(false);
 
 	ui->trvBrowser->invisibleRootItem()->takeChildren();
-	//ui->tblUnits->clearContents();
+	ui->tblUnits->clearContents();
 
 	curFile = "";
 	if (db.isOpen())
@@ -108,10 +108,13 @@ void RentManagerMainWindow::reloadBrowser()
 		QTreeWidgetItem *companyItem = new QTreeWidgetItem(ui->trvBrowser->invisibleRootItem());
 		companyItem->setText(0, companyName);
 		companyItem->setText(99, companyID);
+		companyItem->setText(98, "company");
 		QSqlQuery propQu = db.exec("SELECT * FROM property WHERE CompanyID = '" + companyID + "'");
 		while (propQu.next()) {
 			QTreeWidgetItem *propIt = new QTreeWidgetItem(companyItem);
 			propIt->setText(0, propQu.record().value("PropertyName").toString());
+			propIt->setText(99, propQu.record().value("PropertyID").toString());
+			propIt->setText(98, "property");
 		}
 	}
 }
@@ -265,24 +268,32 @@ void RentManagerMainWindow::on_actionProperties_triggered()
 
 void RentManagerMainWindow::on_actionTenants_triggered()
 {
-    if (!m_tenants)
-	    m_tenants = new TenantsDialog(this);
+	if (!m_tenants)
+		m_tenants = new TenantsDialog(this);
 
-    m_tenants->reloadTenants();
-    m_tenants->exec();
+	m_tenants->reloadTenants();
+	m_tenants->exec();
 }
 
 void RentManagerMainWindow::on_actionAssign_Unit_To_Tenant_triggered()
 {
-    if (!m_assign)
-	    m_assign = new AssignUnitToTenantDialog(this);
+	if (!m_assign)
+		m_assign = new AssignUnitToTenantDialog(this);
 
-    m_assign->reloadLists();
-    m_assign->exec();
+	m_assign->reloadLists();
+	m_assign->exec();
 }
 
 void RentManagerMainWindow::on_actionReceive_Payments_triggered()
 {
-    ReceivePaymentDialog *rec = new ReceivePaymentDialog(this);
-    rec->exec();
+	ReceivePaymentDialog *rec = new ReceivePaymentDialog(this);
+	rec->exec();
+}
+
+void RentManagerMainWindow::on_trvBrowser_itemClicked(QTreeWidgetItem *item, int column)
+{
+	Q_UNUSE(column);
+	if (item->text(98) == "property") {
+
+	}
 }
