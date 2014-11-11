@@ -13,4 +13,7 @@
         <file>images/Sales-by-payment-method-icon.png</file>
         <file>images/Save-icon.png</file>
     </qresource>
+    <qresource prefix="/reports">
+        <file>reports/receipt.xml</file>
+    </qresource>
 </RCC>

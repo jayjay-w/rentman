@@ -35,7 +35,7 @@ void MyPrinter::showReport(QString reportName, QString stringToReplace, QString 
 
 void MyPrinter::showReport(QString reportName, QStringList stringsToReplace, QStringList stringsToUse)
 {
-	QFile fl(qApp->applicationDirPath() + QDir::separator() + reportName);
+	QFile fl(":/reports/reports/" + reportName + ".xml");
 	if (!fl.open(QIODevice::ReadOnly)) {
 		Publics::showError("Could not open report source.\n" + fl.errorString());
 		return;

@@ -57,5 +57,5 @@ void PaymentsDialog::on_trvPayments_doubleClicked(const QModelIndex &index)
 	stringsToReplace << "param_entry_id" << "param_company_id";
 	stringsToUse << paymentID << companyID;
 	qDebug() << paymentID << companyID;
-	MyPrinter::showReport("receipt.xml", stringsToReplace, stringsToUse);
+	MyPrinter::showReport("receipt", stringsToReplace, stringsToUse);
 }
