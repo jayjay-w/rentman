@@ -111,7 +111,7 @@
      <x>0</x>
      <y>0</y>
      <width>855</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -157,9 +157,19 @@
     </property>
     <addaction name="actionAssign_Unit_To_Tenant"/>
    </widget>
+   <widget class="QMenu" name="menuReports">
+    <property name="title">
+     <string>Reports</string>
+    </property>
+    <addaction name="actionCompanies_Properties"/>
+    <addaction name="actionAll_Units"/>
+    <addaction name="actionVacan_Units"/>
+    <addaction name="actionOccupied_Units"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuManagement"/>
    <addaction name="menuAccounting"/>
+   <addaction name="menuReports"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="toolButtonStyle">
@@ -289,6 +299,26 @@
    </property>
    <property name="text">
     <string>View Payments</string>
+   </property>
+  </action>
+  <action name="actionCompanies_Properties">
+   <property name="text">
+    <string>Companies / Properties</string>
+   </property>
+  </action>
+  <action name="actionAll_Units">
+   <property name="text">
+    <string>All Units</string>
+   </property>
+  </action>
+  <action name="actionVacan_Units">
+   <property name="text">
+    <string>Vacant Units</string>
+   </property>
+  </action>
+  <action name="actionOccupied_Units">
+   <property name="text">
+    <string>Occupied Units</string>
    </property>
   </action>
  </widget>
