@@ -88,6 +88,7 @@ QString Publics::getSql(SQL_STRING sqlString)
 
 	case SQL_PAYMENTS:
 		return "CREATE TABLE IF NOT EXISTS 'payments' ('EntryID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+				"'CompanyID' TEXT, 'CompanyName' TEXT, "
 				"'UnitID' TEXT, 'TenantID' TEXT, 'ReceiptNo' TEXT, 'DateReceived' TEXT, 'UnitName' TEXT,"
 				"'TennantName' TEXT, 'AmountReceived' TEXT, 'PaymentFor' TEXT, 'PayMode' TEXT,"
 				"'Month' TEXT, 'MonthNo' INTEGER, 'Year' TEXT, 'ChequeNo' TEXT"

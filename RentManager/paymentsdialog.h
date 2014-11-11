@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+class QSqlQueryModel;
+
 namespace Ui {
 class PaymentsDialog;
 }
@@ -15,6 +17,10 @@ public:
 	explicit PaymentsDialog(QWidget *parent = 0);
 	~PaymentsDialog();
 	void reloadPayments();
+	QSqlQueryModel *model;
+private slots:
+	void on_trvPayments_doubleClicked(const QModelIndex &index);
+
 private:
 	Ui::PaymentsDialog *ui;
 };

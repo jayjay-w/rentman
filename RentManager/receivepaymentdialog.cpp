@@ -12,6 +12,7 @@ ReceivePaymentDialog::ReceivePaymentDialog(QWidget *parent) :
 
 	Publics::loadQueryToCombo("SELECT * FROM tenant", "Name", ui->cboTenant);
 	Publics::loadQueryToCombo("SELECT * FROM unit", "UnitNo", ui->cboUnit);
+	Publics::loadQueryToCombo("SELECT * FROM company", "CompanyName", ui->cboCompany);
 
 	ui->dtpDate->setDate(QDate::currentDate());
 	Publics::setComboBoxText(ui->cboMonth, QDate::currentDate().toString("MMMM"));
@@ -25,16 +26,19 @@ ReceivePaymentDialog::~ReceivePaymentDialog()
 
 void ReceivePaymentDialog::on_cmdSave_clicked()
 {
-	QString unitID, tenantID;
+	QString unitID, tenantID, companyID;
 	unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNO = '" + ui->cboUnit->currentText() + "'", "UnitID").toString();
 	tenantID = Publics::getDbValue("SELECT * FROM tenant WHERE Name = '" + ui->cboTenant->currentText() + "'", "TenantID").toString();
+	companyID = Publics::getDbValue("SELECT * FROM company WHERE CompanyName = '" + ui->cboCompany->currentText() + "'", "CompanyID").toString();
 
 	QString sql = "INSERT INTO payments "
-			"(UnitID, TenantID, ReceiptNo, DateReceived, UnitName, TennantName, "
+			"(UnitID, TenantID, CompanyID, CompanyName, ReceiptNo, DateReceived, UnitName, TennantName, "
 			"AmountReceived, PaymentFor, PayMode, Month, MonthNo, Year, ChequeNo) "
 			"VALUES ('"
 			+ unitID + "', '" +
 			tenantID  + "', '" +
+			companyID  + "', '" +
+			ui->cboCompany->currentText()  + "', '" +
 			ui->txtReceiptNo->text()  + "', '" +
 			ui->dtpDate->date().toString("dd-MMM-yyyy") + "', '" +
 			ui->cboUnit->currentText()  + "', '" +

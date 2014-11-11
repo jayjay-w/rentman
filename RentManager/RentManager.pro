@@ -4,14 +4,27 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += xml sql network widgets printsupport
 
 TARGET = RentManager
 TEMPLATE = app
 
+INCLUDEPATH += ../openrpt/common ../openrpt/OpenRPT/renderer ../openrpt/OpenRPT/common ../openrpt/OpenRPT/images
+#LIBS += -L../openrpt/lib  -lwrtembed -lcommon -lrenderer -lDmtx_Library
+LIBS += -L../openrpt/lib -lrenderer -lcommon -lDmtx_Library
+
 DESTDIR = ../build
+
+
+win32-msvc* {
+  PRE_TARGETDEPS += ../openrpt/lib/wrtembed.lib \
+                    ../openrpt/lib/common.lib   \
+                    ../openrpt/lib/renderer.lib
+} else {
+  PRE_TARGETDEPS += ../openrpt/lib/libwrtembed.a \
+                    ../openrpt/lib/libcommon.a   \
+                    ../openrpt/lib/librenderer.a
+}
 
 SOURCES += main.cpp\
         rentmanagermainwindow.cpp \
@@ -24,7 +37,8 @@ SOURCES += main.cpp\
     assignunittotenantdialog.cpp \
     terminateoccupationdialog.cpp \
     receivepaymentdialog.cpp \
-    paymentsdialog.cpp
+    paymentsdialog.cpp \
+    myprinter.cpp
 
 HEADERS  += rentmanagermainwindow.h \
     publics.h \
@@ -36,7 +50,8 @@ HEADERS  += rentmanagermainwindow.h \
     assignunittotenantdialog.h \
     terminateoccupationdialog.h \
     receivepaymentdialog.h \
-    paymentsdialog.h
+    paymentsdialog.h \
+    myprinter.h
 
 FORMS    += rentmanagermainwindow.ui \
     companyinitializationdialog.ui \
@@ -54,7 +69,7 @@ RESOURCES += \
 
 RC_FILE = Windows.rc
 
-ICON = Cottage.icns
+macx:ICON = Cottage.icns
 
 OTHER_FILES += \
     Windows.rc
