@@ -9,6 +9,7 @@
 #include "tenantsdialog.h"
 #include "assignunittotenantdialog.h"
 #include "receivepaymentdialog.h"
+#include "paymentsdialog.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -19,6 +20,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	m_propertiesDialog(0),
 	m_tenants(0),
 	m_assign(0),
+	m_payDiag(0),
 	ui(new Ui::RentManagerMainWindow)
 {
 	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -292,8 +294,27 @@ void RentManagerMainWindow::on_actionReceive_Payments_triggered()
 
 void RentManagerMainWindow::on_trvBrowser_itemClicked(QTreeWidgetItem *item, int column)
 {
-	Q_UNUSE(column);
+	Q_UNUSED(column);
 	if (item->text(98) == "property") {
-
+		QString propertyID = item->text(99);
+		QSqlQuery unitQu = db.exec("SELECT * FROM unit WHERE PropertyID = '" + propertyID + "'");
+		QStringList headers;
+		for (int i = 0; i < ui->tblUnits->columnCount(); i++) {
+			ui->tblUnits->removeColumn(i);
+		}
+		while (unitQu.next()) {
+			ui->tblUnits->insertColumn(ui->tblUnits->columnCount());
+			headers.append(unitQu.record().value("UnitNo").toString());
+		}
+		ui->tblUnits->setHorizontalHeaderLabels(headers);
 	}
+}
+
+void RentManagerMainWindow::on_actionView_Payments_triggered()
+{
+	if (!m_payDiag)
+		m_payDiag = new PaymentsDialog(this);
+
+	m_payDiag->reloadPayments();
+	m_payDiag->exec();
 }

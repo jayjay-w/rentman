@@ -20,6 +20,7 @@ UnitsDialog::~UnitsDialog()
 void UnitsDialog::edit(QString id)
 {
 	m_unitID = id;
+	isAdding = false;
 	Publics::clearTextBoxes(this);
 	QSqlQuery qu = QSqlDatabase::database().exec(
 				"SELECT * FROM unit WHERE "
@@ -29,7 +30,7 @@ void UnitsDialog::edit(QString id)
 
 	ui->txtOccupied->setText(qu.record().value("Occupied").toString());
 
-	if (ui->txtOccupied->text() == "No") {
+	if (ui->txtOccupied->text() != "Yes") {
 		ui->cmdEndOccupation->setVisible(false);
 		ui->lblTenant->setVisible(false);
 		ui->txtTenantName->setVisible(false);
@@ -64,6 +65,10 @@ void UnitsDialog::addNew(QString propertyID)
 	ui->spNoOfRooms->setValue(0);
 	m_propertyID = propertyID;
 	isAdding  = true;
+	ui->cmdEndOccupation->setVisible(false);
+	ui->lblTenant->setVisible(false);
+	ui->txtTenantName->setVisible(false);
+	ui->txtOccupied->setText("No");
 }
 
 void UnitsDialog::on_cmdSave_clicked()
@@ -81,13 +86,13 @@ void UnitsDialog::on_cmdSave_clicked()
 				"UnitID = '" + m_unitID + "'";
 	} else {
 		sql = "INSERT INTO unit (UnitNo, PropertyID, RoomCount, MonthlyRent, "
-				"SQFT, WaterBillAc, ElecBillAcc) VALUES ('"
+				"SQFT, WaterBillAc, CurrentTenantID, Occupied, ElecBillAcc) VALUES ('"
 				+ ui->txtUnitNo->text() + "', '"
 				+ m_propertyID + "', '"
 				+ QString::number(ui->spNoOfRooms->value()) + "', '"
 				+ ui->txtMonthlyRent->text() + "', '"
 				+ QString::number(ui->spSqFt->value()) + "', '"
-				+ ui->txtWaterBillAc->text() + "', '"
+				+ ui->txtWaterBillAc->text() + "', '0', 'No', '"
 				+ ui->txtElecBillAcc->text() + "')";
 	}
 

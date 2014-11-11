@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     tenantsdialog.cpp \
     assignunittotenantdialog.cpp \
     terminateoccupationdialog.cpp \
-    receivepaymentdialog.cpp
+    receivepaymentdialog.cpp \
+    paymentsdialog.cpp
 
 HEADERS  += rentmanagermainwindow.h \
     publics.h \
@@ -33,7 +34,8 @@ HEADERS  += rentmanagermainwindow.h \
     tenantsdialog.h \
     assignunittotenantdialog.h \
     terminateoccupationdialog.h \
-    receivepaymentdialog.h
+    receivepaymentdialog.h \
+    paymentsdialog.h
 
 FORMS    += rentmanagermainwindow.ui \
     companyinitializationdialog.ui \
@@ -43,4 +45,5 @@ FORMS    += rentmanagermainwindow.ui \
     tenantsdialog.ui \
     assignunittotenantdialog.ui \
     terminateoccupationdialog.ui \
-    receivepaymentdialog.ui
+    receivepaymentdialog.ui \
+    paymentsdialog.ui

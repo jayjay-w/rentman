@@ -15,6 +15,9 @@ public:
 	explicit ReceivePaymentDialog(QWidget *parent = 0);
 	~ReceivePaymentDialog();
 
+private slots:
+	void on_cmdSave_clicked();
+
 private:
 	Ui::ReceivePaymentDialog *ui;
 };

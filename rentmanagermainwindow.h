@@ -4,11 +4,14 @@
 #include <QMainWindow>
 #include <QtSql>
 
+class QTreeWidgetItem;
+
 class QActionGroup;
 class CompaniesDialog;
 class PropertiesDialog;
 class TenantsDialog;
 class AssignUnitToTenantDialog;
+class PaymentsDialog;
 
 namespace Ui {
 class RentManagerMainWindow;
@@ -30,6 +33,7 @@ public:
 	PropertiesDialog *m_propertiesDialog;
 	TenantsDialog *m_tenants;
 	AssignUnitToTenantDialog *m_assign;
+	PaymentsDialog *m_payDiag;
 public slots:
 	void startOpenFile();
 	void closeFile();
@@ -61,6 +65,7 @@ private slots:
 	void on_actionAssign_Unit_To_Tenant_triggered();
 	void on_actionReceive_Payments_triggered();
 	void on_trvBrowser_itemClicked(QTreeWidgetItem *item, int column);
+	void on_actionView_Payments_triggered();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H
