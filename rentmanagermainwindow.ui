@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Rent Manager</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/images/cottage.png</normaloff>:/images/cottage.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
@@ -158,6 +162,9 @@
    <addaction name="menuAccounting"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -171,15 +178,22 @@
    <addaction name="separator"/>
    <addaction name="actionCreate_Invoice"/>
    <addaction name="actionReceive_Payments"/>
-   <addaction name="actionView_Payments"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionCompanies">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/company-building-icon.png</normaloff>:/images/company-building-icon.png</iconset>
+   </property>
    <property name="text">
     <string>Companies</string>
    </property>
   </action>
   <action name="actionProperties">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/Home-icon.png</normaloff>:/images/Home-icon.png</iconset>
+   </property>
    <property name="text">
     <string>Properties</string>
    </property>
@@ -190,6 +204,10 @@
    </property>
   </action>
   <action name="actionTenants">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/Preppy-icon.png</normaloff>:/images/Preppy-icon.png</iconset>
+   </property>
    <property name="text">
     <string>Tenants</string>
    </property>
@@ -205,6 +223,10 @@
    </property>
   </action>
   <action name="actionCreate_Invoice">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/invoice-icon.png</normaloff>:/images/invoice-icon.png</iconset>
+   </property>
    <property name="text">
     <string>Create Invoice</string>
    </property>
@@ -215,6 +237,10 @@
    </property>
   </action>
   <action name="actionReceive_Payments">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/Sales-by-payment-method-icon.png</normaloff>:/images/Sales-by-payment-method-icon.png</iconset>
+   </property>
    <property name="text">
     <string>Receive Payments</string>
    </property>
@@ -225,16 +251,28 @@
    </property>
   </action>
   <action name="action_New">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/Files-New-File-icon.png</normaloff>:/images/Files-New-File-icon.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;New</string>
    </property>
   </action>
   <action name="action_Open">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/open-file-icon.png</normaloff>:/images/open-file-icon.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Open</string>
    </property>
   </action>
   <action name="action_Save">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/Save-icon.png</normaloff>:/images/Save-icon.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Save</string>
    </property>
@@ -245,12 +283,18 @@
    </property>
   </action>
   <action name="actionView_Payments">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/Sales-by-payment-method-icon.png</normaloff>:/images/Sales-by-payment-method-icon.png</iconset>
+   </property>
    <property name="text">
     <string>View Payments</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>
