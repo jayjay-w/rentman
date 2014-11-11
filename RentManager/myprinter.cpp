@@ -13,18 +13,18 @@ MyPrinter::MyPrinter(QObject *mzazi) :
 
 void MyPrinter::showReport(QString reportName, QString stringToReplace, QString replaceValue)
 {
-	QFile fl(qApp->applicationDirPath() + QDir::separator() + reportName);
+	QFile fl(":/reports/reports/" + reportName + ".xml");
 	if (!fl.open(QIODevice::ReadOnly)) {
 		Publics::showError("Could not open report source.\n" + fl.errorString());
 		return;
 	}
+
 	//File open
 	QString xml = fl.readAll();
 	xml.replace(stringToReplace, replaceValue);
 	QDomDocument doc;
 	doc.setContent(xml);
 	fl.close();
-	qDebug() << xml;
 	ORPreRender pre;
 	pre.setDatabase(QSqlDatabase::database());
 	pre.setDom(doc);
@@ -48,7 +48,6 @@ void MyPrinter::showReport(QString reportName, QStringList stringsToReplace, QSt
 	QDomDocument doc;
 	doc.setContent(xml);
 	fl.close();
-	qDebug() << xml;
 	ORPreRender pre;
 	pre.setDatabase(QSqlDatabase::database());
 	pre.setDom(doc);

@@ -67,6 +67,7 @@ private slots:
 	void on_actionReceive_Payments_triggered();
 	void on_trvBrowser_itemClicked(QTreeWidgetItem *item, int column);
 	void on_actionView_Payments_triggered();
+	void on_actionAll_Units_triggered();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

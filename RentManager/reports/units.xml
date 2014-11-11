@@ -17,27 +17,11 @@
  <leftmargin>100</leftmargin>
  <querysource>
   <name>units_query</name>
-  <sql>SELECT * FROM units</sql>
+  <sql>SELECT * FROM unit param_where</sql>
  </querysource>
  <pghead>
   <firstpage/>
   <height>80</height>
-  <label>
-   <rect>
-    <x>10</x>
-    <y>15</y>
-    <width>630</width>
-    <height>25</height>
-   </rect>
-   <font>
-    <face>Sans Serif</face>
-    <size>14</size>
-    <weight>bold</weight>
-   </font>
-   <hcenter/>
-   <vcenter/>
-   <string>Housing Units</string>
-  </label>
   <label>
    <rect>
     <x>20</x>
@@ -125,6 +109,22 @@
    <yend>75</yend>
    <weight>1</weight>
   </line>
+  <label>
+   <rect>
+    <x>10</x>
+    <y>10</y>
+    <width>630</width>
+    <height>25</height>
+   </rect>
+   <font>
+    <face>Sans Serif</face>
+    <size>14</size>
+    <weight>bold</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>Housing Units</string>
+  </label>
  </pghead>
  <section>
   <name>unnamed</name>
@@ -174,7 +174,7 @@
     <left/>
     <top/>
     <data>
-     <query>Context Query</query>
+     <query>units_query</query>
      <column>RoomCount</column>
     </data>
    </field>

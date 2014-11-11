@@ -11,6 +11,7 @@
 #include "receivepaymentdialog.h"
 #include "paymentsdialog.h"
 #include <QTableWidgetItem>
+#include "myprinter.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -344,4 +345,9 @@ void RentManagerMainWindow::on_actionView_Payments_triggered()
 
 	m_payDiag->reloadPayments();
 	m_payDiag->exec();
+}
+
+void RentManagerMainWindow::on_actionAll_Units_triggered()
+{
+	MyPrinter::showReport("units", "param_where", "");
 }
