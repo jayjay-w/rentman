@@ -26,7 +26,7 @@ unix:TARGET = openrpt
 
 CONFIG += qt warn_on
 
-DESTDIR     = ../../bin
+DESTDIR     = ../../../build
 MOC_DIR     = tmp
 UI_DIR      = tmp
 OBJECTS_DIR = tmp

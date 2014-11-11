@@ -41,7 +41,7 @@ win32-msvc* {
                     ../../lib/librenderer.a
 }
 
-DESTDIR = ../../bin
+DESTDIR = ../../../build
 
 RC_FILE = renderapp.rc
 macx:RC_FILE = ../images/OpenRPT.icns

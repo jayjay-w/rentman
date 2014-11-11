@@ -24,7 +24,7 @@ TEMPLATE = app
 CONFIG += warn_on console
 
 TARGET = importrpt
-DESTDIR = ../../bin
+DESTDIR = ../../../build
 MOC_DIR = tmp
 OBJECTS_DIR = tmp
 UI_DIR = tmp

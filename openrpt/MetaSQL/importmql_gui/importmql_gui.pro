@@ -32,7 +32,7 @@ UI_DIR      = tmp
 
 LIBS += -L../../lib -lMetaSQL -lcommon
 
-DESTDIR = ../../bin
+DESTDIR = ../../../build
 
 # Input
 FORMS   += importwindow.ui

@@ -28,7 +28,7 @@ INCLUDEPATH += .. ../tmp ../../common ../../../openrpt-build-desktop/MetaSQL/tmp
 DEPENDPATH  += .. ../tmp ../../common ../../../openrpt-build-desktop/MetaSQL/tmp  ../../../openrpt-build-desktop/common
 
 unix:TARGET=metasql
-DESTDIR = ../../bin
+DESTDIR = ../../../build
 UI_DIR = tmp
 MOC_DIR = tmp
 OBJECTS_DIR = tmp

@@ -33,6 +33,6 @@ MOC_DIR = tmp
 UI_DIR = tmp
 OBJECTS_DIR = tmp
 
-DESTDIR = ../bin
+DESTDIR = ../../build
 QT +=  sql widgets
 

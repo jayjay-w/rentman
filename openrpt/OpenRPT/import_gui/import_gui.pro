@@ -38,7 +38,7 @@ win32-msvc* {
   PRE_TARGETDEPS += ../../lib/libcommon.a
 }
 
-DESTDIR = ../../bin
+DESTDIR = ../../../build
 
 # Input
 FORMS   += importwindow.ui
