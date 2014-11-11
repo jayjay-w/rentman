@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	a.setOrganizationDomain("panthertechno.co.ke");
 
 	RentManagerMainWindow w;
-	w.show();
+	w.showMaximized();
 
 	return a.exec();
 }

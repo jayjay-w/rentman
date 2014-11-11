@@ -1,4 +1,4 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    RentManager openrpt
+     openrpt RentManager

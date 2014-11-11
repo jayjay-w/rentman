@@ -12,6 +12,7 @@ class PropertiesDialog;
 class TenantsDialog;
 class AssignUnitToTenantDialog;
 class PaymentsDialog;
+class MyPrinter;
 
 namespace Ui {
 class RentManagerMainWindow;
@@ -34,6 +35,8 @@ public:
 	TenantsDialog *m_tenants;
 	AssignUnitToTenantDialog *m_assign;
 	PaymentsDialog *m_payDiag;
+
+	MyPrinter *m_printer;
 public slots:
 	void startOpenFile();
 	void closeFile();

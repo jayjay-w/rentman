@@ -23,6 +23,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	m_tenants(0),
 	m_assign(0),
 	m_payDiag(0),
+	m_printer(0),
 	ui(new Ui::RentManagerMainWindow)
 {
 	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -33,6 +34,8 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	//ActionGroup
 	if (!actionsToDisable)
 		actionsToDisable = new QActionGroup(this);
+
+	m_printer = new MyPrinter(this);
 
 	actionsToDisable->addAction(ui->actionAssign_Unit_To_Tenant);
 	actionsToDisable->addAction(ui->actionCompanies);
@@ -349,5 +352,5 @@ void RentManagerMainWindow::on_actionView_Payments_triggered()
 
 void RentManagerMainWindow::on_actionAll_Units_triggered()
 {
-	MyPrinter::showReport("units", "param_where", "");
+	m_printer->qtPreview("units", QStringList("param_where"), QStringList(""));
 }

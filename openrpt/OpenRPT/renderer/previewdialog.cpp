@@ -77,7 +77,7 @@ PreviewDialog::PreviewDialog(ORODocument *document,
     mainlayout->addLayout(buttonlayout);
 
     resize(800, 600);
-    setWindowState(Qt::WindowMaximized);
+    //setWindowState(Qt::WindowMaximized);
 
     connect(zoominbutton, SIGNAL(clicked()), _view, SLOT(zoomIn()));
     connect(zoomoutbutton, SIGNAL(clicked()), _view, SLOT(zoomOut()));

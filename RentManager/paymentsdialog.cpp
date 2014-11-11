@@ -6,6 +6,8 @@
 #include <QtSql>
 #include <QSqlQueryModel>
 
+#include "rentmanagermainwindow.h"
+
 PaymentsDialog::PaymentsDialog(QWidget *parent) :
 	QDialog(parent),
 	model(0),
@@ -57,5 +59,6 @@ void PaymentsDialog::on_trvPayments_doubleClicked(const QModelIndex &index)
 	stringsToReplace << "param_entry_id" << "param_company_id";
 	stringsToUse << paymentID << companyID;
 	qDebug() << paymentID << companyID;
-	MyPrinter::showReport("receipt", stringsToReplace, stringsToUse);
+	//MyPrinter::showReport("receipt", stringsToReplace, stringsToUse);
+	RentManagerMainWindow::instance()->m_printer->qtPreview("receipt", stringsToReplace, stringsToUse);
 }

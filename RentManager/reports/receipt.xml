@@ -126,16 +126,22 @@
     <query>payment_query</query>
    </key>
    <height>187</height>
+   <rect>
+    <x>515</x>
+    <y>12</y>
+    <width>300</width>
+    <height>105</height>
+   </rect>
    <label>
     <rect>
-     <x>20</x>
-     <y>12</y>
-     <width>100</width>
+     <x>525</x>
+     <y>22</y>
+     <width>120</width>
      <height>18</height>
     </rect>
     <font>
      <face></face>
-     <size>8</size>
+     <size>14</size>
      <weight>bold</weight>
     </font>
     <left/>
@@ -144,14 +150,14 @@
    </label>
    <field>
     <rect>
-     <x>130</x>
-     <y>12</y>
-     <width>100</width>
-     <height>14</height>
+     <x>655</x>
+     <y>22</y>
+     <width>150</width>
+     <height>25</height>
     </rect>
     <font>
      <face></face>
-     <size>8</size>
+     <size>16</size>
      <weight>normal</weight>
     </font>
     <left/>
@@ -163,8 +169,8 @@
    </field>
    <label>
     <rect>
-     <x>20</x>
-     <y>32</y>
+     <x>30</x>
+     <y>102</y>
      <width>100</width>
      <height>18</height>
     </rect>
@@ -179,8 +185,8 @@
    </label>
    <field>
     <rect>
-     <x>130</x>
-     <y>32</y>
+     <x>140</x>
+     <y>132</y>
      <width>100</width>
      <height>14</height>
     </rect>
