@@ -27,7 +27,13 @@ class QSplashScreen;
 
 #include "parameter.h"
 
-#include "tmp/ui_login.h"
+#if QT_VERSION > 0x50000
+	#include "qt5-tmp/ui_login.h"
+#endif
+#if QT_VERSION < 0x50000
+	#include "qt4-tmp/ui_login.h"
+#endif
+
 
 class login : public QDialog, public Ui::login
 {

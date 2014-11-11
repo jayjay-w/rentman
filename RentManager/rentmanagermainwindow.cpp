@@ -131,7 +131,7 @@ void RentManagerMainWindow::showCalendar()
 		for (int c = 0; c < ui->tblUnits->columnCount(); c++) {
 			QString unitName = ui->tblUnits->horizontalHeaderItem(c)->text();
 			QString unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitName + "'", "UnitID").toString();
-			QString sql = "SELECT * FROM payments WHERE UnitID = '" + unitID + "' AND MonthNo = '" + QString::number(month) + "'";
+			QString sql = "SELECT * FROM payments WHERE UnitID = '" + unitID + "' AND MonthNo = '" + QString::number(month-1) + "'";
 
 			QSqlQuery itemQu = db.exec(sql);
 			QString itemText = "";

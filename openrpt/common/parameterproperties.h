@@ -23,7 +23,12 @@
 
 #include <QDialog>
 
-#include "tmp/ui_parameterproperties.h"
+#if QT_VERSION > 0x50000
+	#include "qt5-tmp/ui_parameterproperties.h"
+#endif
+#if QT_VERSION < 0x50000
+	#include "qt4-tmp/ui_parameterproperties.h"
+#endif
 
 class ParameterProperties : public QDialog, public Ui::ParameterProperties
 {

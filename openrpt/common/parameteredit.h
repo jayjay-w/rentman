@@ -26,8 +26,12 @@
 
 #include "parameter.h"
 
-#include "tmp/ui_parameteredit.h"
-
+#if QT_VERSION > 0x50000
+	#include "qt5-tmp/ui_parameteredit.h"
+#endif
+#if QT_VERSION < 0x50000
+	#include "qt4-tmp/ui_parameteredit.h"
+#endif
 
 class ParameterEdit : public QWidget, public Ui::ParameterEdit
 {
