@@ -41,7 +41,6 @@ public slots:
 	void startOpenFile();
 	void closeFile();
 	void reloadBrowser();
-	void showCalendar();
 private:
 	Ui::RentManagerMainWindow *ui;
 	QSqlDatabase db;
