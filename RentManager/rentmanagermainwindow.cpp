@@ -127,29 +127,6 @@ void RentManagerMainWindow::reloadBrowser()
 	}
 }
 
-void RentManagerMainWindow::showCalendar()
-{
-	//Go through the units table and show the calendar
-	for (int i = 0; i < ui->tblUnits->rowCount(); i++) {
-		int month = i;
-		for (int c = 0; c < ui->tblUnits->columnCount(); c++) {
-			QString unitName = ui->tblUnits->horizontalHeaderItem(c)->text();
-			QString unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitName + "'", "UnitID").toString();
-			QString sql = "SELECT * FROM payments WHERE UnitID = '" + unitID + "' AND MonthNo = '" + QString::number(month-1) + "'";
-
-			QSqlQuery itemQu = db.exec(sql);
-			QString itemText = "";
-			while (itemQu.next()) {
-				QString receiptNo = itemQu.record().value("ReceiptNo").toString();
-				itemText.append(receiptNo);
-			}
-
-			QTableWidgetItem *newItem = new QTableWidgetItem(itemText);
-			ui->tblUnits->setItem(i, c, newItem);
-		}
-	}
-}
-
 void RentManagerMainWindow::loadFile(const QString &fileName)
 {
 	if (fileName.isNull()) {
@@ -332,14 +309,39 @@ void RentManagerMainWindow::on_trvBrowser_itemClicked(QTreeWidgetItem *item, int
 		for (int i = 0; i < ui->tblUnits->columnCount(); i++) {
 			ui->tblUnits->removeColumn(i);
 		}
+		int cnt = 0;
 		while (unitQu.next()) {
-			ui->tblUnits->insertColumn(ui->tblUnits->columnCount());
+			int colNo = ui->tblUnits->columnCount();
+			ui->tblUnits->insertColumn(colNo);
 			headers.append(unitQu.record().value("UnitNo").toString());
+			for (int month = 0; month < 12; month++) {
+				QString unitName = unitQu.record().value("UnitNo").toString();
+				QString unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitName + "'", "UnitID").toString();
+				QString sql = "SELECT * FROM payments WHERE UnitID = '" + unitID + "' AND MonthNo = '" + QString::number(month) + "'";
+
+				QSqlQuery itemQu = db.exec(sql);
+				QString itemText = "";
+				while (itemQu.next()) {
+					QString receiptNo = itemQu.record().value("ReceiptNo").toString();
+					itemText.append(receiptNo + ",");
+				}
+				itemText.truncate(itemText.length() - 1);
+				QTableWidgetItem *newItem = new QTableWidgetItem(itemText);
+				ui->tblUnits->setItem(month, colNo, newItem);
+			}
+			cnt = cnt + 1;
+		}
+		//Remove trailing columns
+		int max = ui->tblUnits->columnCount();
+		if (max > cnt) {
+			for (int c = cnt; c < max; c++) {
+				ui->tblUnits->removeColumn(c);
+			}
 		}
 		ui->tblUnits->setHorizontalHeaderLabels(headers);
-		showCalendar();
 	}
 }
+
 
 void RentManagerMainWindow::on_actionView_Payments_triggered()
 {
