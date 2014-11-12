@@ -89,15 +89,15 @@ void CompaniesDialog::on_trvCompanies_itemClicked(QTreeWidgetItem *item, int col
 void CompaniesDialog::on_cmdSaveChanges_clicked()
 {
 	QString sql = "UPDATE company SET "
-		      "Code = '" + ui->txtCode->text() + "', "
-							 "PhysicalAddress = '" + ui->txtPhysicalAddress->text() + "', "
-														  "PostalAddress = '" + ui->txtPostalAddress->text() + "', "
-																				       "ContactPerson = '" + ui->txtContactPerson->text() + "', "
-																											    "Mobile = '" + ui->txtMobileNo->text() + "', "
-																																     "Email = '" + ui->txtEmail->text() + "', "
-																																					  "CompanyName = '" + ui->txtCompanyName->text() + "', "
-																																											   "Tel1 = '" + ui->txtTelNo->text() + "' WHERE "
-																																															       "CompanyID = '" + m_currentCompany + "'";
+		"Code = '" + ui->txtCode->text() + "', "
+		"PhysicalAddress = '" + ui->txtPhysicalAddress->text() + "', "
+		"PostalAddress = '" + ui->txtPostalAddress->text() + "', "
+		"ContactPerson = '" + ui->txtContactPerson->text() + "', "
+		"Mobile = '" + ui->txtMobileNo->text() + "', "
+		"Email = '" + ui->txtEmail->text() + "', "
+		"CompanyName = '" + ui->txtCompanyName->text() + "', "
+		"Tel1 = '" + ui->txtTelNo->text() + "' WHERE "
+		"CompanyID = '" + m_currentCompany + "'";
 
 	QSqlDatabase::database().exec(sql);
 	reloadCompanies();
