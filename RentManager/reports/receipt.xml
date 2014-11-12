@@ -127,14 +127,15 @@
    </key>
    <height>187</height>
    <rect>
-    <x>515</x>
+    <x>480</x>
     <y>12</y>
     <width>300</width>
     <height>105</height>
+    <borderstyle>2</borderstyle>
    </rect>
    <label>
     <rect>
-     <x>525</x>
+     <x>490</x>
      <y>22</y>
      <width>120</width>
      <height>18</height>
@@ -150,7 +151,7 @@
    </label>
    <field>
     <rect>
-     <x>655</x>
+     <x>615</x>
      <y>22</y>
      <width>150</width>
      <height>25</height>

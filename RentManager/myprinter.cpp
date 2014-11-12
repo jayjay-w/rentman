@@ -66,6 +66,7 @@ void MyPrinter::qtPreview(QString reportName, QStringList params, QStringList re
 	m_makePdf = pdf;
 	m_openPdf = openPdf;
 
+	qDebug() << params << replacements;
 	QFile fl(":/reports/reports/" + reportName + ".xml");
 	if (!fl.open(QIODevice::ReadOnly)) {
 		Publics::showError("Could not open report source.\n" + fl.errorString());
