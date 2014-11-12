@@ -4,6 +4,7 @@
 #include "orprerender.h"
 #include "previewdialog.h"
 #include "orprintrender.h"
+#include "parameter.h"
 #include <QPrintPreviewDialog>
 #include <QDomDocument>
 
@@ -74,9 +75,9 @@ void MyPrinter::qtPreview(QString reportName, QStringList params, QStringList re
 	}
 	//File open
 	QString xml = fl.readAll();
-	for (int i = 0; i < params.count(); i++) {
-		xml.replace(params.at(i), replacements.at(i));
-	}
+	//	for (int i = 0; i < params.count(); i++) {
+	//		xml.replace(params.at(i), replacements.at(i));
+	//	}
 	m_xml = xml;
 	m_doc.setContent(m_xml);
 	fl.close();
@@ -91,8 +92,13 @@ void MyPrinter::printRequested(QPrinter */*prnt*/)
 	ORPreRender pre;
 	pre.setDatabase(QSqlDatabase::database());
 	pre.setDom(m_doc);
+	ParameterList params = ParameterList();
+	for (int i = 0; i < m_paramsToReplace.count(); i++) {
+		Parameter param(m_paramsToReplace.at(i), m_paramReplacements.at(i));
+		params.append(param);
+	}
+	pre.setParamList(params);
 	ORODocument *oDoc = pre.generate();
-
 
 	if (oDoc) {
 		ORPrintRender render;

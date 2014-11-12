@@ -56,9 +56,7 @@ void PaymentsDialog::on_trvPayments_doubleClicked(const QModelIndex &index)
 	QString companyID = Publics::getDbValue(pSql, "CompanyID").toString();
 	QStringList stringsToReplace;
 	QStringList stringsToUse;
-	stringsToReplace << "param_entry_id" << "param_company_id";
-	stringsToUse << paymentID << companyID;
-	qDebug() << paymentID << companyID;
-	//MyPrinter::showReport("receipt", stringsToReplace, stringsToUse);
+	stringsToReplace << "PaymentID" << "CompanyID" << "ReportDate";
+	stringsToUse << paymentID << companyID << QDate::currentDate().toString("dd-MMM-yyyy");
 	RentManagerMainWindow::instance()->m_printer->qtPreview("receipt", stringsToReplace, stringsToUse);
 }

@@ -3,6 +3,15 @@
  <title>Receipt</title>
  <name>Receipt</name>
  <description>Receipt</description>
+ <parameter default="1" active="true" listtype="static" type="string" name="CompanyID">
+  <description></description>
+ </parameter>
+ <parameter default="1" active="true" listtype="static" type="string" name="PaymentID">
+  <description></description>
+ </parameter>
+ <parameter default="" active="true" listtype="static" type="string" name="ReportDate">
+  <description></description>
+ </parameter>
  <grid>
   <snap/>
   <show/>
@@ -11,26 +20,32 @@
  </grid>
  <size>Letter</size>
  <portrait/>
- <topmargin>10</topmargin>
- <bottommargin>10</bottommargin>
- <rightmargin>10</rightmargin>
- <leftmargin>10</leftmargin>
+ <topmargin>50</topmargin>
+ <bottommargin>50</bottommargin>
+ <rightmargin>50</rightmargin>
+ <leftmargin>50</leftmargin>
  <querysource>
   <name>payment_query</name>
-  <sql>SELECT * FROM payments WHERE EntryID='param_entry_id'</sql>
+  <sql>SELECT * FROM payments WHERE (EntryID=&lt;? value("PaymentID") ?>)</sql>
  </querysource>
  <querysource>
   <name>company_query</name>
-  <sql>SELECT * FROM company WHERE CompanyID = 'param_company_id'</sql>
+  <sql>SELECT * FROM company WHERE (CompanyID=&lt;? value("CompanyID") ?>)</sql>
  </querysource>
+ <colordef>
+  <name>Blue</name>
+  <red>71</red>
+  <green>45</green>
+  <blue>200</blue>
+ </colordef>
  <pghead>
   <firstpage/>
-  <height>183</height>
+  <height>140</height>
   <label>
    <rect>
     <x>5</x>
-    <y>135</y>
-    <width>809</width>
+    <y>105</y>
+    <width>735</width>
     <height>35</height>
    </rect>
    <font>
@@ -44,9 +59,9 @@
   </label>
   <field>
    <rect>
-    <x>15</x>
-    <y>40</y>
-    <width>807</width>
+    <x>10</x>
+    <y>30</y>
+    <width>730</width>
     <height>41</height>
    </rect>
    <font>
@@ -63,9 +78,9 @@
   </field>
   <field>
    <rect>
-    <x>175</x>
-    <y>100</y>
-    <width>491</width>
+    <x>5</x>
+    <y>85</y>
+    <width>735</width>
     <height>24</height>
    </rect>
    <font>
@@ -82,9 +97,9 @@
   </field>
   <field>
    <rect>
-    <x>175</x>
-    <y>80</y>
-    <width>491</width>
+    <x>5</x>
+    <y>65</y>
+    <width>735</width>
     <height>23</height>
    </rect>
    <font>
@@ -101,10 +116,10 @@
   </field>
   <field>
    <rect>
-    <x>630</x>
+    <x>510</x>
     <y>10</y>
-    <width>165</width>
-    <height>20</height>
+    <width>230</width>
+    <height>15</height>
    </rect>
    <font>
     <face></face>
@@ -114,8 +129,8 @@
    <right/>
    <top/>
    <data>
-    <query>Context Query</query>
-    <column>report_date</column>
+    <query>Parameter Query</query>
+    <column>ReportDate</column>
    </data>
   </field>
  </pghead>
@@ -125,20 +140,20 @@
    <key>
     <query>payment_query</query>
    </key>
-   <height>187</height>
+   <height>70</height>
    <rect>
-    <x>480</x>
-    <y>12</y>
-    <width>300</width>
-    <height>105</height>
+    <x>343</x>
+    <y>10</y>
+    <width>395</width>
+    <height>45</height>
     <borderstyle>2</borderstyle>
    </rect>
    <label>
     <rect>
-     <x>490</x>
-     <y>22</y>
-     <width>120</width>
-     <height>18</height>
+     <x>350</x>
+     <y>10</y>
+     <width>175</width>
+     <height>25</height>
     </rect>
     <font>
      <face></face>
@@ -151,9 +166,9 @@
    </label>
    <field>
     <rect>
-     <x>615</x>
-     <y>22</y>
-     <width>150</width>
+     <x>530</x>
+     <y>10</y>
+     <width>205</width>
      <height>25</height>
     </rect>
     <font>
@@ -170,14 +185,14 @@
    </field>
    <label>
     <rect>
-     <x>30</x>
-     <y>102</y>
-     <width>100</width>
-     <height>18</height>
+     <x>350</x>
+     <y>30</y>
+     <width>180</width>
+     <height>30</height>
     </rect>
     <font>
      <face></face>
-     <size>8</size>
+     <size>14</size>
      <weight>bold</weight>
     </font>
     <left/>
@@ -186,14 +201,14 @@
    </label>
    <field>
     <rect>
-     <x>140</x>
-     <y>132</y>
-     <width>100</width>
-     <height>14</height>
+     <x>530</x>
+     <y>30</y>
+     <width>195</width>
+     <height>25</height>
     </rect>
     <font>
      <face></face>
-     <size>8</size>
+     <size>14</size>
      <weight>normal</weight>
     </font>
     <left/>
