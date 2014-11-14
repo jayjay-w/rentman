@@ -10,7 +10,6 @@ TARGET = RentManager
 TEMPLATE = app
 
 INCLUDEPATH += ../openrpt/common ../openrpt/OpenRPT/renderer ../openrpt/OpenRPT/common ../openrpt/OpenRPT/images
-#LIBS += -L../openrpt/lib  -lwrtembed -lcommon -lrenderer -lDmtx_Library
 LIBS += -L../openrpt/lib -lrenderer -lcommon -lDmtx_Library
 
 DESTDIR = ../build

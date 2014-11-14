@@ -1,10 +1,10 @@
 #include "myprinter.h"
 #include "publics.h"
-#include "renderobjects.h"
-#include "orprerender.h"
-#include "previewdialog.h"
-#include "orprintrender.h"
-#include "parameter.h"
+//#include "renderobjects.h"
+//#include "orprerender.h"
+//#include "previewdialog.h"
+//#include "orprintrender.h"
+//#include "parameter.h"
 #include <QPrintPreviewDialog>
 #include <QDomDocument>
 
@@ -27,12 +27,12 @@ void MyPrinter::showReport(QString reportName, QString stringToReplace, QString 
 	QDomDocument doc;
 	doc.setContent(xml);
 	fl.close();
-	ORPreRender pre;
-	pre.setDatabase(QSqlDatabase::database());
-	pre.setDom(doc);
-	ORODocument *oDoc = pre.generate();
-	PreviewDialog *diag = new PreviewDialog(oDoc, new QPrinter(QPrinter::HighResolution), 0);
-	diag->exec();
+//	ORPreRender pre;
+//	pre.setDatabase(QSqlDatabase::database());
+//	pre.setDom(doc);
+//	ORODocument *oDoc = pre.generate();
+//	PreviewDialog *diag = new PreviewDialog(oDoc, new QPrinter(QPrinter::HighResolution), 0);
+//	diag->exec();
 }
 
 void MyPrinter::showReport(QString reportName, QStringList stringsToReplace, QStringList stringsToUse)
@@ -50,12 +50,12 @@ void MyPrinter::showReport(QString reportName, QStringList stringsToReplace, QSt
 	QDomDocument doc;
 	doc.setContent(xml);
 	fl.close();
-	ORPreRender pre;
-	pre.setDatabase(QSqlDatabase::database());
-	pre.setDom(doc);
-	ORODocument *oDoc = pre.generate();
-	PreviewDialog *diag = new PreviewDialog(oDoc, new QPrinter(QPrinter::HighResolution), 0);
-	diag->exec();
+//	ORPreRender pre;
+//	pre.setDatabase(QSqlDatabase::database());
+//	pre.setDom(doc);
+//	ORODocument *oDoc = pre.generate();
+//	PreviewDialog *diag = new PreviewDialog(oDoc, new QPrinter(QPrinter::HighResolution), 0);
+//	diag->exec();
 }
 
 void MyPrinter::qtPreview(QString reportName, QStringList params, QStringList replacements, bool pdf, bool openPdf)
@@ -89,23 +89,23 @@ void MyPrinter::qtPreview(QString reportName, QStringList params, QStringList re
 
 void MyPrinter::printRequested(QPrinter */*prnt*/)
 {
-	ORPreRender pre;
-	pre.setDatabase(QSqlDatabase::database());
-	pre.setDom(m_doc);
-	ParameterList params = ParameterList();
-	for (int i = 0; i < m_paramsToReplace.count(); i++) {
-		Parameter param(m_paramsToReplace.at(i), m_paramReplacements.at(i));
-		params.append(param);
-	}
-	pre.setParamList(params);
-	ORODocument *oDoc = pre.generate();
+//	ORPreRender pre;
+//	pre.setDatabase(QSqlDatabase::database());
+//	pre.setDom(m_doc);
+//	ParameterList params = ParameterList();
+//	for (int i = 0; i < m_paramsToReplace.count(); i++) {
+//		Parameter param(m_paramsToReplace.at(i), m_paramReplacements.at(i));
+//		params.append(param);
+//	}
+//	pre.setParamList(params);
+//	ORODocument *oDoc = pre.generate();
 
-	if (oDoc) {
-		ORPrintRender render;
-		render.setPrinter(printer);
-		render.render(oDoc);
-		render.setupPrinter(oDoc, printer);
-	} else {
-		Publics::showError("Printer Error");
-	}
+//	if (oDoc) {
+//		ORPrintRender render;
+//		render.setPrinter(printer);
+//		render.render(oDoc);
+//		render.setupPrinter(oDoc, printer);
+//	} else {
+//		Publics::showError("Printer Error");
+//	}
 }

@@ -93,6 +93,23 @@ QString Publics::getSql(SQL_STRING sqlString)
 				"'TennantName' TEXT, 'AmountReceived' TEXT, 'PaymentFor' TEXT, 'PayMode' TEXT,"
 				"'Month' TEXT, 'MonthNo' INTEGER, 'Year' TEXT, 'ChequeNo' TEXT"
 				")";
+	case SQL_INVOICE_ITEMS:
+		return "CREATE TABLE IF NOT EXISTS 'invoice_item' ('EntryID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+				"'ItemName' TEXT, 'Description' TEXT)";
+
+	case SQL_INVOICE_MASTER:
+		return "CREATE TABLE IF NOT EXISTS 'invoice_master' ('EntryID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+				"'UniqueID' TEXT, "
+				"'TenantID' INTEGER, 'UnitID' INTEGER, 'PropertyID' INTEGER, 'CompanyID' INTEGER, "
+				"'InvoiceDate' TEXT, 'TenantName' TEXT, 'TenantAddress' TEXT, "
+				"'InvoiceTotal' REAL, "
+				"'AmountInWords' TEXT)";
+
+	case SQL_INVOICE_DETAIL:
+		return "CREATE TABLE IF NOT EXISTS 'invoice_detail' ('EntryID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+				"'UniqueID' TEXT, 'ItemID' INTEGER, 'ItemName' TEXT, 'Amount' REAL)";
+
+
 	default:
 		return "SELECT NOW()";
 	}
