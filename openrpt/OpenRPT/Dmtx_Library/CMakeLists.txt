@@ -4,10 +4,10 @@ PROJECT(Dmtx_Library)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
+QT5_WRAP_CPP(moc dmtx.h)
 
-
-add_library(Dmtx_Library 
-    simple_test.c 
+add_library(Dmtx_Library ${moc}  
+    dmtx.c simple_test.c 
     dmtxvector2.c 
     dmtxtime.c 
     dmtxsymbol.c 
@@ -28,8 +28,7 @@ add_library(Dmtx_Library
     dmtxencode.c 
     dmtxdecodescheme.c 
     dmtxdecode.c 
-    dmtxbytelist.c 
-    dmtx.c )
+    dmtxbytelist.c)
 
 
 
