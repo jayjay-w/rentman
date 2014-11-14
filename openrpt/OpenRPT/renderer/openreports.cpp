@@ -22,7 +22,7 @@
 #include "orprerender.h"
 #include "orprintrender.h"
 #include "renderobjects.h"
-#include "builtinSqlFunctions.h"
+#include "../common/builtinSqlFunctions.h"
 #include "previewdialog.h"
 
 #include <QString>
@@ -33,8 +33,8 @@
 #include <QApplication>
 #include <QMessageBox>
 
-#include <xsqlquery.h>
-#include <parameter.h>
+#include <../../common/xsqlquery.h>
+#include <../../common/parameter.h>
 
 //
 // Class orReportPrivate

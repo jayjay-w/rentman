@@ -25,14 +25,20 @@
 
 #include "parameter.h"
 
-#include "tmp/ui_loginOptions.h"
+
+#if QT_VERSION > 0x50000
+	#include "qt5-tmp/ui_loginOptions.h"
+#endif
+#if QT_VERSION < 0x50000
+	#include "qt4-tmp/ui_loginOptions.h"
+#endif
 
 class loginOptions : public QDialog, public Ui::loginOptions
 {
     Q_OBJECT
 
 public:
-    loginOptions(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WFlags fl = 0);
+    loginOptions(QWidget* parent = 0, const char* name = 0, bool modal = false);
     ~loginOptions();
 
     QString _databaseURL;

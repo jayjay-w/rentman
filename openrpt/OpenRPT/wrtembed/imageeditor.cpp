@@ -29,8 +29,8 @@
 
 #include <quuencode.h>
 
-ImageEditor::ImageEditor(QWidget* parent, Qt::WindowFlags fl)
-    : QDialog(parent, fl)
+ImageEditor::ImageEditor(QWidget* parent)
+    : QDialog(parent)
 {
     setupUi(this);
 

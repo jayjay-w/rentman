@@ -31,7 +31,7 @@ class QSplashScreen;
 	#include "qt5-tmp/ui_login.h"
 #endif
 #if QT_VERSION < 0x50000
-	#include "qt4-tmp/ui_login.h"
+	//#include "qt4-tmp/ui_login.h"
 #endif
 
 
@@ -40,7 +40,7 @@ class login : public QDialog, public Ui::login
     Q_OBJECT
 
   public:
-    login(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WFlags fl = 0);
+    login(QWidget* parent = 0, const char* name = 0, bool modal = false);
     ~login();
 
     QString _databaseURL;

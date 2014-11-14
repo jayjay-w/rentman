@@ -12,4 +12,4 @@ find_package(Qt5Xml REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 
-subdirs (rentmanager)
+subdirs (rentmanager openrpt)

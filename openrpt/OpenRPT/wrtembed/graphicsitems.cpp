@@ -727,7 +727,7 @@ void ORGraphicsRectItem::setRotation(qreal angle)
 {    
     _rotation = angle; 
     resetTransform(); 
-    rotate(angle); 
+    setRotation(angle); 
 }
 
 //
@@ -3184,7 +3184,7 @@ void ORGraphicsCrossTabItem::paint(QPainter * painter, const QStyleOptionGraphic
 
     if (sectRect.intersects(ltableRect))
     {
-      QRectF intRect = sectRect.intersect(ltableRect);
+      QRectF intRect = sectRect.intersected(ltableRect);
       painter->drawRect(intRect);
 
       // Draw table empty header

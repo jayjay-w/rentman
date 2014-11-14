@@ -29,7 +29,7 @@
 #include <QPen>
 #include <QBrush>
 
-#include "parsexmlutils.h"
+#include "../../common/parsexmlutils.h"
 #include "renderobjects.h"
 
 struct code3of9 {

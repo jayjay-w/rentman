@@ -29,7 +29,7 @@
 #include <QPen>
 #include <QBrush>
 
-#include "parsexmlutils.h"
+#include "../../common/parsexmlutils.h"
 #include "renderobjects.h"
 
 const char* _i2of5charmap[] = {

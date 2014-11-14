@@ -48,8 +48,8 @@
 #include <qsqlquery.h>
 #include <qvariant.h>
 
-#include <xsqlquery.h>
-#include <parsexmlutils.h>
+#include <../../common/xsqlquery.h>
+#include <../../common/parsexmlutils.h>
 
 #include "orcrosstab.h" // TODO: renderCrossTab can be static function of CrossTab
 #include "crosstab.h"

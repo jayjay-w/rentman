@@ -19,7 +19,9 @@ QT5_WRAP_UI(uis
 
 QT5_ADD_RESOURCES(qrcs res.qrc)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} 
+  ../openrpt/common/ ../openrpt/OpenRPT/common/ ../openrpt/OpenRPT/renderer/
+  ${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(rentmanager ${uis} ${qrcs}
     main.cpp 
@@ -39,4 +41,4 @@ add_executable(rentmanager ${uis} ${qrcs}
     multiinvoicingdialog.cpp
 )
 
-target_link_libraries(rentmanager Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
+target_link_libraries(rentmanager renderer common Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)

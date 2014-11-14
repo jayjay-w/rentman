@@ -30,7 +30,7 @@
 #include <QPen>
 #include <QBrush>
 
-#include "parsexmlutils.h"
+#include "../../common/parsexmlutils.h"
 #include "renderobjects.h"
 #include "barcodes.h"
 
