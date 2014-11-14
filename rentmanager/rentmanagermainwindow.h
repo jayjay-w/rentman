@@ -72,7 +72,8 @@ private slots:
 	void on_trvBrowser_itemClicked(QTreeWidgetItem *item, int column);
 	void on_actionView_Payments_triggered();
 	void on_actionAll_Units_triggered();
-	void on_actionCreate_Invoice_triggered();
+	void aboutQt();
+	void singleInvoice();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

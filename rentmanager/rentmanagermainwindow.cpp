@@ -64,7 +64,8 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	//connects
 	connect (ui->action_Open, SIGNAL(triggered()), SLOT(startOpenFile()));
 	connect (ui->action_New, SIGNAL(triggered()), SLOT(startNewFile()));
-
+	connect (ui->actionAbout_Qt, SIGNAL(triggered()), SLOT(aboutQt()));
+	connect (ui->actionCreate_Invoice, SIGNAL(triggered()), SLOT(singleInvoice()));
 	//ui restore
 	ui->splitter->restoreState(Publics::getSetting("MainSplitter",
 						       ui->splitter->saveState()).toByteArray());
@@ -359,11 +360,19 @@ void RentManagerMainWindow::on_actionAll_Units_triggered()
 	m_printer->qtPreview("units", QStringList("param_where"), QStringList(""));
 }
 
-void RentManagerMainWindow::on_actionCreate_Invoice_triggered()
+void RentManagerMainWindow::aboutQt()
 {
-	if (!m_singleInvoice)
-		m_singleInvoice = new CreateInvoiceDialog(this);
-
-	m_singleInvoice->startNew();
-	m_singleInvoice->exec();
+  QMessageBox::aboutQt(this, "About QT");
 }
+
+void RentManagerMainWindow::singleInvoice()
+{
+  if (!m_singleInvoice)
+    m_singleInvoice = new CreateInvoiceDialog(this);
+  
+  m_singleInvoice->startNew();
+  m_singleInvoice->exec();
+}
+
+
+

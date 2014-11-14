@@ -17,6 +17,7 @@ public:
 	void startNew();
 private:
 	Ui::CreateInvoiceDialog *ui;
+	void addItem(QString itemName, QString description, QString amount);
 };
 
 #endif // CREATEINVOICEDIALOG_H
