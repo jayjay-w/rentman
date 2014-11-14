@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>596</width>
-    <height>399</height>
+    <width>619</width>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,16 +31,6 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="txtName"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Sex:</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="1">
       <widget class="QLineEdit" name="txtTel"/>
      </item>
@@ -58,6 +48,9 @@
        </item>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="txtName"/>
+     </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
@@ -65,15 +58,12 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
+     <item row="4" column="0" colspan="2">
+      <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Name:</string>
+        <string>Leases:</string>
        </property>
       </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="txtEmail"/>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_4">
@@ -82,18 +72,25 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
-      <spacer name="verticalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="txtEmail"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Name:</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Sex:</string>
        </property>
-      </spacer>
+      </widget>
+     </item>
+     <item row="5" column="0" colspan="2">
+      <widget class="QTableView" name="tblLeases"/>
      </item>
     </layout>
    </item>

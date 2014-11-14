@@ -46,6 +46,9 @@ void DatabaseInitThread::run()
 	executeInitSql(Publics::getSql(Publics::SQL_UNITS));
 	executeInitSql(Publics::getSql(Publics::SQL_TENANT_UNITS));
 	executeInitSql(Publics::getSql(Publics::SQL_PAYMENTS));
+	executeInitSql(Publics::getSql(Publics::SQL_INVOICE_DETAIL));
+	executeInitSql(Publics::getSql(Publics::SQL_INVOICE_MASTER));
+	executeInitSql(Publics::getSql(Publics::SQL_INVOICE_ITEMS));
 	emit progress(100);
 
 
@@ -65,6 +68,18 @@ void DatabaseInitThread::run()
 //			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('D')");
 //		}
 //	}
+
+	//Insert invoice items
+	QSqlQuery qu = db.exec("SELECT Count(EntryID) as 'cnt' FROM invoice_item");
+	if (!qu.lastError().isValid()) {
+		qu.first();
+		if (qu.record().value("cnt").toInt() < 1) {
+			db.exec("INSERT INTO invoice_item (ItemName, Description) VALUES ('Rent', 'Montly Rent')");
+			db.exec("INSERT INTO invoice_item (ItemName, Description) VALUES ('Rent Deposit', 'Rent security deposit')");
+			db.exec("INSERT INTO invoice_item (ItemName, Description) VALUES ('Service Charge', 'Misc. Services charge')");
+			db.exec("INSERT INTO invoice_item (ItemName, Description) VALUES ('Security Fee', 'Property Security')");
+		}
+	}
 }
 
 void DatabaseInitThread::executeInitSql(QString sql)

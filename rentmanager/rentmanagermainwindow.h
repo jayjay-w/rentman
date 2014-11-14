@@ -13,6 +13,7 @@ class TenantsDialog;
 class AssignUnitToTenantDialog;
 class PaymentsDialog;
 class MyPrinter;
+class CreateInvoiceDialog;
 
 namespace Ui {
 class RentManagerMainWindow;
@@ -35,6 +36,7 @@ public:
 	TenantsDialog *m_tenants;
 	AssignUnitToTenantDialog *m_assign;
 	PaymentsDialog *m_payDiag;
+	CreateInvoiceDialog *m_singleInvoice;
 
 	MyPrinter *m_printer;
 public slots:
@@ -70,6 +72,7 @@ private slots:
 	void on_trvBrowser_itemClicked(QTreeWidgetItem *item, int column);
 	void on_actionView_Payments_triggered();
 	void on_actionAll_Units_triggered();
+	void on_actionCreate_Invoice_triggered();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

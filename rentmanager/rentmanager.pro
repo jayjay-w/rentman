@@ -37,7 +37,9 @@ SOURCES += main.cpp\
     terminateoccupationdialog.cpp \
     receivepaymentdialog.cpp \
     paymentsdialog.cpp \
-    myprinter.cpp
+    myprinter.cpp \
+    createinvoicedialog.cpp \
+    multiinvoicingdialog.cpp
 
 HEADERS  += rentmanagermainwindow.h \
     publics.h \
@@ -50,7 +52,9 @@ HEADERS  += rentmanagermainwindow.h \
     terminateoccupationdialog.h \
     receivepaymentdialog.h \
     paymentsdialog.h \
-    myprinter.h
+    myprinter.h \
+    createinvoicedialog.h \
+    multiinvoicingdialog.h
 
 FORMS    += rentmanagermainwindow.ui \
     companyinitializationdialog.ui \
@@ -61,7 +65,9 @@ FORMS    += rentmanagermainwindow.ui \
     assignunittotenantdialog.ui \
     terminateoccupationdialog.ui \
     receivepaymentdialog.ui \
-    paymentsdialog.ui
+    paymentsdialog.ui \
+    createinvoicedialog.ui \
+    multiinvoicingdialog.ui
 
 RESOURCES += \
     res.qrc

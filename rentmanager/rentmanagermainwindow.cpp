@@ -12,6 +12,7 @@
 #include "paymentsdialog.h"
 #include <QTableWidgetItem>
 #include "myprinter.h"
+#include "createinvoicedialog.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -24,6 +25,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	m_assign(0),
 	m_payDiag(0),
 	m_printer(0),
+	m_singleInvoice(0),
 	ui(new Ui::RentManagerMainWindow)
 {
 	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -355,4 +357,13 @@ void RentManagerMainWindow::on_actionView_Payments_triggered()
 void RentManagerMainWindow::on_actionAll_Units_triggered()
 {
 	m_printer->qtPreview("units", QStringList("param_where"), QStringList(""));
+}
+
+void RentManagerMainWindow::on_actionCreate_Invoice_triggered()
+{
+	if (!m_singleInvoice)
+		m_singleInvoice = new CreateInvoiceDialog(this);
+
+	m_singleInvoice->startNew();
+	m_singleInvoice->exec();
 }

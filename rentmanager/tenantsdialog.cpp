@@ -100,4 +100,11 @@ void TenantsDialog::tenantChanged(QTreeWidgetItem *item, int col)
 	QString c_id = item->text(99);
 	m_tenantID = c_id;
 	editTenant();
+
+	QString leaseSQL = "SELECT unit.UnitNo as 'Unit Number', leases.MonthlyRent as 'Rent Per Month' FROM leases,unit WHERE leases.UnitID = unit.UnitID AND leases.TenantID = '" + m_tenantID + "'";
+	qDebug() << leaseSQL;
+	QSqlQuery qu = QSqlDatabase::database().exec(leaseSQL);
+	QSqlQueryModel *model = new QSqlQueryModel(this);
+	model->setQuery(qu);
+	ui->tblLeases->setModel(model);
 }
