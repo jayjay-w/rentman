@@ -1,5 +1,5 @@
 before_install:
- - uname -a
+ - sudo apt-get update
  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
  - sudo apt-get install -qq cmake build-essential qtbase5-dev libsqlite3-dev qt5-default qttools5-dev-tools
 before_script:
