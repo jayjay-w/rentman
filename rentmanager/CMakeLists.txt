@@ -58,10 +58,21 @@ set( rentManagerSources ${rc} ${uis} ${qrcs}
     multiinvoicingdialog.cpp )
 
 
+
 if( APPLE )
-    add_executable(rentmanager MACOSX_BUNDLE ${rentManagerSources} )
+    set( PROGNAME rentmanager )
+    set( MACOSX_BUNDLE_ICON_FILE cottage.icns )
 else( APPLE )
-    add_executable(rentmanager WIN32 ${rentManagerSources} )
+    set( PROGNAME rentmanager )
+endif( APPLE )
+
+add_executable(rentmanager WIN32 MACOSX_BUNDLE ${rentManagerSources} )
+
+if( APPLE )
+    set( rentmanager_RESOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/rentmanager.app/Contents/Resources )
+    add_custom_command( TARGET rentmanager POST_BUILD
+        COMMAND mkdir ARGS -p ${rentmanager_RESOURCE_DIR}
+        COMMAND cp ARGS -f cottage.icns ${rentmanager_RESOURCE_DIR} )
 endif( APPLE )
 
 target_link_libraries(rentmanager renderer common Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
