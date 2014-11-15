@@ -33,24 +33,36 @@ else(MINGW)
     #set(rc windows.rc)
 endif(MINGW)
 
-add_executable(rentmanager WIN32 ${rc} ${uis} ${qrcs}
-    main.cpp 
-    rentmanagermainwindow.cpp  
-    publics.cpp  
-    companyinitializationdialog.cpp  
-    companiesdialog.cpp  
-    propertiesdialog.cpp  
-    unitsdialog.cpp  
-    tenantsdialog.cpp  
-    assignunittotenantdialog.cpp  
-    terminateoccupationdialog.cpp  
-    receivepaymentdialog.cpp  
-    paymentsdialog.cpp  
-    myprinter.cpp  
-    createinvoicedialog.cpp  
-    multiinvoicingdialog.cpp
-)
+if( APPLE )
+    set( PROGNAME RentManager )
+    set( MACOSX_BUNDLE_ICON_FILE cottage.icns )
+else( APPLE )
+    set( PROGNAME rentmanager )
+endif( APPLE )
 
+set( rentManagerSources ${rc} ${uis} ${qrcs}
+    main.cpp
+    rentmanagermainwindow.cpp
+    publics.cpp
+    companyinitializationdialog.cpp
+    companiesdialog.cpp
+    propertiesdialog.cpp
+    unitsdialog.cpp
+    tenantsdialog.cpp
+    assignunittotenantdialog.cpp
+    terminateoccupationdialog.cpp
+    receivepaymentdialog.cpp
+    paymentsdialog.cpp
+    myprinter.cpp
+    createinvoicedialog.cpp
+    multiinvoicingdialog.cpp )
+
+
+if( APPLE )
+    add_executable(rentmanager WIN32 ${rentManagerSources} )
+else( APPLE )
+    add_executable(rentmanager WIN32 ${rentManagerSources} )
+endif( APPLE )
 
 install(TARGETS rentmanager RUNTIME DESTINATION bin)
 
