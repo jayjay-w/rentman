@@ -20,7 +20,7 @@ notifications:
   - joshua@megvel.me.ke
  email:
   on_success: change
-   on_failure: change
+  on_failure: change
  irc:
   channels:
    - "irc.freenode.net#freepayrollke"
