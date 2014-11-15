@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.7)
 
 PROJECT(renderer)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ../common/ ../../common/ ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ../Dmtx_Library ../common/ ../../common/ ${CMAKE_CURRENT_BINARY_DIR})
 
 
 
