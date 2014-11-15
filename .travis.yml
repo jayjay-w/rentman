@@ -1,8 +1,4 @@
-language: cpp
-
- compiler: gcc
-
- before_install:
+before_install:
  - "sudo apt-get -q update"
    - "sudo apt-get install -y g++-4.8"
    - "sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 40 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8"
@@ -11,14 +7,14 @@ language: cpp
    - "unzip -qq qt5.zip -d qt5"
    - "export PATH=`pwd`/qt5/bin:$PATH"
    - "export QT_PLUGIN_PATH=`pwd`/qt5/plugins"
- before_script:
+before_script:
    - mkdir build
    - cd build
    - cmake ..
 
- script: make
+script: make
 
- notifications:
+notifications:
    recepients:
      - joejoshw@gmail.com
      - joshua@megvel.me.ke
