@@ -16,10 +16,10 @@ notifications:
   - joejoshw@gmail.com
   - joshua@megvel.me.ke
  email:
-  on_success: change
-  on_failure: change
+  on_success: always
+  on_failure: always
  irc:
   channels:
    - "irc.freenode.net#freepayrollke"
-  on_success: change
-  on_failure: change
+  on_success: always
+  on_failure: always
