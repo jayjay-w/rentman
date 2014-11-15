@@ -23,7 +23,17 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
   ../openrpt/common/ ../openrpt/OpenRPT/common/ ../openrpt/OpenRPT/renderer/
   ${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(rentmanager ${uis} ${qrcs}
+if(MINGW)
+    #MinGW resource compilation
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/windows.o
+    COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_CURRENT_SOURCE_DIR}/windows.rc
+            -o ${CMAKE_CURRENT_BINARY_DIR}/windows.o )
+    set(rc ${CMAKE_CURRENT_BINARY_DIR}/windows.o )
+else(MINGW)
+    set(rc windows.rc)
+endif(MINGW)
+
+add_executable(rentmanager ${rc} ${uis} ${qrcs}
     main.cpp 
     rentmanagermainwindow.cpp  
     publics.cpp  
@@ -40,5 +50,8 @@ add_executable(rentmanager ${uis} ${qrcs}
     createinvoicedialog.cpp  
     multiinvoicingdialog.cpp
 )
+
+
+install(TARGETS rentmanager RUNTIME DESTINATION bin)
 
 target_link_libraries(rentmanager renderer common Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
