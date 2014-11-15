@@ -3,9 +3,14 @@ language: cpp
  compiler: gcc
 
  before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq cmake qt5-default qttools-dev-tools sqlite3
-
+ - "sudo apt-get -q update"
+   - "sudo apt-get install -y g++-4.8"
+   - "sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 40 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8"
+   - "mkdir qt5"
+   - "wget -q -O qt5.zip http://ftp.osuosl.org/pub/musescore/utils/qt531.zip"
+   - "unzip -qq qt5.zip -d qt5"
+   - "export PATH=`pwd`/qt5/bin:$PATH"
+   - "export QT_PLUGIN_PATH=`pwd`/qt5/plugins"
  before_script:
    - mkdir build
    - cd build
@@ -14,13 +19,14 @@ language: cpp
  script: make
 
  notifications:
-   email:
+   recepients:
      - joejoshw@gmail.com
      - joshua@megvel.me.ke
+   email:
+      on_success: change
+      on_failure: change
    irc:
-      channels:
-        - "chat.freenode.net#freepayrollke"
-      template:
-        - "%{repository}/%{branch} (%{commit} - %{author}): %{message}"
-   on_success: change
-   on_failure: always
+        channels:
+            - "irc.freenode.net#freepayrollke"
+        on_success: change
+        on_failure: change
