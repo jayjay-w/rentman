@@ -82,5 +82,5 @@ add_library(wrtembed ${uis} ${qrc} reportgridoptions.cpp
 
 
 
-target_link_libraries(wrtembed Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
+target_link_libraries(wrtembed renderer common Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
 

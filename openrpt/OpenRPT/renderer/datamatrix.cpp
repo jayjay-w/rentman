@@ -132,18 +132,18 @@ void renderCodeDatamatrix(QPainter *painter, const QRectF &qrect, const QString 
 
   //pointer declaration
   unsigned char  *pxl = NULL;
-  DmtxEncode     *enc = NULL;
-  DmtxImage      *img = NULL;
+  //DmtxEncode     *enc = NULL;
+  //DmtxImage      *img = NULL;
   int valeur = 0;
 
   /* 1) ENCODE a new Data Matrix barcode image (in memory only) */
-  enc = dmtxEncodeCreate();
+  //enc = dmtxEncodeCreate();
 
   //see DmtxSymbolSize in dmtx.h for more details
-  enc->sizeIdxRequest = dmtxInfos.type;
-  enc->marginSize = 0;
+  //enc->sizeIdxRequest = dmtxInfos.type;
+  //enc->marginSize = 0;
   //number of pixel for one square
-  enc->moduleSize = 1;
+  //enc->moduleSize = 1;
 
   QPen pen(Qt::NoPen);
   QBrush brush(QColor("black"));
@@ -154,13 +154,13 @@ void renderCodeDatamatrix(QPainter *painter, const QRectF &qrect, const QString 
   try
   {
     //assert(enc != NULL);
-    dmtxEncodeDataMatrix(enc, qstr.size(), (unsigned char*)qstr.toStdString().c_str());
+    //dmtxEncodeDataMatrix(enc, qstr.size(), (unsigned char*)qstr.toStdString().c_str());
 
     /* 2) COPY the new image data before releasing encoding memory */
 
-    width = dmtxImageGetProp(enc->image, DmtxPropWidth);
-    height = dmtxImageGetProp(enc->image, DmtxPropHeight);
-    bytesPerPixel = dmtxImageGetProp(enc->image, DmtxPropBytesPerPixel);
+    //width = dmtxImageGetProp(enc->image, DmtxPropWidth);
+    //height = dmtxImageGetProp(enc->image, DmtxPropHeight);
+    //bytesPerPixel = dmtxImageGetProp(enc->image, DmtxPropBytesPerPixel);
 
     if(width > 1000000000)
     {
@@ -169,21 +169,21 @@ void renderCodeDatamatrix(QPainter *painter, const QRectF &qrect, const QString 
 
     pxl = (unsigned char *)malloc(width * height * bytesPerPixel);
     //assert(pxl != NULL);
-    memcpy(pxl, enc->image->pxl, width * height * bytesPerPixel);
+    //memcpy(pxl, enc->image->pxl, width * height * bytesPerPixel);
 
-    dmtxEncodeDestroy(&enc);
+    //dmtxEncodeDestroy(&enc);
 
     /* 3) DECODE the Data Matrix barcode from the copied image */
-    img = dmtxImageCreate(pxl, width, height, DmtxPack24bppRGB);
+    //img = dmtxImageCreate(pxl, width, height, DmtxPack24bppRGB);
 
     qreal Xo = 0;
     qreal Yo = 0;
     //length of square
     qreal pas = 0;
 
-    datamatrixGeometry(dmtxInfos.align,qrect,img,&Xo,&Yo,&pas);
+    //datamatrixGeometry(dmtxInfos.align,qrect,img,&Xo,&Yo,&pas);
 
-    //draw the datamatrix
+    /*draw the datamatrix
     for(int y = 0; y < img->height; y++)
     {
       for(int x = 0; x < img->width; x++)
@@ -198,12 +198,12 @@ void renderCodeDatamatrix(QPainter *painter, const QRectF &qrect, const QString 
                                 pas));
         }
       }
-    }
+    }*/
 
     //memory cleanning
     free(pxl);
-    dmtxEncodeDestroy(&enc);
-    dmtxImageDestroy(&img);
+    //dmtxEncodeDestroy(&enc);
+    //dmtxImageDestroy(&img);
   }
   catch(...)
   {
@@ -211,7 +211,7 @@ void renderCodeDatamatrix(QPainter *painter, const QRectF &qrect, const QString 
     //RR is printed
     printRR(painter, qrect);
 
-    //memory cleaning
+    /*memory cleaning
     if(enc != NULL)
     {
       dmtxEncodeDestroy(&enc);
@@ -223,7 +223,7 @@ void renderCodeDatamatrix(QPainter *painter, const QRectF &qrect, const QString 
     if(pxl!=NULL)
     {
       free(pxl);
-    }
+    }*/
   }
 
   painter->restore();

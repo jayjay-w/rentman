@@ -22,14 +22,14 @@ DMatrixPreview::DMatrixPreview(QWidget *parent, Qt::WindowFlags fl) :
 DMatrixPreview::~DMatrixPreview()
 {
     delete ui;
-    dmtxEncodeDestroy(&enc);
-    dmtxImageDestroy(&img);
+    ///dmtxEncodeDestroy(&enc);
+    //dmtxImageDestroy(&img);
 }
 
 void DMatrixPreview::generePreview(int format)
 {
     this->_format = format;
-    if(this->enc != NULL)
+    /*if(this->enc != NULL)
     {
         dmtxEncodeDestroy(&enc);
         enc = NULL;
@@ -43,9 +43,10 @@ void DMatrixPreview::generePreview(int format)
     size_t          width, height, bytesPerPixel;
     unsigned char  *pxl;
     /* 1) ENCODE a new Data Matrix barcode image (in memory only) */
-    enc = dmtxEncodeCreate();
+//    enc = dmtxEncodeCreate();
 
     //voir l'enumération DmtxSymbolSize dans dmtx.h pour plus de détails
+    /*
     enc->sizeIdxRequest = this->_format;
     enc->marginSize = 0;
     enc->moduleSize = 1;
@@ -54,7 +55,7 @@ void DMatrixPreview::generePreview(int format)
     dmtxEncodeDataMatrix(enc, this->previewString.size(), (unsigned char*)this->previewString.toStdString().c_str());
 
     /* 2) COPY the new image data before releasing encoding memory */
-
+  /*
     width = dmtxImageGetProp(enc->image, DmtxPropWidth);
     height = dmtxImageGetProp(enc->image, DmtxPropHeight);
     bytesPerPixel = dmtxImageGetProp(enc->image, DmtxPropBytesPerPixel);
@@ -64,11 +65,12 @@ void DMatrixPreview::generePreview(int format)
     memcpy(pxl, enc->image->pxl, width * height * bytesPerPixel);
 
     dmtxEncodeDestroy(&enc);
-
+  
     /* 3) DECODE the Data Matrix barcode from the copied image */
+    /*
     img = dmtxImageCreate(pxl, width, height, DmtxPack24bppRGB);
 
-    this->repaint();
+    this->repaint(); */
 }
 
 void DMatrixPreview::paintEvent(QPaintEvent *)
@@ -99,7 +101,7 @@ void DMatrixPreview::paintEvent(QPaintEvent *)
     {
             for(int x = 0; x < img->width; x++)
             {
-                    dmtxImageGetPixelValue(img,x,y,0,&valeur);
+                   // dmtxImageGetPixelValue(img,x,y,0,&valeur);
 
                     if(valeur < 128)
                     {

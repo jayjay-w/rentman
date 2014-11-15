@@ -13,6 +13,6 @@ add_executable(writer rptwrt.cpp
            ../common/builtinSqlFunctions.cpp  
            reportwriterwindow.cpp)
 
-target_link_libraries(writer common renderer wrtembed Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
+target_link_libraries(writer renderer common  wrtembed Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
 
 

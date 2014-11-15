@@ -4,7 +4,7 @@ PROJECT(Dmtx_Library)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-QT5_WRAP_CPP(moc dmtx.h)
+#QT5_WRAP_CPP(moc dmtx.h)
 
 add_library(Dmtx_Library ${moc}  
     dmtx.c simple_test.c 
@@ -28,9 +28,6 @@ add_library(Dmtx_Library ${moc}
     dmtxencode.c 
     dmtxdecodescheme.c 
     dmtxdecode.c 
-    dmtxbytelist.c)
+    dmtxbytelist.c )
 
-
-
-
-target_link_libraries(Dmtx_Library Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
+target_link_libraries(Dmtx_Library)
