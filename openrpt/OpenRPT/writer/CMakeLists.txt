@@ -19,9 +19,15 @@ else(MINGW)
     #set(rc windows.rc)
 endif(MINGW)
 
-add_executable(writer WIN32 ${rc} rptwrt.cpp
+set(writerSources rptwrt.cpp
            ../common/builtinSqlFunctions.cpp
-           reportwriterwindow.cpp)
+           reportwriterwindow.cpp )
+
+if( APPLE )
+    add_executable(writer MACOSX_BUNDLE ${writerSources} )
+else( APPLE )
+add_executable(writer WIN32 ${rc} ${writerSources})
+endif( APPLE )
 
 target_link_libraries(writer renderer common  wrtembed Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
 

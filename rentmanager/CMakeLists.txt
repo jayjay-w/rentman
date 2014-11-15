@@ -59,11 +59,9 @@ set( rentManagerSources ${rc} ${uis} ${qrcs}
 
 
 if( APPLE )
-    add_executable(rentmanager WIN32 ${rentManagerSources} )
+    add_executable(rentmanager MACOSX_BUNDLE ${rentManagerSources} )
 else( APPLE )
     add_executable(rentmanager WIN32 ${rentManagerSources} )
 endif( APPLE )
-
-install(TARGETS rentmanager RUNTIME DESTINATION bin)
 
 target_link_libraries(rentmanager renderer common Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
