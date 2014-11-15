@@ -30,10 +30,10 @@ if(MINGW)
             -o ${CMAKE_CURRENT_BINARY_DIR}/windows.o )
     set(rc ${CMAKE_CURRENT_BINARY_DIR}/windows.o )
 else(MINGW)
-    set(rc windows.rc)
+    #set(rc windows.rc)
 endif(MINGW)
 
-add_executable(rentmanager ${rc} ${uis} ${qrcs}
+add_executable(rentmanager WIN32 ${rc} ${uis} ${qrcs}
     main.cpp 
     rentmanagermainwindow.cpp  
     publics.cpp  
