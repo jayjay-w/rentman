@@ -9,11 +9,9 @@ env:
  - CONFIG=release
  - CONFIG=release QT5=qt5
 before_install:
- - travis_retry sudo apt-get update -qq
- - travis_retry bash -c "if [[ \"${RAGEL}\" == ON ]]; then sudo apt-get install -qq ragel; fi"
- - travis_retry bash -c "if [[ \"${ZLIB}\" != OFF ]]; then sudo apt-get install -qq zlib1g-dev; fi"
- - travis_retry bash -c "if [[ -z \"${QT5}\" ]]; then sudo apt-get install -qq libqt4-dev qt4-dev-tools libqtwebkit-dev libqt4-sql-sqlite; else sudo apt-add-repository -y ppa:beineri/opt-qt521; sudo apt-add-repository -y ppa:leppa/backports; sudo apt-get update -qq; sudo apt-get install -qq qt52base qt52webkit qt52tools libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev; fi"
- - travis_retry sudo apt-get install -qq xvfb xauth cmake
+ - sudo apt-add-repository -y ppa:beineri/opt-qt521
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq qt52base qt52webkit qt52tools
  - bash -c "cmake --version"
 script:
  - mkdir build
@@ -26,7 +24,7 @@ notifications:
   - joshua@megvel.me.ke
  email:
   on_success: always
-  on_failure: always
+  on_failure: change
  irc:
   channels:
    - "irc.freenode.net#freepayrollke"
