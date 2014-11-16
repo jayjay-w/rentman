@@ -16,7 +16,8 @@ before_install:
 script:
  - mkdir build
  - cd build
- - cmake -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$CONFIG ${QT5:+-DCMAKE_PREFIX_PATH=/opt/qt52/lib/cmake} ${QT5:+-DWITH_QT5=ON} -DCMAKE_INSTALL_PREFIX=/usr -DDEV_FATAL_WARNINGS=$WERROR ..
+ - export CMAKE_PREFIX_PATH=/opt/qt52/lib/cmake
+ - cmake ..
  - make
 notifications:
  recepients:
