@@ -11,7 +11,7 @@ env:
 before_install:
  - sudo apt-add-repository -y ppa:beineri/opt-qt521
  - sudo apt-get update -qq
- - sudo apt-get install -qq qt52base qt52webkit qt52tools
+ - sudo apt-get install -qq cmake qt52base qt52webkit qt52tools
  - bash -c "cmake --version"
 script:
  - mkdir build
