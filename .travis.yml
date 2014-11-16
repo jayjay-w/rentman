@@ -1,22 +1,25 @@
 language: cpp
 compiler:
  - gcc
-env:
- - CONFIG=debug RAGEL=OFF
- - CONFIG=debug RAGEL=ON
- - CONFIG=debug ZLIB=OFF
- - CONFIG=debug QT5=qt5
- - CONFIG=release
- - CONFIG=release QT5=qt5
 before_install:
- - sudo apt-add-repository -y ppa:beineri/opt-qt521
- - sudo apt-get update -qq
- - sudo apt-get install -qq cmake qt52base qt52webkit qt52tools
+ # rm the rabbitmq source file since it currently times out and we don't need it
+ - "sudo rm -f /etc/apt/sources.list.d/rabbitmq-source.list"
+ - "sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test"
+ - "sudo apt-get -q update"
+ - "sudo apt-get install -y g++-4.8"
+ - "sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 40 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8"
+ - "sudo apt-get install -qq wget make ant curl cmake"
+ - "sudo apt-get install -qq libegl1-mesa-dev libegl1-mesa"
+ - "mkdir qt5"
+ - "wget -q -O qt5.zip http://ftp.osuosl.org/pub/musescore/utils/qt531.zip"
+ - "unzip -qq qt5.zip -d qt5"
+ - "export PATH=`pwd`/qt5/bin:$PATH"
+ - "export QT_PLUGIN_PATH=`pwd`/qt5/plugins"
  - bash -c "cmake --version"
 script:
  - mkdir build
  - cd build
- - export CMAKE_PREFIX_PATH=/opt/qt52/lib/cmake
+ #- export CMAKE_PREFIX_PATH=/opt/qt52/lib/cmake
  - cmake ..
  - make
 notifications:
