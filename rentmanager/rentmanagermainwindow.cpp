@@ -58,6 +58,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	actionsToDisable->addAction(ui->actionView_Payments);
 	actionsToDisable->addAction(ui->actionContact_List);
 
+	ui->actionAbout_Qt->setVisible(false);
 	actionsToDisable->setDisabled(true);
 	ui->menuRecent_Files->clear();
 	for (int i = 0; i < MaxRecentFiles; ++i) {
@@ -458,4 +459,9 @@ void RentManagerMainWindow::on_cboYear_currentIndexChanged(int index)
 void RentManagerMainWindow::on_actionContact_List_triggered()
 {
 	m_printer->qtPreview("contact_list", QStringList("param_where"), QStringList(""));
+}
+
+void RentManagerMainWindow::on_actionAbout_triggered()
+{
+	QMessageBox::about(this, "About RentManager", "<h3>Rent Manager</h3><br/><b>(c) 2014 Joseph W Joshua</b><br/>joejoshw@gmail.com");
 }
