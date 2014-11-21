@@ -22,7 +22,7 @@ AssignUnitToTenantDialog::~AssignUnitToTenantDialog()
 void AssignUnitToTenantDialog::reloadLists()
 {
 	Publics::loadQueryToCombo("SELECT * FROM tenant", "Name", ui->cboTenant);
-	//Publics::loadQueryToCombo("SELECT * FROM unit WHERE Occupied = 'No'", "UnitNo", ui->cboUnit);
+	ui->trvUnits->invisibleRootItem()->takeChildren();
 	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit WHERE Occupied = 'No'");
 	while (qu.next()) {
 		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits->invisibleRootItem());
