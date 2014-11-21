@@ -41,6 +41,7 @@ void DatabaseInitThread::run()
 	//Create tables
 	emit progress(0);
 	executeInitSql(Publics::getSql(Publics::SQL_COMPANY));
+	executeInitSql(Publics::getSql(Publics::SQL_FILE));
 	executeInitSql(Publics::getSql(Publics::SQL_PROPERTIES));
 	executeInitSql(Publics::getSql(Publics::SQL_TENANTS));
 	executeInitSql(Publics::getSql(Publics::SQL_UNITS));
@@ -52,23 +53,6 @@ void DatabaseInitThread::run()
 	executeInitSql(Publics::getSql(Publics::SQL_PAYMENT_ALLOCATION));
 	emit progress(100);
 
-
-	//Insert jo groups
-//	qu = db.exec("SELECT Count(JobGroupID) as 'cnt' FROM JobGroups");
-//	if (!qu.lastError().isValid()) {
-//		qu.first();
-//		int cnt = qu.record().value("cnt").toInt();
-//		if (cnt < 1) {
-//			//No j groups
-//			emit status("Creating job groups");
-//			//Insert job groups
-//			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('-No Job Group-')");
-//			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('A')");
-//			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('B')");
-//			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('C')");
-//			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('D')");
-//		}
-//	}
 
 	//Insert invoice items
 	QSqlQuery qu = db.exec("SELECT Count(EntryID) as 'cnt' FROM invoice_item");

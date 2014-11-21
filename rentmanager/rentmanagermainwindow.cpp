@@ -465,3 +465,9 @@ void RentManagerMainWindow::on_actionAbout_triggered()
 {
 	QMessageBox::about(this, "About RentManager", "<h3>Rent Manager</h3><br/><b>(c) 2014 Joseph W Joshua</b><br/>joejoshw@gmail.com");
 }
+
+void RentManagerMainWindow::on_actionQuit_triggered()
+{
+    closeFile();
+    qApp->quit();
+}

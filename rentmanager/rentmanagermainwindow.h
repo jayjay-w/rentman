@@ -85,6 +85,7 @@ private slots:
 	void on_cboYear_currentIndexChanged(int index);
 	void on_actionContact_List_triggered();
 	void on_actionAbout_triggered();
+	void on_actionQuit_triggered();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

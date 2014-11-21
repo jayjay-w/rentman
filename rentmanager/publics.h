@@ -18,6 +18,7 @@ class Publics : public QObject
 public:
 	explicit Publics(QObject *parent = 0);
 	enum SQL_STRING {
+		SQL_FILE,
 		SQL_COMPANY,
 		SQL_PROPERTIES,
 		SQL_UNITS,

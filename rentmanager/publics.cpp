@@ -59,6 +59,8 @@ QVariant Publics::getSetting(QString settingName, QVariant defaultValue)
 QString Publics::getSql(SQL_STRING sqlString)
 {
 	switch (sqlString) {
+	case SQL_FILE:
+		return "CREATE TABLE IF NOT EXISTS 'version' ('CompanyID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'DbVersion' Text Default('1'))";
 	case SQL_COMPANY:
 		return "CREATE TABLE IF NOT EXISTS 'company' ('CompanyID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'CompanyName' Text,"
 		       "'Code' TEXT, 'PhysicalAddress' Text, 'PostalAddress' Text, 'ContactPerson' Text,"
