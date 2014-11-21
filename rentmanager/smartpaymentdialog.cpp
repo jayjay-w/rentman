@@ -38,7 +38,7 @@ void SmartPaymentDialog::on_cboUnit_currentTextChanged(const QString &arg1)
 	ui->trvPaymentAllocation->invisibleRootItem()->takeChildren();
 	QString unitNo = arg1;
 	unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitNo + "'", "UnitID").toString();
-	propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitNo + "'", "UnitID").toString();
+	propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitNo + "'", "PropertyID").toString();
 	companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
 	companyName = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "CompanyName").toString();
 	//QString leaseID = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + unitID + "'", "EntryID").toString();
