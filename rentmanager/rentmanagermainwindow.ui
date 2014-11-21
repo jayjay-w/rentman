@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>855</width>
-    <height>539</height>
+    <width>690</width>
+    <height>510</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,16 +18,31 @@
     <normaloff>:/images/cottage.png</normaloff>:/images/cottage.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <widget class="QSplitter" name="splitter">
+     <widget class="QSplitter" name="splitter_2">
+      <property name="midLineWidth">
+       <number>1</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="opaqueResize">
+       <bool>false</bool>
+      </property>
+      <property name="handleWidth">
+       <number>3</number>
       </property>
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QLabel" name="label">
+          <property name="maximumSize">
+           <size>
+            <width>208</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>Companies/Properties/Units</string>
           </property>
@@ -35,6 +50,12 @@
         </item>
         <item>
          <widget class="QTreeWidget" name="trvBrowser">
+          <property name="maximumSize">
+           <size>
+            <width>500</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <column>
            <property name="text">
             <string>Name</string>
@@ -44,62 +65,64 @@
         </item>
        </layout>
       </widget>
-      <widget class="QTableWidget" name="tblUnits">
-       <row>
-        <property name="text">
-         <string>Jan</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Feb</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Mar</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Apr</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Jun</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Jul</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Aug</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Sep</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Oct</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Nov</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Dec</string>
-        </property>
-       </row>
+      <widget class="QWidget" name="">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QSplitter" name="splitter">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Year:</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="cboYear">
+           <item>
+            <property name="text">
+             <string>2014</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2015</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2016</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2017</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2018</string>
+            </property>
+           </item>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="txtCalendar">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>53</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>500</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -110,17 +133,17 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>855</width>
-     <height>19</height>
+     <width>690</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>Fi&amp;le</string>
     </property>
     <widget class="QMenu" name="menuRecent_Files">
      <property name="title">
-      <string>Recent Files</string>
+      <string>&amp;Recent Files</string>
      </property>
      <addaction name="separator"/>
     </widget>
@@ -141,7 +164,7 @@
    </widget>
    <widget class="QMenu" name="menuAccounting">
     <property name="title">
-     <string>Accounting</string>
+     <string>Acco&amp;unting</string>
     </property>
     <addaction name="actionView_Tenan_Accounts"/>
     <addaction name="separator"/>
@@ -153,13 +176,13 @@
    </widget>
    <widget class="QMenu" name="menuManagement">
     <property name="title">
-     <string>Management</string>
+     <string>&amp;Management</string>
     </property>
     <addaction name="actionAssign_Unit_To_Tenant"/>
    </widget>
    <widget class="QMenu" name="menuReports">
     <property name="title">
-     <string>Reports</string>
+     <string>&amp;Reports</string>
     </property>
     <addaction name="actionCompanies_Properties"/>
     <addaction name="actionAll_Units"/>
@@ -204,7 +227,7 @@
      <normaloff>:/images/company-building-icon.png</normaloff>:/images/company-building-icon.png</iconset>
    </property>
    <property name="text">
-    <string>Companies</string>
+    <string>&amp;Companies</string>
    </property>
   </action>
   <action name="actionProperties">
@@ -213,12 +236,12 @@
      <normaloff>:/images/Home-icon.png</normaloff>:/images/Home-icon.png</iconset>
    </property>
    <property name="text">
-    <string>Properties</string>
+    <string>&amp;Properties</string>
    </property>
   </action>
   <action name="actionUnites">
    <property name="text">
-    <string>Units</string>
+    <string>&amp;Units</string>
    </property>
   </action>
   <action name="actionTenants">
@@ -227,17 +250,17 @@
      <normaloff>:/images/Preppy-icon.png</normaloff>:/images/Preppy-icon.png</iconset>
    </property>
    <property name="text">
-    <string>Tenants</string>
+    <string>&amp;Tenants</string>
    </property>
   </action>
   <action name="actionQuit">
    <property name="text">
-    <string>Quit</string>
+    <string>&amp;Quit</string>
    </property>
   </action>
   <action name="actionView_Tenan_Accounts">
    <property name="text">
-    <string>View Tenan Accounts</string>
+    <string>&amp;View Tenan Accounts</string>
    </property>
   </action>
   <action name="actionCreate_Invoice">
@@ -246,12 +269,12 @@
      <normaloff>:/images/invoice-icon.png</normaloff>:/images/invoice-icon.png</iconset>
    </property>
    <property name="text">
-    <string>Create Invoice</string>
+    <string>&amp;Create Invoice</string>
    </property>
   </action>
   <action name="actionMulti_Invoicing">
    <property name="text">
-    <string>Multi Invoicing</string>
+    <string>&amp;Multi Invoicing</string>
    </property>
   </action>
   <action name="actionReceive_Payments">
@@ -260,12 +283,12 @@
      <normaloff>:/images/Sales-by-payment-method-icon.png</normaloff>:/images/Sales-by-payment-method-icon.png</iconset>
    </property>
    <property name="text">
-    <string>Receive Payments</string>
+    <string>&amp;Receive Payments</string>
    </property>
   </action>
   <action name="actionAssign_Unit_To_Tenant">
    <property name="text">
-    <string>Assign Unit To Tenant</string>
+    <string>&amp;Assign Unit To Tenant</string>
    </property>
   </action>
   <action name="action_New">
@@ -306,37 +329,37 @@
      <normaloff>:/images/Sales-by-payment-method-icon.png</normaloff>:/images/Sales-by-payment-method-icon.png</iconset>
    </property>
    <property name="text">
-    <string>View Payments</string>
+    <string>View &amp;Payments</string>
    </property>
   </action>
   <action name="actionCompanies_Properties">
    <property name="text">
-    <string>Companies / Properties</string>
+    <string>&amp;Companies / Properties</string>
    </property>
   </action>
   <action name="actionAll_Units">
    <property name="text">
-    <string>All Units</string>
+    <string>&amp;All Units</string>
    </property>
   </action>
   <action name="actionVacan_Units">
    <property name="text">
-    <string>Vacant Units</string>
+    <string>&amp;Vacant Units</string>
    </property>
   </action>
   <action name="actionOccupied_Units">
    <property name="text">
-    <string>Occupied Units</string>
+    <string>&amp;Occupied Units</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About</string>
+    <string>&amp;About</string>
    </property>
   </action>
   <action name="actionAbout_Qt">
    <property name="text">
-    <string>About Qt</string>
+    <string>About &amp;Qt</string>
    </property>
   </action>
  </widget>

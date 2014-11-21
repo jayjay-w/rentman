@@ -29,7 +29,7 @@ void PaymentsDialog::reloadPayments()
 	QSqlQuery qu = QSqlDatabase::database().exec("SELECT EntryID, ReceiptNo as 'Receipt No', "
 						     "DateReceived as 'Date Received', "
 						     "company.CompanyName as 'Company', "
-						     "UnitName as 'Unit', TennantName as 'Tenant',"
+						     "UnitName as 'Unit', TenantName as 'Tenant',"
 						     "AmountReceived as 'Amount', PaymentFor as 'Payment For', "
 						     "PayMode as 'Payment Mode', ChequeNo as 'Cheque No' "
 						     " FROM payments, company WHERE payments.CompanyID = company.CompanyID");

@@ -13,6 +13,8 @@
 #include <QTableWidgetItem>
 #include "myprinter.h"
 #include "createinvoicedialog.h"
+#include "createmultiinvoice.h"
+#include "smartpaymentdialog.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -26,6 +28,8 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	m_payDiag(0),
 	m_printer(0),
 	m_singleInvoice(0),
+	m_multiInvoice(0),
+	m_smartPayment(0),
 	ui(new Ui::RentManagerMainWindow)
 {
 	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -68,13 +72,13 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	connect (ui->actionCreate_Invoice, SIGNAL(triggered()), SLOT(singleInvoice()));
 	//ui restore
 	ui->splitter->restoreState(Publics::getSetting("MainSplitter",
-						       ui->splitter->saveState()).toByteArray());
+						       ui->splitter_2->saveState()).toByteArray());
 }
 
 RentManagerMainWindow::~RentManagerMainWindow()
 {
 	//ui save state
-	Publics::saveSetting("MainSplitter", ui->splitter->saveState());
+	Publics::saveSetting("MainSplitter", ui->splitter_2->saveState());
 	delete ui;
 }
 
@@ -101,7 +105,7 @@ void RentManagerMainWindow::closeFile()
 	actionsToDisable->setEnabled(false);
 
 	ui->trvBrowser->invisibleRootItem()->takeChildren();
-	ui->tblUnits->clearContents();
+	ui->txtCalendar->setText("");
 
 	curFile = "";
 	if (db.isOpen())
@@ -297,52 +301,29 @@ void RentManagerMainWindow::on_actionAssign_Unit_To_Tenant_triggered()
 
 void RentManagerMainWindow::on_actionReceive_Payments_triggered()
 {
-	ReceivePaymentDialog *rec = new ReceivePaymentDialog(this);
-	rec->exec();
+	if (!m_smartPayment)
+		m_smartPayment = new SmartPaymentDialog(this);
+
+	m_smartPayment->startNew();
+	if (m_smartPayment->exec() == QDialog::Accepted)
+	{
+		reloadCalendar();
+	}
 }
 
 void RentManagerMainWindow::on_trvBrowser_itemClicked(QTreeWidgetItem *item, int column)
 {
 	Q_UNUSED(column);
+	QString html = "";
 	if (item->text(98) == "property") {
 		QString propertyID = item->text(99);
-		QSqlQuery unitQu = db.exec("SELECT * FROM unit WHERE PropertyID = '" + propertyID + "'");
-		QStringList headers;
-		ui->tblUnits->clearContents();
-		for (int i = 0; i < ui->tblUnits->columnCount(); i++) {
-			ui->tblUnits->removeColumn(i);
-		}
-		int cnt = 0;
-		while (unitQu.next()) {
-			int colNo = ui->tblUnits->columnCount();
-			ui->tblUnits->insertColumn(colNo);
-			headers.append(unitQu.record().value("UnitNo").toString());
-			for (int month = 0; month < 12; month++) {
-				QString unitName = unitQu.record().value("UnitNo").toString();
-				QString unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitName + "'", "UnitID").toString();
-				QString sql = "SELECT * FROM payments WHERE UnitID = '" + unitID + "' AND MonthNo = '" + QString::number(month) + "'";
-
-				QSqlQuery itemQu = db.exec(sql);
-				QString itemText = "";
-				while (itemQu.next()) {
-					QString receiptNo = itemQu.record().value("ReceiptNo").toString();
-					itemText.append(receiptNo + ",");
-				}
-				itemText.truncate(itemText.length() - 1);
-				QTableWidgetItem *newItem = new QTableWidgetItem(itemText);
-				ui->tblUnits->setItem(month, colNo, newItem);
-			}
-			cnt = cnt + 1;
-		}
-		//Remove trailing columns
-		int max = ui->tblUnits->columnCount();
-		if (max > cnt) {
-			for (int c = cnt; c < max; c++) {
-				ui->tblUnits->removeColumn(c);
-			}
-		}
-		ui->tblUnits->setHorizontalHeaderLabels(headers);
+		currentProperty = propertyID;
+		reloadCalendar();
+	} else {
+		html = "<h3>Select a property to see its' payment schedule</h3>";
+		ui->txtCalendar->setHtml(html);
 	}
+
 }
 
 
@@ -362,17 +343,112 @@ void RentManagerMainWindow::on_actionAll_Units_triggered()
 
 void RentManagerMainWindow::aboutQt()
 {
-  QMessageBox::aboutQt(this, "About QT");
+	QMessageBox::aboutQt(this, "About QT");
 }
 
 void RentManagerMainWindow::singleInvoice()
 {
-  if (!m_singleInvoice)
-    m_singleInvoice = new CreateInvoiceDialog(this);
-  
-  m_singleInvoice->startNew();
-  m_singleInvoice->exec();
+	if (!m_singleInvoice)
+		m_singleInvoice = new CreateInvoiceDialog(this);
+
+	m_singleInvoice->startNew();
+	m_singleInvoice->exec();
 }
 
 
 
+
+void RentManagerMainWindow::on_actionMulti_Invoicing_triggered()
+{
+	if (!m_multiInvoice)
+		m_multiInvoice = new CreateMultiInvoice(this);
+
+	m_multiInvoice->startNew();
+	if (m_multiInvoice->exec() == QDialog::Accepted)
+		reloadCalendar();
+}
+
+void RentManagerMainWindow::reloadCalendar()
+{
+	QString html = "";
+	QSqlQuery unitQu = db.exec("SELECT * FROM unit WHERE PropertyID = '" + currentProperty + "'");
+	QString propertyName = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + currentProperty + "'", "PropertyName").toString();
+	html += "<h2>Payment calendar for " + propertyName + "</h2><br/>";
+
+	html += "<table border=1 width=100%>";
+	html += "<tr><td></td>"
+		"<td><b>Jan</b></td>"
+		"<td><b>Feb</b></td>"
+		"<td><b>Mar</b></td>"
+		"<td><b>Apr</b></td>"
+		"<td><b>May</b></td>"
+		"<td><b>Jun</b></td>"
+		"<td><b>Jul</b></td>"
+		"<td><b>Aug</b></td>"
+		"<td><b>Sep</b></td>"
+		"<td><b>Oct</b></td>"
+		"<td><b>Nov</b></td>"
+		"<td><b>Dec</b></td></tr>";
+
+	while (unitQu.next()) {
+		QString unitNo = unitQu.record().value("UnitNo").toString();
+		QString unitID = unitQu.record().value("UnitID").toString();
+		html += "<tr>"; //start or unit row
+		//first col is the unit name
+		html += "<td><b>" + unitNo + "</b></td>";
+		for (int i = 1; i < 13; i++) {
+			QDate dat(ui->cboYear->currentText().toInt(), i, 1);
+			QString monthYear = dat.toString("MMM-yy");
+			QSqlQuery invQu = QSqlDatabase::database().exec("SELECT * FROM invoice_master "
+									" WHERE InvoiceMonthYear = '" + monthYear + "' AND UnitID = '" + unitID + "'");
+
+			//QString invoiceNos;
+			double paid = 0;
+			double due = 0;
+			double balance = 0;
+
+			QString colText, bgColor = "LightGreen";
+			while (invQu.next()) {
+				QString invoiceID = invQu.record().value("InvoiceNo").toString();
+				QSqlQuery allocQu = QSqlDatabase::database().exec("SELECT * FROM payment_allocation WHERE InvoiceID = '" + invoiceID + "'");
+				while (allocQu.next()) {
+					paid = paid + allocQu.record().value("Amount").toDouble();
+				}
+				due = due + invQu.record().value("InvoiceTotal").toDouble();
+				balance = due - paid;
+			}
+			if (balance > 0) {
+				bgColor = "Salmon";
+			}
+
+			if (balance == due) {
+				bgColor = "Red";
+			}
+
+			if (balance < 1) {
+				bgColor = "LightGreen";
+			}
+
+			if (balance )
+			colText = "";
+			colText += "Due: " + QString::number(due);
+			colText += "<br/>Paid: " + QString::number(paid);
+			colText += "<br/>Balance: " + QString::number(balance);
+
+			html += "<td bgcolor=" + bgColor + ">";
+			html += colText;
+			html += "</td>";
+		}
+		html += "</tr>"; //end of unit row
+	}
+
+	html += "</table>";
+
+	ui->txtCalendar->setHtml(html);
+}
+
+void RentManagerMainWindow::on_cboYear_currentIndexChanged(int index)
+{
+	Q_UNUSED(index);
+	reloadCalendar();
+}

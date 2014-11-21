@@ -10,6 +10,8 @@ UnitsDialog::UnitsDialog(QWidget *parent) :
 	ui(new Ui::UnitsDialog)
 {
 	ui->setupUi(this);
+	ui->txtMonthlyRent->setReadOnly(true);
+	ui->txtMonthlyRent->setText("0");
 }
 
 UnitsDialog::~UnitsDialog()
@@ -37,6 +39,8 @@ void UnitsDialog::edit(QString id)
 	} else {
 		ui->cmdEndOccupation->setVisible(true);
 		ui->lblTenant->setVisible(true);
+		QString rent = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + id + "'", "MonthlyRent").toString();
+		ui->txtMonthlyRent->setText(rent);
 		ui->txtTenantName->setVisible(true);
 	}
 
@@ -51,7 +55,7 @@ void UnitsDialog::edit(QString id)
 	ui->txtUnitNo->setText(qu.record().value("UnitNo").toString());
 	ui->txtElecBillAcc->setText(qu.record().value("ElecBillAcc").toString());
 	ui->txtWaterBillAc->setText(qu.record().value("WaterBillAc").toString());
-	ui->txtMonthlyRent->setText(qu.record().value("MonthlyRent").toString());
+	//ui->txtMonthlyRent->setText(qu.record().value("MonthlyRent").toString());
 	ui->spNoOfRooms->setValue(qu.record().value("RoomCount").toInt());
 	ui->spSqFt->setValue(qu.record().value("SQFT").toDouble());
 	m_propertyID = qu.record().value("PropertyID").toString();

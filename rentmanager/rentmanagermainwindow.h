@@ -14,6 +14,8 @@ class AssignUnitToTenantDialog;
 class PaymentsDialog;
 class MyPrinter;
 class CreateInvoiceDialog;
+class CreateMultiInvoice;
+class SmartPaymentDialog;
 
 namespace Ui {
 class RentManagerMainWindow;
@@ -37,6 +39,8 @@ public:
 	AssignUnitToTenantDialog *m_assign;
 	PaymentsDialog *m_payDiag;
 	CreateInvoiceDialog *m_singleInvoice;
+	CreateMultiInvoice *m_multiInvoice;
+	SmartPaymentDialog *m_smartPayment;
 
 	MyPrinter *m_printer;
 public slots:
@@ -60,6 +64,7 @@ private:
 	QActionGroup *actionsToDisable;
 	bool initializeCompanyFile();
 	static RentManagerMainWindow *m_instance;
+	QString currentProperty;
 private slots:
 	void openRecentFile();
 	void startNewFile();
@@ -74,6 +79,10 @@ private slots:
 	void on_actionAll_Units_triggered();
 	void aboutQt();
 	void singleInvoice();
+	void on_actionMulti_Invoicing_triggered();
+
+	void reloadCalendar();
+	void on_cboYear_currentIndexChanged(int index);
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

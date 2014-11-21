@@ -49,6 +49,7 @@ void DatabaseInitThread::run()
 	executeInitSql(Publics::getSql(Publics::SQL_INVOICE_DETAIL));
 	executeInitSql(Publics::getSql(Publics::SQL_INVOICE_MASTER));
 	executeInitSql(Publics::getSql(Publics::SQL_INVOICE_ITEMS));
+	executeInitSql(Publics::getSql(Publics::SQL_PAYMENT_ALLOCATION));
 	emit progress(100);
 
 

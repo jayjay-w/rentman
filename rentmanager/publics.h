@@ -27,7 +27,8 @@ public:
 		SQL_INVOICE_DETAIL,
 		SQL_PAYMENTS,
 		SQL_INVOICE_ITEMS,
-		SQL_LOG
+		SQL_LOG,
+		SQL_PAYMENT_ALLOCATION
 	};
 
 	static QString lastPath();

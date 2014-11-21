@@ -15,6 +15,9 @@ QT5_WRAP_UI(uis
     paymentsdialog.ui  
     createinvoicedialog.ui  
     multiinvoicingdialog.ui
+    additemtoinvoicedialog.ui
+    createmultiinvoice.ui
+smartpaymentdialog.ui
 )
 
 QT5_ADD_RESOURCES(qrcs res.qrc)
@@ -55,7 +58,11 @@ set( rentManagerSources ${rc} ${uis} ${qrcs}
     paymentsdialog.cpp
     myprinter.cpp
     createinvoicedialog.cpp
-    multiinvoicingdialog.cpp )
+    multiinvoicingdialog.cpp
+    additemtoinvoicedialog.cpp
+    createmultiinvoice.cpp
+smartpaymentdialog.cpp
+)
 
 
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>696</width>
-    <height>528</height>
+    <width>740</width>
+    <height>469</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -107,11 +107,35 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Invoice Items:</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="cmdAddItemToInvoice">
+       <property name="text">
+        <string>Add Item</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Invoice Items:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QTableWidget" name="tblInvoiceItems">
@@ -137,6 +161,60 @@
       </property>
      </column>
     </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="1" column="2">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>VAT Amout:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QLineEdit" name="txtGrandTotal"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="txtSubtotal"/>
+     </item>
+     <item row="1" column="3">
+      <widget class="QLineEdit" name="txtVATAmount"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Subtotal:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Grand Total:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="chkHasVAT">
+       <property name="text">
+        <string>Has VAT</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
