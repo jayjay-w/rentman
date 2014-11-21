@@ -10,6 +10,8 @@ AssignUnitToTenantDialog::AssignUnitToTenantDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 	ui->dtpStartDate->setDate(QDate::currentDate());
+
+	connect (ui->txtMonthlyRent, SIGNAL(textChanged(QString)), SLOT(calculateVAT()));
 }
 
 AssignUnitToTenantDialog::~AssignUnitToTenantDialog()
@@ -57,4 +59,31 @@ void AssignUnitToTenantDialog::on_cmdSave_clicked()
 	}
 
 	this->accept();
+}
+
+void AssignUnitToTenantDialog::on_chkVAT_clicked()
+{
+	calculateVAT();
+}
+
+void AssignUnitToTenantDialog::calculateVAT()
+{
+	if (ui->chkVAT->isChecked()) {
+		quint64 total = ui->txtMonthlyRent->text().toDouble();
+		quint64 vat = 0;
+		quint64 rent = 0;
+		vat = 0.137931034483 * total;
+		rent = total - vat;
+		qDebug() << total << vat << rent;
+		ui->txtRent->setText(QString::number(rent));
+		ui->txtVAT->setText(QString::number(vat));
+	} else {
+		ui->txtRent->setText("0");
+		ui->txtVAT->setText("0");
+	}
+}
+
+void AssignUnitToTenantDialog::on_chkVAT_toggled(bool checked)
+{
+    calculateVAT();
 }

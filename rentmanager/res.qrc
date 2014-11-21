@@ -16,5 +16,6 @@
     <qresource prefix="/reports">
         <file>reports/receipt.xml</file>
         <file>reports/units.xml</file>
+        <file>reports/contact_list.xml</file>
     </qresource>
 </RCC>

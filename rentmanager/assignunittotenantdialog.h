@@ -18,6 +18,12 @@ public:
 private slots:
 	void on_cmdSave_clicked();
 
+	void on_chkVAT_clicked();
+
+	void calculateVAT();
+
+	void on_chkVAT_toggled(bool checked);
+
 private:
 	Ui::AssignUnitToTenantDialog *ui;
 };

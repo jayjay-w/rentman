@@ -10,8 +10,6 @@ UnitsDialog::UnitsDialog(QWidget *parent) :
 	ui(new Ui::UnitsDialog)
 {
 	ui->setupUi(this);
-	ui->txtMonthlyRent->setReadOnly(true);
-	ui->txtMonthlyRent->setText("0");
 }
 
 UnitsDialog::~UnitsDialog()
@@ -39,8 +37,8 @@ void UnitsDialog::edit(QString id)
 	} else {
 		ui->cmdEndOccupation->setVisible(true);
 		ui->lblTenant->setVisible(true);
-		QString rent = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + id + "'", "MonthlyRent").toString();
-		ui->txtMonthlyRent->setText(rent);
+		//QString rent = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + id + "'", "MonthlyRent").toString();
+		//ui->txtMonthlyRent->setText(rent);
 		ui->txtTenantName->setVisible(true);
 	}
 
@@ -83,18 +81,16 @@ void UnitsDialog::on_cmdSave_clicked()
 				"PropertyID = '" + m_propertyID + "', "
 				"UnitNo = '" + ui->txtUnitNo->text() + "', "
 				"RoomCount = '" + QString::number(ui->spNoOfRooms->value()) + "', "
-				"MonthlyRent = '" + ui->txtMonthlyRent->text() + "', "
 				"SQFT = '" + QString::number(ui->spSqFt->value()) + "', "
 				"WaterBillAc = '" + ui->txtWaterBillAc->text() + "', "
 				"ElecBillAcc = '" + ui->txtElecBillAcc->text() + "' WHERE "
 				"UnitID = '" + m_unitID + "'";
 	} else {
-		sql = "INSERT INTO unit (UnitNo, PropertyID, RoomCount, MonthlyRent, "
+		sql = "INSERT INTO unit (UnitNo, PropertyID, RoomCount,"
 				"SQFT, WaterBillAc, CurrentTenantID, Occupied, ElecBillAcc) VALUES ('"
 				+ ui->txtUnitNo->text() + "', '"
 				+ m_propertyID + "', '"
 				+ QString::number(ui->spNoOfRooms->value()) + "', '"
-				+ ui->txtMonthlyRent->text() + "', '"
 				+ QString::number(ui->spSqFt->value()) + "', '"
 				+ ui->txtWaterBillAc->text() + "', '0', 'No', '"
 				+ ui->txtElecBillAcc->text() + "')";

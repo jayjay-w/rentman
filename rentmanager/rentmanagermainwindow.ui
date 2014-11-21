@@ -188,6 +188,8 @@
     <addaction name="actionAll_Units"/>
     <addaction name="actionVacan_Units"/>
     <addaction name="actionOccupied_Units"/>
+    <addaction name="separator"/>
+    <addaction name="actionContact_List"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -360,6 +362,11 @@
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="actionContact_List">
+   <property name="text">
+    <string>Contact List</string>
    </property>
   </action>
  </widget>

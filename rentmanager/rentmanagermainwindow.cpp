@@ -55,6 +55,8 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	actionsToDisable->addAction(ui->action_Save);
 	actionsToDisable->addAction(ui->actionSave_As);
 	actionsToDisable->addAction(ui->actionReceive_Payments);
+	actionsToDisable->addAction(ui->actionView_Payments);
+	actionsToDisable->addAction(ui->actionContact_List);
 
 	actionsToDisable->setDisabled(true);
 	ui->menuRecent_Files->clear();
@@ -451,4 +453,9 @@ void RentManagerMainWindow::on_cboYear_currentIndexChanged(int index)
 {
 	Q_UNUSED(index);
 	reloadCalendar();
+}
+
+void RentManagerMainWindow::on_actionContact_List_triggered()
+{
+	m_printer->qtPreview("contact_list", QStringList("param_where"), QStringList(""));
 }
