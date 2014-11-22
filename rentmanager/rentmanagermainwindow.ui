@@ -31,7 +31,7 @@
        <bool>false</bool>
       </property>
       <property name="handleWidth">
-       <number>3</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -52,7 +52,7 @@
          <widget class="QTreeWidget" name="trvBrowser">
           <property name="maximumSize">
            <size>
-            <width>500</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>

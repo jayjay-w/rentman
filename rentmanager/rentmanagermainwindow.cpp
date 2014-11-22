@@ -74,14 +74,14 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	connect (ui->actionAbout_Qt, SIGNAL(triggered()), SLOT(aboutQt()));
 	connect (ui->actionCreate_Invoice, SIGNAL(triggered()), SLOT(singleInvoice()));
 	//ui restore
-	ui->splitter->restoreState(Publics::getSetting("MainSplitter",
+	ui->splitter->restoreState(Publics::getSetting("Splitter2",
 						       ui->splitter_2->saveState()).toByteArray());
 }
 
 RentManagerMainWindow::~RentManagerMainWindow()
 {
 	//ui save state
-	Publics::saveSetting("MainSplitter", ui->splitter_2->saveState());
+	Publics::saveSetting("Splitter2", ui->splitter_2->saveState());
 	delete ui;
 }
 

@@ -59,7 +59,7 @@ void CreateMultiInvoice::on_spinMonths_valueChanged(int arg1)
 		ui->tblPreview->insertRow(r);
 		QDate thisMonthStart = startDate.addMonths(r);
 		thisMonthStart = QDate(thisMonthStart.year(), thisMonthStart.month(), 1);
-		QString monthYear = thisMonthStart.toString(QString::number(r+1) + "/" + ui->txtYear->text());
+		QString monthYear = thisMonthStart.toString(thisMonthStart.toString("M") + "/" + ui->txtYear->text());
 		QString itemName = "Rent";
 		QString itemDesc = "Rent for " + thisMonthStart.toString("MMM-yyyy");
 		QString amt = QString::number(ui->spinRent->value());
