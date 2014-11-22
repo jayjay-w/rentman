@@ -27,6 +27,7 @@ CreateMultiInvoice::~CreateMultiInvoice()
 
 void CreateMultiInvoice::startNew()
 {
+	ui->trvUnits->invisibleRootItem()->takeChildren();
 	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit WHERE Occupied = 'Yes'");
 	while (qu.next()) {
 		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits->invisibleRootItem());
