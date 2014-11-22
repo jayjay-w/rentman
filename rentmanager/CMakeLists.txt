@@ -92,7 +92,7 @@ IF( APPLE )
 ENDIF( APPLE )
 
 
-target_link_libraries(${ExecutableName} common renderer
+target_link_libraries(${ExecutableName} renderer common
     Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
 
 if(APPLE)
