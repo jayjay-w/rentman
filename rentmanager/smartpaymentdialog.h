@@ -18,7 +18,6 @@ public:
 	~SmartPaymentDialog();
 	void startNew();
 private slots:
-	void on_cboUnit_currentTextChanged(const QString &arg1);
 
 	void on_cmdAutoAllocate_clicked();
 	void updateTotals();
@@ -29,6 +28,10 @@ private slots:
 
 	void on_cmdSave_clicked();
 
+	void on_spAmountReceived_valueChanged(double arg1);
+
+	void handleItemClick(QTreeWidgetItem *item, int column);
+	void showInvoices(QString queryBy, QString queryValue);
 private:
 	Ui::SmartPaymentDialog *ui;
 	QString unitID, tenantID, tenantName, tenantTel, tenantEmail, companyID, companyName, propertyID, propertyName;

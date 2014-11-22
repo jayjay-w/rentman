@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QMap>
 #include <QUuid>
+#include <QTreeWidgetItem>
 
 CreateMultiInvoice::CreateMultiInvoice(QWidget *parent) :
 	QDialog(parent),
@@ -15,6 +16,8 @@ CreateMultiInvoice::CreateMultiInvoice(QWidget *parent) :
 	ui->setupUi(this);
 	tmr = new QTimer(this);
 	connect (tmr, SIGNAL(timeout()), SLOT(onTimer()));
+	Publics::setComboBoxText(ui->cboMonth, QDate::currentDate().toString("MMMM"));
+	ui->txtYear->setText(QDate::currentDate().toString("yyyy"));
 }
 
 CreateMultiInvoice::~CreateMultiInvoice()
@@ -24,10 +27,43 @@ CreateMultiInvoice::~CreateMultiInvoice()
 
 void CreateMultiInvoice::startNew()
 {
-	Publics::loadQueryToCombo("SELECT UnitNo FROM unit WHERE Occupied = 'Yes'", "UnitNo", ui->cboUnits);
+	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit WHERE Occupied = 'Yes'");
+	while (qu.next()) {
+		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits->invisibleRootItem());
+		it->setText(0, qu.record().value("UnitNo").toString());
+		QString s_unitID, propertyID, companyID, propertyCode, companyCode;
+		s_unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + qu.record().value("UnitNo").toString() + "'", "UnitID").toString();
+		propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + s_unitID + "'", "PropertyID").toString();
+		companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
+		propertyCode = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyCode").toString();
+		companyCode = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "Code").toString();
+
+		it->setText(99, s_unitID);
+		it->setText(1, companyCode);
+		it->setText(2, propertyCode);
+
+		//tenant name, rent
+		it->setText(3, "-");
+		it->setText(4, "-");
+		QSqlQuery unitQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE UnitID = '" + it->text(99) + "'");
+		while (unitQu.next()) {
+			QString tenantID = unitQu.record().value("TenantID").toString();
+			QString tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
+			it->setText(3, tenantName);
+			it->setText(4, unitQu.record().value("MonthlyRent").toString());
+		}
+	}
+	ui->txtTenantDetails->setPlainText("");
+	ui->spinRent->setValue(0);
+	ui->spinMonths->setValue(0);
+	Publics::setComboBoxText(ui->cboMonth, QDate::currentDate().toString("MMMM"));
+	ui->txtYear->setText(QDate::currentDate().toString("yyyy"));
+	int rs = ui->tblPreview->rowCount();
+	for (int r = 0; r < rs; r++)
+		ui->tblPreview->removeRow(0);
 }
 
-void CreateMultiInvoice::on_cboUnits_currentIndexChanged(const QString &arg1)
+void CreateMultiInvoice::currentUnitChanged(const QString &arg1)
 {
 	QString unitNo = arg1;
 	unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitNo + "'", "UnitID").toString();
@@ -151,4 +187,11 @@ void CreateMultiInvoice::on_cmdSave_clicked()
 	this->accept();
 
 
+}
+
+void CreateMultiInvoice::on_trvUnits_itemClicked(QTreeWidgetItem *item, int column)
+{
+	Q_UNUSED(column);
+	QString unitNo = item->text(0);
+	currentUnitChanged(unitNo);
 }

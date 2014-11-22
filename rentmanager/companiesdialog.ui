@@ -60,6 +60,9 @@
          <property name="text">
           <string>Save Changes</string>
          </property>
+         <property name="default">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -211,6 +214,8 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>cmdNewCompany</tabstop>
+  <tabstop>cmdSaveChanges</tabstop>
   <tabstop>cmdDeleteCompany</tabstop>
   <tabstop>trvCompanies</tabstop>
   <tabstop>txtCompanyName</tabstop>

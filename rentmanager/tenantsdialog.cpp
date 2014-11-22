@@ -56,7 +56,7 @@ void TenantsDialog::editTenant()
 	ui->txtEmail->setText(qu.record().value("Email").toString());
 	ui->txtTel->setText(qu.record().value("Tel").toString());
 	Publics::setComboBoxText(ui->cboIsActive, qu.record().value("IsActive").toString());
-
+	ui->txtName->setFocus();
 }
 
 void TenantsDialog::newTenant()

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>639</width>
-    <height>534</height>
+    <width>886</width>
+    <height>677</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,142 +15,232 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Receipt No.</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Tenant Details:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1" colspan="3">
-      <widget class="QComboBox" name="cboUnit"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Paid Via:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QComboBox" name="cboPaidVia">
-       <item>
-        <property name="text">
-         <string>Cash</string>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="minimumSize">
+       <size>
+        <width>400</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Search Invoices by Unit</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>0</number>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Cheque</string>
+        <property name="leftMargin">
+         <number>0</number>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Mobile Money</string>
+        <property name="topMargin">
+         <number>0</number>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Credit Card</string>
+        <property name="rightMargin">
+         <number>0</number>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Other</string>
+        <property name="bottomMargin">
+         <number>0</number>
         </property>
+        <item>
+         <widget class="QTreeWidget" name="trvUnits">
+          <column>
+           <property name="text">
+            <string>Unit Name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Company</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Property</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Tenant</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Search Invoices by Tenant</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QTreeWidget" name="trvTenants">
+          <column>
+           <property name="text">
+            <string>Tenant Name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Unit</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Company</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Property</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="">
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Receipt No.</string>
+         </property>
+        </widget>
        </item>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Amount Paid:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Select Unit:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2" colspan="2">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Cheque / Payment No.:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="4">
-      <widget class="QLineEdit" name="txtChequeNo"/>
-     </item>
-     <item row="3" column="1" colspan="2">
-      <widget class="QLineEdit" name="txtReceiptNo"/>
-     </item>
-     <item row="3" column="3">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Receipt Date:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="4">
-      <widget class="QDateEdit" name="dtpReceiptDate">
-       <property name="displayFormat">
-        <string>dd MMM yyyy</string>
-       </property>
-       <property name="calendarPopup">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1" colspan="3">
-      <widget class="QPlainTextEdit" name="txtTenantDetails">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>88</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="5">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="2" column="3">
-      <widget class="QPushButton" name="cmdAutoAllocate">
-       <property name="text">
-        <string>Allocate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1" colspan="2">
-      <widget class="QDoubleSpinBox" name="spAmountReceived">
-       <property name="maximum">
-        <double>999999999.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-    </layout>
+       <item row="2" column="3">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Receipt Date:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" colspan="2">
+        <widget class="QDoubleSpinBox" name="spAmountReceived">
+         <property name="maximum">
+          <double>999999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="QLineEdit" name="txtChequeNo"/>
+       </item>
+       <item row="1" column="3">
+        <widget class="QPushButton" name="cmdAutoAllocate">
+         <property name="text">
+          <string>Allocate</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" colspan="2">
+        <widget class="QLineEdit" name="txtReceiptNo"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="cboPaidVia">
+         <item>
+          <property name="text">
+           <string>Cash</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Cheque</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Mobile Money</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Credit Card</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Other</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Amount Paid:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2" colspan="2">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Cheque / Payment No.:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="4">
+        <widget class="QDateEdit" name="dtpReceiptDate">
+         <property name="displayFormat">
+          <string>dd MMM yyyy</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Paid Via:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Tenant Details:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" colspan="5">
+        <widget class="QPlainTextEdit" name="txtTenantDetails">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>100</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="label_8">
@@ -170,6 +260,21 @@
      <column>
       <property name="text">
        <string>Invoice No.</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Unit </string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Company</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Property</string>
       </property>
      </column>
      <column>
@@ -298,6 +403,23 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>trvUnits</tabstop>
+  <tabstop>txtTenantDetails</tabstop>
+  <tabstop>spAmountReceived</tabstop>
+  <tabstop>cmdAutoAllocate</tabstop>
+  <tabstop>txtReceiptNo</tabstop>
+  <tabstop>dtpReceiptDate</tabstop>
+  <tabstop>cboPaidVia</tabstop>
+  <tabstop>txtChequeNo</tabstop>
+  <tabstop>trvPaymentAllocation</tabstop>
+  <tabstop>txtReceived</tabstop>
+  <tabstop>txtAllocated</tabstop>
+  <tabstop>txtBalance</tabstop>
+  <tabstop>cmdSave</tabstop>
+  <tabstop>trvTenants</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -18,8 +18,7 @@ QT5_WRAP_UI(uis
     terminateoccupationdialog.ui  
     receivepaymentdialog.ui  
     paymentsdialog.ui  
-    createinvoicedialog.ui  
-    multiinvoicingdialog.ui
+    createinvoicedialog.ui
     additemtoinvoicedialog.ui
     createmultiinvoice.ui
 smartpaymentdialog.ui
@@ -56,7 +55,6 @@ set(rentManagerSources ${rc} ${uis} ${qrcs}
     paymentsdialog.cpp
     myprinter.cpp
     createinvoicedialog.cpp
-    multiinvoicingdialog.cpp
     additemtoinvoicedialog.cpp
     createmultiinvoice.cpp
 smartpaymentdialog.cpp

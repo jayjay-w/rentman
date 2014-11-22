@@ -62,6 +62,8 @@ void CompaniesDialog::editCompany()
 		it->setText(2, qu.record().value("Location").toString());
 		it->setText(3, qu.record().value("UnitCount").toString());
 	}
+
+	ui->txtCompanyName->setFocus();
 }
 
 void CompaniesDialog::on_cmdNewCompany_clicked()

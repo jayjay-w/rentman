@@ -77,6 +77,7 @@ void PropertiesDialog::editProperty()
 	QString companyID = qu.record().value("CompanyID").toString();
 	QString companyName = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "CompanyName").toString();
 	Publics::setComboBoxText(ui->cboCompany, companyName);
+	ui->txtPropertyName->setFocus();
 }
 
 void PropertiesDialog::newProperty()
@@ -148,7 +149,18 @@ void PropertiesDialog::reloadUnits()
 		it->setText(0, qu.record().value("UnitNo").toString());
 		it->setText(1, qu.record().value("RoomCount").toString());
 		it->setText(2, qu.record().value("SQFT").toString());
-		it->setText(3, qu.record().value("MonthlyRent").toString());
+		//Occupied, tenant name, rent
+		it->setText(3, "No");
+		it->setText(4, "-");
+		it->setText(5, "-");
+		QSqlQuery unitQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE UnitID = '" + it->text(99) + "'");
+		while (unitQu.next()) {
+			it->setText(3, "Yes");
+			QString tenantID = unitQu.record().value("TenantID").toString();
+			QString tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
+			it->setText(4, tenantName);
+			it->setText(5, unitQu.record().value("MonthlyRent").toString());
+		}
 	}
 }
 

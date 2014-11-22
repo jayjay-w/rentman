@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>628</width>
-    <height>466</height>
+    <width>691</width>
+    <height>588</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,55 +16,38 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Unit:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="cboUnits"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Tenant Details:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPlainTextEdit" name="txtTenantDetails">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>81</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
+     <item row="6" column="1">
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>Monthly Rent:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="6" column="3">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>No. Of Months:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="4">
+      <widget class="QSpinBox" name="spinMonths"/>
+     </item>
+     <item row="6" column="2">
       <widget class="QDoubleSpinBox" name="spinRent">
        <property name="maximum">
         <double>999999999.000000000000000</double>
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="4" column="1">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>Start Month:</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="4" column="2">
       <widget class="QComboBox" name="cboMonth">
        <item>
         <property name="text">
@@ -128,29 +111,78 @@
        </item>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="4" column="3">
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>Year:</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="4" column="4">
       <widget class="QLineEdit" name="txtYear">
        <property name="text">
         <string>2014</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_6">
+     <item row="2" column="1">
+      <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>No. Of Months:</string>
+        <string>Tenant Details:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
-      <widget class="QSpinBox" name="spinMonths"/>
+     <item row="0" column="1" rowspan="2">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Unit:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2" rowspan="2" colspan="3">
+      <widget class="QTreeWidget" name="trvUnits">
+       <column>
+        <property name="text">
+         <string>Unit No</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Company</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Property</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Tenant Name</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Monthly Rent Amount</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item row="2" column="2" colspan="3">
+      <widget class="QPlainTextEdit" name="txtTenantDetails">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>81</height>
+        </size>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

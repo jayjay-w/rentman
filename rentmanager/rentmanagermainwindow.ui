@@ -207,6 +207,7 @@
    <addaction name="menuReports"/>
    <addaction name="menuHelp"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="mainToolBar">
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonTextUnderIcon</enum>
@@ -222,10 +223,9 @@
    <addaction name="separator"/>
    <addaction name="actionTenants"/>
    <addaction name="separator"/>
-   <addaction name="actionCreate_Invoice"/>
+   <addaction name="actionMulti_Invoicing"/>
    <addaction name="actionReceive_Payments"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionCompanies">
    <property name="icon">
     <iconset resource="res.qrc">
@@ -278,6 +278,10 @@
    </property>
   </action>
   <action name="actionMulti_Invoicing">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/invoice-icon.png</normaloff>:/images/invoice-icon.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Multi Invoicing</string>
    </property>
@@ -369,7 +373,7 @@
   </action>
   <action name="actionContact_List">
    <property name="text">
-    <string>Contact List</string>
+    <string>Contact &amp;List</string>
    </property>
   </action>
  </widget>

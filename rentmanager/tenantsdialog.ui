@@ -129,6 +129,9 @@
        <property name="text">
         <string>Save</string>
        </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -169,10 +172,10 @@
   <tabstop>cboIsActive</tabstop>
   <tabstop>txtTel</tabstop>
   <tabstop>txtEmail</tabstop>
-  <tabstop>tblLeases</tabstop>
   <tabstop>cmdAddNew</tabstop>
   <tabstop>cmdSave</tabstop>
   <tabstop>cmdDelete</tabstop>
+  <tabstop>tblLeases</tabstop>
   <tabstop>cmdExit</tabstop>
  </tabstops>
  <resources/>

@@ -17,6 +17,9 @@ SmartPaymentDialog::SmartPaymentDialog(QWidget *parent) :
 	ui->txtBalance->setReadOnly(true);
 
 	ui->dtpReceiptDate->setDate(QDate::currentDate());
+
+	connect (ui->trvTenants, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SLOT(handleItemClick(QTreeWidgetItem*,int)));
+	connect (ui->trvUnits, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SLOT(handleItemClick(QTreeWidgetItem*,int)));
 }
 
 SmartPaymentDialog::~SmartPaymentDialog()
@@ -26,59 +29,66 @@ SmartPaymentDialog::~SmartPaymentDialog()
 
 void SmartPaymentDialog::startNew()
 {
-	Publics::loadQueryToCombo("SELECT * FROM unit", "UnitNo", ui->cboUnit);
 	ui->spAmountReceived->setValue(0);
 	ui->trvPaymentAllocation->invisibleRootItem()->takeChildren();
 
-	on_cboUnit_currentTextChanged(ui->cboUnit->currentText());
-}
+	ui->trvTenants->invisibleRootItem()->takeChildren();
+	ui->trvUnits->invisibleRootItem()->takeChildren();
 
-void SmartPaymentDialog::on_cboUnit_currentTextChanged(const QString &arg1)
-{
-	ui->trvPaymentAllocation->invisibleRootItem()->takeChildren();
-	QString unitNo = arg1;
-	unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitNo + "'", "UnitID").toString();
-	propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitNo + "'", "PropertyID").toString();
-	companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
-	companyName = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "CompanyName").toString();
-	//QString leaseID = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + unitID + "'", "EntryID").toString();
-
-	tenantID = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + unitID + "'", "TenantID").toString();
-	tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
-	tenantTel = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Tel").toString();
-	tenantEmail = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Email").toString();
-
-	ui->txtTenantDetails->setPlainText(tenantName + "\n" + tenantTel + "\n" + tenantEmail);
-
-	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM invoice_master WHERE UnitID = '" + unitID + "'");
+	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit WHERE Occupied = 'Yes'");
 	while (qu.next()) {
-		double paid = 0;
-		double due = 0;
-		double balance = 0;
-		QString invoiceID = qu.record().value("InvoiceNo").toString();
-		QSqlQuery allocQu = QSqlDatabase::database().exec("SELECT * FROM payment_allocation WHERE InvoiceID = '" + invoiceID + "'");
-		while (allocQu.next()) {
-			paid = paid + allocQu.record().value("Amount").toDouble();
-		}
-		due = qu.record().value("InvoiceTotal").toDouble();
-		balance = due - paid;
+		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits->invisibleRootItem());
+		it->setText(0, qu.record().value("UnitNo").toString());
+		QString s_unitID, propertyID, companyID, propertyCode, companyCode;
+		s_unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + qu.record().value("UnitNo").toString() + "'", "UnitID").toString();
+		propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + s_unitID + "'", "PropertyID").toString();
+		companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
+		propertyCode = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyCode").toString();
+		companyCode = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "Code").toString();
 
-		if (balance > 0) {
-			QTreeWidgetItem *invItem = new QTreeWidgetItem(ui->trvPaymentAllocation->invisibleRootItem());
-			invItem->setCheckState(0, Qt::Unchecked);
-			invItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled|Qt::ItemIsUserCheckable);
-			invItem->setText(0, qu.record().value("InvoiceNo").toString());
-			//amt, paid, bal, alloc, newbal
-			invItem->setText(1, QString::number(due));
-			invItem->setText(2, QString::number(paid));
-			invItem->setText(3, QString::number(balance));
-			invItem->setText(4, "0");
-			invItem->setText(5, QString::number(balance));
-		}
+		it->setText(99, s_unitID);
+		it->setText(100, "Unit");
+		it->setText(1, companyCode);
+		it->setText(2, propertyCode);
 
+		//tenant name, rent
+		it->setText(3, "-");
+		//it->setText(4, "-");
+		QSqlQuery unitQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE UnitID = '" + it->text(99) + "'");
+		while (unitQu.next()) {
+			QString tenantID = unitQu.record().value("TenantID").toString();
+			QString tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
+			it->setText(3, tenantName);
+			//it->setText(4, unitQu.record().value("MonthlyRent").toString());
+		}
 	}
 
-	updateTotals();
+	qu = QSqlDatabase::database().exec("SELECT * FROM tenant");
+	while (qu.next()) {
+		QString tenantID = qu.record().value("TenantID").toString();
+		QString tenantName = qu.record().value("Name").toString();
+		QTreeWidgetItem *tenant = new QTreeWidgetItem(ui->trvTenants->invisibleRootItem());
+		tenant->setText(0, tenantName);
+		tenant->setText(99, tenantID);
+		tenant->setText(100, "Tenant");
+		QSqlQuery leaseQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE TenantID = '" + tenantID + "'");
+		while (leaseQu.next()) {
+			QString lease_unitID = leaseQu.value("UnitID").toString();
+			QString unitNO, companyID, propertyID, companyName, propertyName;
+			unitNO = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + lease_unitID + "'", "UnitNo").toString();
+			propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + lease_unitID + "'", "PropertyID").toString();
+			companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
+			propertyName = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyName").toString();
+			companyName = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + propertyID + "'", "Code").toString();
+
+			QTreeWidgetItem *unitItem = new QTreeWidgetItem(tenant);
+			unitItem->setText(1, unitNO);
+			unitItem->setText(2, companyName);
+			unitItem->setText(3, propertyName);
+			unitItem->setText(99, lease_unitID);
+			unitItem->setText(100, "Unit");
+		}
+	}
 }
 
 void SmartPaymentDialog::on_cmdAutoAllocate_clicked()
@@ -87,10 +97,10 @@ void SmartPaymentDialog::on_cmdAutoAllocate_clicked()
 	double _bal = _orig;
 	for (int i = 0; i < ui->trvPaymentAllocation->invisibleRootItem()->childCount(); i++) {
 		QTreeWidgetItem *it = ui->trvPaymentAllocation->invisibleRootItem()->child(i);
-		double item_balance = it->text(3).toDouble();
+		double item_balance = it->text(6).toDouble();
 		double assigned = 0;
 		if (_bal  > 0) {
-			if (_bal > item_balance) {
+			if (_bal >= item_balance) {
 				assigned = item_balance;
 			}
 			if (_bal < item_balance) {
@@ -106,8 +116,8 @@ void SmartPaymentDialog::on_cmdAutoAllocate_clicked()
 
 		_bal = _bal - assigned;
 		double new_bal = item_balance - assigned;
-		it->setText(4, QString::number(assigned));
-		it->setText(5, QString::number(new_bal));
+		it->setText(7, QString::number(assigned));
+		it->setText(8, QString::number(new_bal));
 		it->setCheckState(0, Qt::Unchecked);
 
 		if (assigned > 0)
@@ -124,8 +134,8 @@ void SmartPaymentDialog::updateTotals()
 	double balance = 0;
 	for (int i = 0; i < ui->trvPaymentAllocation->invisibleRootItem()->childCount(); i++) {
 		QTreeWidgetItem *it = ui->trvPaymentAllocation->invisibleRootItem()->child(i);
-		assigned = assigned + it->text(4).toDouble();
-		if (it->text(4).toDouble() < 1) {
+		assigned = assigned + it->text(7).toDouble();
+		if (it->text(7).toDouble() < 1) {
 			it->setCheckState(0, Qt::Unchecked);
 		}
 	}
@@ -145,12 +155,12 @@ void SmartPaymentDialog::on_trvPaymentAllocation_itemClicked(QTreeWidgetItem *it
 {
 	if (column == 0) {
 		double receipt_balance = ui->txtBalance->text().toDouble();
-		double balance_before = item->text(3).toDouble();
-		double assigned = item->text(4).toDouble();
+		double balance_before = item->text(6).toDouble();
+		double assigned = item->text(7).toDouble();
 		double new_assign = 0;
 		if (item->checkState(0) == Qt::Unchecked) {
-			item->setText(4, "0");
-			item->setText(5, item->text(3));
+			item->setText(7, "0");
+			item->setText(8, item->text(6));
 		} else {
 			if (assigned < 1) {
 				if (receipt_balance < balance_before) {
@@ -163,8 +173,8 @@ void SmartPaymentDialog::on_trvPaymentAllocation_itemClicked(QTreeWidgetItem *it
 					new_assign = 0;
 				}
 
-				item->setText(4, QString::number(new_assign));
-				item->setText(5, QString::number(balance_before - new_assign) );
+				item->setText(7, QString::number(new_assign));
+				item->setText(8, QString::number(balance_before - new_assign) );
 			}
 		}
 		updateTotals();
@@ -173,14 +183,14 @@ void SmartPaymentDialog::on_trvPaymentAllocation_itemClicked(QTreeWidgetItem *it
 
 void SmartPaymentDialog::on_trvPaymentAllocation_itemChanged(QTreeWidgetItem *item, int column)
 {
-	if (column == 4) {
-		double balance_before = item->text(3).toDouble();
-		double assiged = item->text(4).toDouble();
+	if (column == 7) {
+		double balance_before = item->text(6).toDouble();
+		double assiged = item->text(7).toDouble();
 		if (assiged > balance_before)
 			assiged = balance_before;
 		double new_balance = balance_before - assiged;
-		item->setText(5, QString::number(new_balance));
-		item->setText(4, QString::number(assiged));
+		item->setText(8, QString::number(new_balance));
+		item->setText(7, QString::number(assiged));
 		if (assiged > 0)
 			item->setCheckState(0, Qt::Checked);
 		updateTotals();
@@ -203,6 +213,7 @@ void SmartPaymentDialog::on_cmdSave_clicked()
 	QString unique = QUuid::createUuid().toString();
 	unique  = unique.left(unique.length() - 1);
 	unique = unique.right(unique.length() - 1);
+	QString unitNo = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "UnitNo").toString();
 	QString master_sql = "INSERT INTO payments (UniqueID, "
 			     "UnitID,  TenantID, CompanyID, CompanyName, ReceiptNo, DateReceived, UnitName, TenantName, "
 			     "AmountReceived, PaymentFor, PayMode, ChequeNo, Allocated, Balance) "
@@ -214,10 +225,10 @@ void SmartPaymentDialog::on_cmdSave_clicked()
 			+ companyName + "', '"
 			+ ui->txtReceiptNo->text() + "', '"
 			+ ui->dtpReceiptDate->date().toString("dd-MMM-yyyy") + "', '"
-			+ ui->cboUnit->currentText() + "', '"
+			+ unitNo + "', '"
 			+ tenantName + "', '"
 			+ QString::number(received) + "', '"
-			"Rent', '"
+						      "Rent', '"
 			+ ui->cboPaidVia->currentText() + "', '"
 			+ ui->txtChequeNo->text() + "', '"
 			+ QString::number(assigned) + "', '"
@@ -228,9 +239,9 @@ void SmartPaymentDialog::on_cmdSave_clicked()
 
 	for (int i = 0; i < ui->trvPaymentAllocation->invisibleRootItem()->childCount(); i++) {
 		QTreeWidgetItem *it = ui->trvPaymentAllocation->invisibleRootItem()->child(i);
-		if (it->text(4).toDouble() > 0) {
+		if (it->text(7).toDouble() > 0) {
 			QString invoiceNo = it->text(0);
-			QString allocated = it->text(4);
+			QString allocated = it->text(7);
 			QString itemSql = "INSERT INTO payment_allocation (UniqueID, InvoiceID, Amount) VALUES ('"
 					+ unique + "', '"
 					+ invoiceNo + "', '"
@@ -242,4 +253,88 @@ void SmartPaymentDialog::on_cmdSave_clicked()
 	}
 
 	this->accept();
+}
+
+void SmartPaymentDialog::on_spAmountReceived_valueChanged(double arg1)
+{
+	Q_UNUSED(arg1);
+	updateTotals();
+}
+
+void SmartPaymentDialog::handleItemClick(QTreeWidgetItem *item, int column)
+{
+	Q_UNUSED(column);
+	showInvoices(item->text(100), item->text(99));
+}
+
+void SmartPaymentDialog::showInvoices(QString queryBy, QString queryValue)
+{
+	if (queryBy == "Unit") {
+		unitID = queryValue;
+		tenantID = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + unitID + "'", "TenantID").toString();
+	} else if (queryBy == "Tenant") {
+		tenantID = queryValue;
+		unitID = Publics::getDbValue("SELECT * FROM leases WHERE TenantID = '" + tenantID + "'", "UnitID").toString();
+	}
+	ui->trvPaymentAllocation->invisibleRootItem()->takeChildren();
+	//QString unitNo = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "UnitNo").toString();
+	propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "PropertyID").toString();
+	companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
+	companyName = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "CompanyName").toString();
+	//QString leaseID = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + unitID + "'", "EntryID").toString();
+
+	tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
+	tenantTel = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Tel").toString();
+	tenantEmail = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Email").toString();
+
+	ui->txtTenantDetails->setPlainText(tenantName + "\n" + tenantTel + "\n" + tenantEmail);
+
+	QSqlQuery qu;
+	if (queryBy == "Unit") {
+		qu = QSqlDatabase::database().exec("SELECT * FROM invoice_master WHERE UnitID = '" + unitID + "'");
+	} else {
+		qu = QSqlDatabase::database().exec("SELECT * FROM invoice_master WHERE TenantID = '" + tenantID + "'");
+	}
+	while (qu.next()) {
+		double paid = 0;
+		double due = 0;
+		double balance = 0;
+		QString invoiceID = qu.record().value("InvoiceNo").toString();
+		QSqlQuery allocQu = QSqlDatabase::database().exec("SELECT * FROM payment_allocation WHERE InvoiceID = '" + invoiceID + "'");
+		while (allocQu.next()) {
+			paid = paid + allocQu.record().value("Amount").toDouble();
+		}
+		due = qu.record().value("InvoiceTotal").toDouble();
+		balance = due - paid;
+
+		if (balance > 0) {
+			QTreeWidgetItem *invItem = new QTreeWidgetItem(ui->trvPaymentAllocation->invisibleRootItem());
+			invItem->setCheckState(0, Qt::Unchecked);
+			invItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled|Qt::ItemIsUserCheckable);
+			invItem->setText(0, qu.record().value("InvoiceNo").toString());
+			//unit, company, property
+			invItem->setText(1, "-");
+			invItem->setText(2, "-");
+			invItem->setText(3, "-");
+			QString lease_unitID = qu.record().value("UnitID").toString();
+			QString unitNO, companyID, propertyID, companyName, propertyName;
+			unitNO = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + lease_unitID + "'", "UnitNo").toString();
+			propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + lease_unitID + "'", "PropertyID").toString();
+			companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
+			propertyName = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyName").toString();
+			companyName = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + propertyID + "'", "Code").toString();
+			invItem->setText(1, unitNO);
+			invItem->setText(2, companyName);
+			invItem->setText(3, propertyName);
+			//amt, paid, bal, alloc, newbal
+			invItem->setText(4, QString::number(due));
+			invItem->setText(5, QString::number(paid));
+			invItem->setText(6, QString::number(balance));
+			invItem->setText(7, "0");
+			invItem->setText(8, QString::number(balance));
+		}
+
+	}
+
+	updateTotals();
 }

@@ -5,6 +5,7 @@
 #include <QList>
 
 class QTimer;
+class QTreeWidgetItem;
 
 namespace Ui {
 class CreateMultiInvoice;
@@ -19,11 +20,13 @@ public:
 	~CreateMultiInvoice();
 	void startNew();
 private slots:
-	void on_cboUnits_currentIndexChanged(const QString &arg1);
+	void currentUnitChanged(const QString &arg1);
 	void onTimer();
 	void on_spinMonths_valueChanged(int arg1);
 
 	void on_cmdSave_clicked();
+
+	void on_trvUnits_itemClicked(QTreeWidgetItem *item, int column);
 
 private:
 	Ui::CreateMultiInvoice *ui;

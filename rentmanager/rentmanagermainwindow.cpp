@@ -432,6 +432,10 @@ void RentManagerMainWindow::reloadCalendar()
 				bgColor = "LightGreen";
 			}
 
+			if (due == 0) {
+				bgColor = "LightBlue";
+			}
+
 			if (balance )
 			colText = "";
 			colText += "Due: " + QString::number(due);

@@ -58,6 +58,7 @@ void UnitsDialog::edit(QString id)
 	ui->spSqFt->setValue(qu.record().value("SQFT").toDouble());
 	m_propertyID = qu.record().value("PropertyID").toString();
 
+	ui->txtUnitNo->setFocus();
 }
 
 void UnitsDialog::addNew(QString propertyID)
@@ -71,6 +72,7 @@ void UnitsDialog::addNew(QString propertyID)
 	ui->lblTenant->setVisible(false);
 	ui->txtTenantName->setVisible(false);
 	ui->txtOccupied->setText("No");
+	ui->txtUnitNo->setFocus();
 }
 
 void UnitsDialog::on_cmdSave_clicked()
