@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtSql>
+#include <QtXml>
 
 class QTreeWidgetItem;
 
@@ -16,6 +17,8 @@ class MyPrinter;
 class CreateInvoiceDialog;
 class CreateMultiInvoice;
 class SmartPaymentDialog;
+class QPrinter;
+class QListWidgetItem;
 
 namespace Ui {
 class RentManagerMainWindow;
@@ -65,6 +68,12 @@ private:
 	bool initializeCompanyFile();
 	static RentManagerMainWindow *m_instance;
 	QString currentProperty;
+
+	QPrinter *printer;
+	QString m_reportName;
+	QString m_xml;
+protected:
+	QDomDocument m_doc;
 private slots:
 	void openRecentFile();
 	void startNewFile();
@@ -86,6 +95,10 @@ private slots:
 	void on_actionContact_List_triggered();
 	void on_actionAbout_triggered();
 	void on_actionQuit_triggered();
+	void on_lstReports_itemClicked(QListWidgetItem *item);
+
+	void showReportPreview(QString reportName);
+	void previewRequested(QPrinter *p);
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

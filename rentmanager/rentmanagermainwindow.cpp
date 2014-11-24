@@ -15,7 +15,13 @@
 #include "createinvoicedialog.h"
 #include "createmultiinvoice.h"
 #include "smartpaymentdialog.h"
-
+#include "renderobjects.h"
+#include "orprerender.h"
+#include "previewdialog.h"
+#include "orprintrender.h"
+#include "parameter.h"
+#include <QDomDocument>
+#include <QPrinter>
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
 RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
@@ -77,7 +83,11 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	QSettings sett(qApp->organizationName(), qApp->applicationName());
 	qDebug() << sett.value("MainWindowSplitter").toString();
 	ui->splitter->restoreState(sett.value("MainWindowSplitter",
-						       ui->splitter_2->saveState()).toByteArray());
+					      ui->splitter_2->saveState()).toByteArray());
+
+	printer = new QPrinter(QPrinter::HighResolution);
+	connect (ui->printPreviewWidget, SIGNAL(paintRequested(QPrinter*)), SLOT(previewRequested(QPrinter*)));
+	//ui->printPreviewWidget = new QPrintPreviewWidget(printer);
 }
 
 RentManagerMainWindow::~RentManagerMainWindow()
@@ -440,7 +450,7 @@ void RentManagerMainWindow::reloadCalendar()
 			}
 
 			if (balance )
-			colText = "";
+				colText = "";
 			colText += "Due: " + QString::number(due);
 			colText += "<br/>Paid: " + QString::number(paid);
 			colText += "<br/>Balance: " + QString::number(balance);
@@ -482,6 +492,8 @@ void RentManagerMainWindow::on_actionContact_List_triggered()
 			leaseCount++;
 			QString unitID = leasesQu.record().value("UnitID").toString();
 			QString rent = leasesQu.record().value("MonthlyRent").toString();
+			QString balance = "0";
+			QString asOfDate = QDate::currentDate().toString("dd-MMM-yyyy");
 			QString unitNo, propertyID, companyID, propertyCode, companyCode;
 			unitNo = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "UnitNo").toString();
 			propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "PropertyID").toString();
@@ -531,6 +543,51 @@ void RentManagerMainWindow::on_actionAbout_triggered()
 
 void RentManagerMainWindow::on_actionQuit_triggered()
 {
-    closeFile();
-    qApp->quit();
+	closeFile();
+	qApp->quit();
+}
+
+void RentManagerMainWindow::on_lstReports_itemClicked(QListWidgetItem *item)
+{
+	showReportPreview(item->text());
+}
+
+void RentManagerMainWindow::showReportPreview(QString reportName)
+{
+	if (reportName == "Contact List")
+		reportName = "contact_list";
+
+	printer = new QPrinter(QPrinter::HighResolution);
+	m_reportName = reportName;
+	QFile fl(":/reports/reports/" + reportName + ".xml");
+	if (!fl.open(QIODevice::ReadOnly)) {
+		Publics::showError("Could not open report source.\n" + fl.errorString());
+		return;
+	}
+	//File open
+	QString xml = fl.readAll();
+	m_xml = xml;
+	m_doc.setContent(m_xml);
+	fl.close();
+
+	ui->printPreviewWidget->updatePreview();
+}
+
+void RentManagerMainWindow::previewRequested(QPrinter *p)
+{
+	qDebug() << "HERE";
+	ORPreRender pre;
+	pre.setDatabase(QSqlDatabase::database());
+	pre.setDom(m_doc);
+	ORODocument *oDoc = pre.generate();
+
+	if (oDoc) {
+		ORPrintRender render;
+		render.setPrinter(p);
+		render.render(oDoc);
+		render.setupPrinter(oDoc, p);
+	} else {
+		if (currentFilePath.length() > 0)
+			Publics::showError("Printer Error");
+	}
 }
