@@ -8,7 +8,7 @@ CompanyFilePassword::CompanyFilePassword(QWidget *parent, bool newP) :
 {
 	ui->setupUi(this);
 	if (newP)
-		ui->txtCurrentPassword->setDisabled(false);
+		ui->txtCurrentPassword->setDisabled(true);
 
 	isNewP = newP;
 }
@@ -35,7 +35,7 @@ void CompanyFilePassword::on_cmdOK_clicked()
 			return;
 		}
 	}
-	QSqlDatabase::database().exec("CREATE TABLE IF NOT EXSISTS 'password' ('Password' TEXT)");
+	QSqlDatabase::database().exec("CREATE TABLE IF NOT EXISTS 'password' ('Password' TEXT)");
 	QSqlDatabase::database().exec("DELETE FROM password");
 	QSqlDatabase::database().exec("INSERT INTO password ('Password') VALUES ('" + ui->txtNewPassword->text() + "')");
 	this->accept();

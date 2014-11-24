@@ -23,7 +23,7 @@
 #include <QDomDocument>
 #include <QPrinter>
 #include <QPrintDialog>
-
+#include <QInputDialog>
 #include "companyfilepassword.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
@@ -189,6 +189,22 @@ void RentManagerMainWindow::loadFile(const QString &fileName)
 	//Database open
 	initializeCompanyFile();
 
+	QSqlQuery pasQu = db.exec("SELECT * FROM password");
+	QString pass;
+	while (pasQu.next()) {
+		pass = pasQu.record().value("Password").toString();
+	}
+
+	if (pass.length() > 1) {
+		//This file has a valid password
+		QString userPass = QInputDialog::getText(this, "User Login", "Enter your password to open this file:", QLineEdit::Password);
+		if (userPass != pass) {
+			Publics::showError("The password you entered is invalid. Please try again.");
+			closeFile();
+			return;
+		}
+	}
+
 	curFile = fileName;
 	ui->statusBar->showMessage(QString("Opened file: %1").arg(fileName));
 	//refresh browser
@@ -292,7 +308,7 @@ void RentManagerMainWindow::startNewFile()
 			if (pass->exec() == QDialog::Accepted)
 				password = pass->newPassword;
 		}
-		QSqlDatabase::database().exec("CREATE TABLE IF NOT EXSISTS 'password' ('Password' TEXT)");
+		QSqlDatabase::database().exec("CREATE TABLE IF NOT EXISTS 'password' ('Password' TEXT)");
 		QSqlDatabase::database().exec("DELETE FROM password");
 		QSqlDatabase::database().exec("INSERT INTO password ('Password') VALUES ('" + password + "')");
 		if (initializeCompanyFile()) {

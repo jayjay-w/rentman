@@ -55,6 +55,7 @@ void DatabaseInitThread::run()
 	executeInitSql(Publics::getSql(Publics::SQL_REPORT_OCCUPIED_UNITS));
 	executeInitSql(Publics::getSql(Publics::SQL_REPORT_PROPERTIES));
 	executeInitSql(Publics::getSql(Publics::SQL_REPORT_VACANT_UNITS));
+	db.exec("CREATE TABLE IF NOT EXISTS 'password' ('Password' TEXT)");
 	emit progress(100);
 
 
