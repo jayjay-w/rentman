@@ -22,6 +22,7 @@ QT5_WRAP_UI(uis
     additemtoinvoicedialog.ui
     createmultiinvoice.ui
 smartpaymentdialog.ui
+companyfilepassword.ui
 )
 
 QT5_ADD_RESOURCES(qrcs res.qrc)
@@ -58,6 +59,7 @@ set(rentManagerSources ${rc} ${uis} ${qrcs}
     additemtoinvoicedialog.cpp
     createmultiinvoice.cpp
 smartpaymentdialog.cpp
+companyfilepassword.cpp
 )
 
 
