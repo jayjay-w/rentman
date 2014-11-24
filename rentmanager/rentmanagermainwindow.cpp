@@ -74,14 +74,17 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	connect (ui->actionAbout_Qt, SIGNAL(triggered()), SLOT(aboutQt()));
 	connect (ui->actionCreate_Invoice, SIGNAL(triggered()), SLOT(singleInvoice()));
 	//ui restore
-	ui->splitter->restoreState(Publics::getSetting("Splitter2",
+	QSettings sett(qApp->organizationName(), qApp->applicationName());
+	qDebug() << sett.value("MainWindowSplitter").toString();
+	ui->splitter->restoreState(sett.value("MainWindowSplitter",
 						       ui->splitter_2->saveState()).toByteArray());
 }
 
 RentManagerMainWindow::~RentManagerMainWindow()
 {
 	//ui save state
-	Publics::saveSetting("Splitter2", ui->splitter_2->saveState());
+	QSettings sett(qApp->organizationName(), qApp->applicationName());
+	sett.setValue("MainWindowSplitter", ui->splitter_2->saveState());
 	delete ui;
 }
 
@@ -462,6 +465,62 @@ void RentManagerMainWindow::on_cboYear_currentIndexChanged(int index)
 
 void RentManagerMainWindow::on_actionContact_List_triggered()
 {
+	QSqlDatabase::database().exec("DELETE FROM report_contact_list");
+	QSqlQuery tenantQu = QSqlDatabase::database().exec("SELECT * FROM tenant");
+	while (tenantQu.next()) {
+		QString tenantName, tenantTel, tenantEmail;
+		tenantName = tenantQu.record().value("Name").toString();
+		tenantTel = tenantQu.record().value("Tel").toString();
+		tenantEmail = tenantQu.record().value("Email").toString();
+
+		QSqlQuery leasesQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE IsOngoing = 'Yes' AND TenantID = '" +
+								   tenantQu.record().value("TenantID").toString() + "'"
+								   );
+		int leaseCount = 0;
+
+		while (leasesQu.next()) {
+			leaseCount++;
+			QString unitID = leasesQu.record().value("UnitID").toString();
+			QString rent = leasesQu.record().value("MonthlyRent").toString();
+			QString unitNo, propertyID, companyID, propertyCode, companyCode;
+			unitNo = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "UnitNo").toString();
+			propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "PropertyID").toString();
+			companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
+			propertyCode = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyCode").toString();
+			companyCode = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "Code").toString();
+
+			if (leaseCount > 1) {
+				tenantName = "";
+				tenantEmail = "";
+				tenantTel = "";
+			}
+
+			QSqlDatabase::database().exec("INSERT INTO report_contact_list (Name, Tel, Email, Company, Property, Unit, Rent)"
+						      " VALUES ('"
+						      + tenantName + "', '"
+						      + tenantTel + "', '"
+						      + tenantEmail + "', '"
+						      + companyCode + "', '"
+						      + propertyCode + "', '"
+						      + unitNo + "', '"
+						      + rent + "')");
+		}
+
+		if (leaseCount == 0) {
+			//this tenant has no leases
+			QString dash = "-";
+			QSqlDatabase::database().exec("INSERT INTO report_contact_list (Name, Tel, Email, Company, Property, Unit, Rent)"
+						      " VALUES ('"
+						      + tenantName + "', '"
+						      + tenantTel + "', '"
+						      + tenantEmail + "', '"
+						      + dash + "', '"
+						      + dash + "', '"
+						      + dash + "', '"
+						      + dash + "')");
+		}
+
+	}
 	m_printer->qtPreview("contact_list", QStringList("param_where"), QStringList(""));
 }
 

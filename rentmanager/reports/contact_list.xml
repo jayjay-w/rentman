@@ -10,22 +10,22 @@
   <y>0.05</y>
  </grid>
  <size>Letter</size>
- <portrait/>
- <topmargin>100</topmargin>
- <bottommargin>100</bottommargin>
- <rightmargin>100</rightmargin>
- <leftmargin>100</leftmargin>
+ <landscape/>
+ <topmargin>25</topmargin>
+ <bottommargin>25</bottommargin>
+ <rightmargin>25</rightmargin>
+ <leftmargin>25</leftmargin>
  <querysource>
   <name>tenant</name>
-  <sql>SELECT * FROM tenant</sql>
+  <sql>SELECT * FROM report_contact_list</sql>
  </querysource>
  <rpthead>
   <height>35</height>
   <label>
    <rect>
-    <x>420</x>
+    <x>295</x>
     <y>5</y>
-    <width>160</width>
+    <width>85</width>
     <height>25</height>
    </rect>
    <font>
@@ -55,9 +55,9 @@
   </label>
   <label>
    <rect>
-    <x>225</x>
+    <x>165</x>
     <y>5</y>
-    <width>170</width>
+    <width>125</width>
     <height>25</height>
    </rect>
    <font>
@@ -69,21 +69,85 @@
    <top/>
    <string>Tel</string>
   </label>
+  <label>
+   <rect>
+    <x>465</x>
+    <y>5</y>
+    <width>85</width>
+    <height>25</height>
+   </rect>
+   <font>
+    <face>Verdana</face>
+    <size>12</size>
+    <weight>bold</weight>
+   </font>
+   <left/>
+   <top/>
+   <string>Company</string>
+  </label>
+  <label>
+   <rect>
+    <x>625</x>
+    <y>5</y>
+    <width>85</width>
+    <height>25</height>
+   </rect>
+   <font>
+    <face>Verdana</face>
+    <size>12</size>
+    <weight>bold</weight>
+   </font>
+   <left/>
+   <top/>
+   <string>Property</string>
+  </label>
+  <label>
+   <rect>
+    <x>750</x>
+    <y>5</y>
+    <width>85</width>
+    <height>25</height>
+   </rect>
+   <font>
+    <face>Verdana</face>
+    <size>12</size>
+    <weight>bold</weight>
+   </font>
+   <left/>
+   <top/>
+   <string>Unit</string>
+  </label>
+  <label>
+   <rect>
+    <x>850</x>
+    <y>5</y>
+    <width>85</width>
+    <height>25</height>
+   </rect>
+   <font>
+    <face>Verdana</face>
+    <size>12</size>
+    <weight>bold</weight>
+   </font>
+   <left/>
+   <top/>
+   <string>Rent</string>
+  </label>
   <line>
    <xstart>5</xstart>
-   <ystart>25</ystart>
-   <xend>640</xend>
-   <yend>25</yend>
-   <weight>3</weight>
+   <ystart>30</ystart>
+   <xend>1040</xend>
+   <yend>30</yend>
+   <weight>2</weight>
   </line>
  </rpthead>
  <pghead>
-  <height>50</height>
+  <height>35</height>
   <label>
    <rect>
     <x>15</x>
     <y>0</y>
-    <width>625</width>
+    <width>1030</width>
     <height>35</height>
    </rect>
    <font>
@@ -95,13 +159,6 @@
    <vcenter/>
    <string>Contact List</string>
   </label>
-  <line>
-   <xstart>210</xstart>
-   <ystart>40</ystart>
-   <xend>465</xend>
-   <yend>40</yend>
-   <weight>1</weight>
-  </line>
  </pghead>
  <section>
   <name>tenant_detail</name>
@@ -110,18 +167,11 @@
     <query>tenant</query>
    </key>
    <height>30</height>
-   <line>
-    <xstart>6</xstart>
-    <ystart>24</ystart>
-    <xend>641</xend>
-    <yend>24</yend>
-    <weight>1</weight>
-   </line>
    <field>
     <rect>
      <x>5</x>
      <y>5</y>
-     <width>195</width>
+     <width>155</width>
      <height>20</height>
     </rect>
     <font>
@@ -138,9 +188,9 @@
    </field>
    <field>
     <rect>
-     <x>225</x>
+     <x>165</x>
      <y>5</y>
-     <width>155</width>
+     <width>120</width>
      <height>25</height>
     </rect>
     <font>
@@ -157,9 +207,9 @@
    </field>
    <field>
     <rect>
-     <x>420</x>
+     <x>295</x>
      <y>5</y>
-     <width>225</width>
+     <width>160</width>
      <height>25</height>
     </rect>
     <font>
@@ -174,6 +224,89 @@
      <column>Email</column>
     </data>
    </field>
+   <field>
+    <rect>
+     <x>465</x>
+     <y>5</y>
+     <width>145</width>
+     <height>25</height>
+    </rect>
+    <font>
+     <face>Verdana</face>
+     <size>10</size>
+     <weight>normal</weight>
+    </font>
+    <left/>
+    <top/>
+    <data>
+     <query>tenant</query>
+     <column>Company</column>
+    </data>
+   </field>
+   <field>
+    <rect>
+     <x>625</x>
+     <y>5</y>
+     <width>115</width>
+     <height>25</height>
+    </rect>
+    <font>
+     <face>Verdana</face>
+     <size>10</size>
+     <weight>normal</weight>
+    </font>
+    <left/>
+    <top/>
+    <data>
+     <query>tenant</query>
+     <column>Property</column>
+    </data>
+   </field>
+   <field>
+    <rect>
+     <x>750</x>
+     <y>5</y>
+     <width>90</width>
+     <height>25</height>
+    </rect>
+    <font>
+     <face>Verdana</face>
+     <size>10</size>
+     <weight>normal</weight>
+    </font>
+    <left/>
+    <top/>
+    <data>
+     <query>tenant</query>
+     <column>Unit</column>
+    </data>
+   </field>
+   <field>
+    <rect>
+     <x>850</x>
+     <y>5</y>
+     <width>90</width>
+     <height>25</height>
+    </rect>
+    <font>
+     <face>Verdana</face>
+     <size>10</size>
+     <weight>normal</weight>
+    </font>
+    <left/>
+    <top/>
+    <data>
+     <query>tenant</query>
+     <column>Rent</column>
+    </data>
+   </field>
+   <line>
+    <xstart>5</xstart>
+    <ystart>25</ystart>
+    <xend>1040</xend>
+    <yend>25</yend>
+    <weight>1</weight>
+   </line>
   </detail>
  </section>
  <rptfoot>

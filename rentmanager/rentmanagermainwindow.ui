@@ -21,17 +21,8 @@
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
      <widget class="QSplitter" name="splitter_2">
-      <property name="midLineWidth">
-       <number>1</number>
-      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="opaqueResize">
-       <bool>false</bool>
-      </property>
-      <property name="handleWidth">
-       <number>5</number>
       </property>
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -65,7 +56,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="layoutWidget">
+      <widget class="QWidget" name="">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QSplitter" name="splitter">
@@ -73,11 +64,35 @@
            <enum>Qt::Horizontal</enum>
           </property>
           <widget class="QLabel" name="label_2">
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Year:</string>
            </property>
           </widget>
           <widget class="QComboBox" name="cboYear">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <item>
             <property name="text">
              <string>2014</string>

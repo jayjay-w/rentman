@@ -119,6 +119,28 @@ QString Publics::getSql(SQL_STRING sqlString)
 		return "CREATE TABLE IF NOT EXISTS 'payment_allocation' ('EntryID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
 				"'UniqueID' TEXT,'PaymentID' TEXT, 'InvoiceID' TEXT, 'Amount' TEXT DEFAULT('0'))";
 
+	case SQL_REPORT_CONTACT_LIST:
+		return "CREATE TABLE IF NOT EXISTS report_contact_list ("
+				"'Name' TEXT, 'Tel' TEXT, 'Email' TEXT, "
+				"'Company' TEXT, 'Property' TEXT, 'Unit' TEXT, 'Rent' TEXT DEFAULT('0'),"
+				"'AsOfDate' TEXT, 'Balance' TEXT DEFAULT('0')"
+				")";
+
+	case SQL_REPORT_OCCUPIED_UNITS:
+		return "CREATE TABLE IF NOT EXISTS report_occupied_units ("
+				"'Company' TEXT, 'Property' TEXT, 'Unit' TEXT,"
+				"'Name' TEXT, 'Tel' TEXT, 'Rent' TEXT"
+				")";
+
+	case SQL_REPORT_VACANT_UNITS:
+		return "CREATE TABLE IF NOT EXISTS  report_vacant_units ("
+				"'Company' TEXT, 'Property' TEXT, 'Unit' TEXT"
+				")";
+
+	case SQL_REPORT_PROPERTIES:
+		return "CREATE TABLE IF NOT EXISTS report_properties ("
+				"'Company' TEXT, 'Property' TEXT, 'Units' TEXT"
+				")";
 
 	default:
 		return "SELECT NOW()";
