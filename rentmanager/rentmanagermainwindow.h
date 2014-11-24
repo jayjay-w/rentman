@@ -99,6 +99,9 @@ private slots:
 
 	void showReportPreview(QString reportName);
 	void previewRequested(QPrinter *p);
+	void on_actionPrint_triggered();
+	void on_actionExport_To_Excel_triggered();
+	void on_actionChange_Password_triggered();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

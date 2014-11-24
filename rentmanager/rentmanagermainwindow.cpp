@@ -22,6 +22,10 @@
 #include "parameter.h"
 #include <QDomDocument>
 #include <QPrinter>
+#include <QPrintDialog>
+
+#include "companyfilepassword.h"
+
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
 RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
@@ -49,6 +53,8 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 
 	m_printer = new MyPrinter(this);
 
+
+
 	actionsToDisable->addAction(ui->actionAssign_Unit_To_Tenant);
 	actionsToDisable->addAction(ui->actionCompanies);
 	actionsToDisable->addAction(ui->actionCreate_Invoice);
@@ -64,6 +70,8 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	actionsToDisable->addAction(ui->actionView_Payments);
 	actionsToDisable->addAction(ui->actionContact_List);
 
+
+	closeFile();
 	ui->actionAbout_Qt->setVisible(false);
 	actionsToDisable->setDisabled(true);
 	ui->menuRecent_Files->clear();
@@ -88,6 +96,17 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	printer = new QPrinter(QPrinter::HighResolution);
 	connect (ui->printPreviewWidget, SIGNAL(paintRequested(QPrinter*)), SLOT(previewRequested(QPrinter*)));
 	//ui->printPreviewWidget = new QPrintPreviewWidget(printer);
+
+	ui->menuPrint->setVisible(false);
+	QHBoxLayout *tab2Layout = new QHBoxLayout(this);
+	tab2Layout->addWidget(ui->lstReports);
+
+	QVBoxLayout *printLayout = new QVBoxLayout(this);
+	printLayout->addWidget(ui->printToolBar);
+	printLayout->addWidget(ui->printPreviewWidget);
+	tab2Layout->addLayout(printLayout);
+
+	ui->tab_2->setLayout(tab2Layout);
 }
 
 RentManagerMainWindow::~RentManagerMainWindow()
@@ -122,6 +141,8 @@ void RentManagerMainWindow::closeFile()
 
 	ui->trvBrowser->invisibleRootItem()->takeChildren();
 	ui->txtCalendar->setText("");
+	ui->tabWidget->setCurrentIndex(0);
+	ui->tabWidget->setEnabled(false);
 
 	curFile = "";
 	if (db.isOpen())
@@ -189,6 +210,7 @@ void RentManagerMainWindow::loadFile(const QString &fileName)
 	updateRecentFileActions();
 	//Enable employee related widgets and actions
 	actionsToDisable->setEnabled(true);
+	ui->tabWidget->setEnabled(true);
 	reloadBrowser();
 }
 
@@ -264,6 +286,15 @@ void RentManagerMainWindow::startNewFile()
 					      .arg(db.lastError().text()));
 			return;
 		}
+		QString password  = "";
+		if (QMessageBox::question(this, "Confirm", "Would you like to add a password to this file?\nIf you do not add a password now, you can add it later.", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+			CompanyFilePassword *pass = new CompanyFilePassword(this, true);
+			if (pass->exec() == QDialog::Accepted)
+				password = pass->newPassword;
+		}
+		QSqlDatabase::database().exec("CREATE TABLE IF NOT EXSISTS 'password' ('Password' TEXT)");
+		QSqlDatabase::database().exec("DELETE FROM password");
+		QSqlDatabase::database().exec("INSERT INTO password ('Password') VALUES ('" + password + "')");
 		if (initializeCompanyFile()) {
 			closeFile();
 			loadFile(fileName);
@@ -575,7 +606,6 @@ void RentManagerMainWindow::showReportPreview(QString reportName)
 
 void RentManagerMainWindow::previewRequested(QPrinter *p)
 {
-	qDebug() << "HERE";
 	ORPreRender pre;
 	pre.setDatabase(QSqlDatabase::database());
 	pre.setDom(m_doc);
@@ -590,4 +620,24 @@ void RentManagerMainWindow::previewRequested(QPrinter *p)
 		if (currentFilePath.length() > 0)
 			Publics::showError("Printer Error");
 	}
+}
+
+void RentManagerMainWindow::on_actionPrint_triggered()
+{
+	printer = new QPrinter(QPrinter::HighResolution);
+	QPrintDialog *prnt = new QPrintDialog(printer, this);
+	if (prnt->exec() == QDialog::Accepted) {
+		previewRequested(printer);
+	}
+}
+
+void RentManagerMainWindow::on_actionExport_To_Excel_triggered()
+{
+
+}
+
+void RentManagerMainWindow::on_actionChange_Password_triggered()
+{
+	CompanyFilePassword *pass = new CompanyFilePassword(this, false);
+	pass->exec() ;
 }

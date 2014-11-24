@@ -20,18 +20,18 @@
 
 TEMPLATE = subdirs
 SUBDIRS = common \
-          graph \
-          MetaSQL \
-          MetaSQL/metasql_gui \
-          MetaSQL/importmql_gui \
+          #graph \
+          #MetaSQL \
+          #MetaSQL/metasql_gui \
+          #MetaSQL/importmql_gui \
           OpenRPT/Dmtx_Library \
           OpenRPT/renderer \
           OpenRPT/wrtembed \
           OpenRPT/writer \
-          OpenRPT/renderapp \
-          OpenRPT/import \
-          OpenRPT/import_gui \
-          OpenRPT/export
+          OpenRPT/renderapp
+          #OpenRPT/import \
+          #OpenRPT/import_gui \
+          #OpenRPT/export
 
 
 CONFIG += ordered

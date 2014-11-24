@@ -25,8 +25,8 @@ win32-msvc* {
                     ../openrpt/lib/librenderer.a
 }
 
-SOURCES += main.cpp\
-        rentmanagermainwindow.cpp \
+SOURCES +=  main.cpp \
+    rentmanagermainwindow.cpp \
     publics.cpp \
     companyinitializationdialog.cpp \
     companiesdialog.cpp \
@@ -39,9 +39,12 @@ SOURCES += main.cpp\
     paymentsdialog.cpp \
     myprinter.cpp \
     createinvoicedialog.cpp \
-    multiinvoicingdialog.cpp
+    additemtoinvoicedialog.cpp \
+    createmultiinvoice.cpp \
+smartpaymentdialog.cpp \
+    companyfilepassword.cpp
 
-HEADERS  += rentmanagermainwindow.h \
+HEADERS  +=  rentmanagermainwindow.h \
     publics.h \
     companyinitializationdialog.h \
     companiesdialog.h \
@@ -54,7 +57,10 @@ HEADERS  += rentmanagermainwindow.h \
     paymentsdialog.h \
     myprinter.h \
     createinvoicedialog.h \
-    multiinvoicingdialog.h
+    additemtoinvoicedialog.h \
+    createmultiinvoice.h \
+smartpaymentdialog.h \
+    companyfilepassword.h
 
 FORMS    += rentmanagermainwindow.ui \
     companyinitializationdialog.ui \
@@ -67,7 +73,10 @@ FORMS    += rentmanagermainwindow.ui \
     receivepaymentdialog.ui \
     paymentsdialog.ui \
     createinvoicedialog.ui \
-    multiinvoicingdialog.ui
+    additemtoinvoicedialog.ui \
+    createmultiinvoice.ui \
+smartpaymentdialog.ui \
+    companyfilepassword.ui
 
 RESOURCES += \
     res.qrc
