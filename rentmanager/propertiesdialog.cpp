@@ -19,6 +19,8 @@ PropertiesDialog::PropertiesDialog(QWidget *parent) :
 		 SLOT(itemChanged(QTreeWidgetItem*,int)));
 	connect (ui->cmdNewProperty, SIGNAL(clicked()), SLOT(newProperty()));
 	connect (ui->cmdSaveChanges, SIGNAL(clicked()), SLOT(saveChanges()));
+
+	ui->txtNoOfUnits->setReadOnly(true);
 }
 
 PropertiesDialog::~PropertiesDialog()
@@ -162,6 +164,7 @@ void PropertiesDialog::reloadUnits()
 			it->setText(5, unitQu.record().value("MonthlyRent").toString());
 		}
 	}
+	ui->txtNoOfUnits->setText(QString::number(ui->trvUnits->invisibleRootItem()->childCount()));
 }
 
 void PropertiesDialog::on_trvUnits_itemDoubleClicked(QTreeWidgetItem *item, int column)
