@@ -625,6 +625,7 @@ void RentManagerMainWindow::showReportPreview(QString reportName)
 	fl.close();
 
 	ui->printPreviewWidget->updatePreview();
+	ui->printPreviewWidget->setZoomMode(QPrintPreviewWidget::FitToWidth);
 }
 
 void RentManagerMainWindow::previewRequested(QPrinter *p)

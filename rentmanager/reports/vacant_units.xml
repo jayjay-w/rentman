@@ -99,11 +99,11 @@
    <key>
     <query>full_units</query>
    </key>
-   <height>20</height>
+   <height>30</height>
    <field>
     <rect>
      <x>5</x>
-     <y>0</y>
+     <y>5</y>
      <width>235</width>
      <height>25</height>
     </rect>
@@ -122,7 +122,7 @@
    <field>
     <rect>
      <x>250</x>
-     <y>0</y>
+     <y>5</y>
      <width>230</width>
      <height>20</height>
     </rect>
@@ -141,7 +141,7 @@
    <field>
     <rect>
      <x>485</x>
-     <y>0</y>
+     <y>5</y>
      <width>145</width>
      <height>25</height>
     </rect>
@@ -159,9 +159,9 @@
    </field>
    <line>
     <xstart>5</xstart>
-    <ystart>15</ystart>
+    <ystart>23</ystart>
     <xend>640</xend>
-    <yend>15</yend>
+    <yend>23</yend>
     <weight>1</weight>
    </line>
   </detail>
