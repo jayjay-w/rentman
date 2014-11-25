@@ -145,6 +145,12 @@
        <verstretch>4</verstretch>
       </sizepolicy>
      </property>
+     <property name="gridStyle">
+      <enum>Qt::DashLine</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
      <column>
       <property name="text">
        <string>Item</string>

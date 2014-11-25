@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
+    <width>625</width>
     <height>498</height>
    </rect>
   </property>
@@ -88,6 +88,12 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="sortingEnabled">
+        <bool>true</bool>
+       </property>
        <column>
         <property name="text">
          <string>Existing Companies</string>
@@ -104,6 +110,12 @@
        <horstretch>6</horstretch>
        <verstretch>10</verstretch>
       </sizepolicy>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
      </property>
      <column>
       <property name="text">

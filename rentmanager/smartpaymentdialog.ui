@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>886</width>
+    <width>995</width>
     <height>677</height>
    </rect>
   </property>
@@ -51,6 +51,12 @@
         </property>
         <item>
          <widget class="QTreeWidget" name="trvUnits">
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
           <column>
            <property name="text">
             <string>Unit Name</string>
@@ -97,6 +103,12 @@
         </property>
         <item>
          <widget class="QTreeWidget" name="trvTenants">
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
           <column>
            <property name="text">
             <string>Tenant Name</string>
@@ -122,7 +134,7 @@
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QGridLayout" name="gridLayout">
        <item row="2" column="0">
         <widget class="QLabel" name="label_4">
@@ -256,6 +268,12 @@
        <horstretch>0</horstretch>
        <verstretch>5</verstretch>
       </sizepolicy>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
      </property>
      <column>
       <property name="text">

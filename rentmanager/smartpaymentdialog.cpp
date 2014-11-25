@@ -89,6 +89,9 @@ void SmartPaymentDialog::startNew()
 			unitItem->setText(100, "Unit");
 		}
 	}
+
+	ui->trvTenants->resizeColumnToContents(-1);
+	ui->trvUnits->resizeColumnToContents(-1);
 }
 
 void SmartPaymentDialog::on_cmdAutoAllocate_clicked()

@@ -89,6 +89,8 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	connect (ui->action_New, SIGNAL(triggered()), SLOT(startNewFile()));
 	connect (ui->actionAbout_Qt, SIGNAL(triggered()), SLOT(aboutQt()));
 	connect (ui->actionCreate_Invoice, SIGNAL(triggered()), SLOT(singleInvoice()));
+	connect (ui->actionFit_Page, SIGNAL(triggered()), SLOT(fitPage()));
+	connect (ui->actionFit_Width, SIGNAL(triggered()), SLOT(fitWidth()));
 	//ui restore
 	QSettings sett(qApp->organizationName(), qApp->applicationName());
 	qDebug() << sett.value("MainWindowSplitter").toString();
@@ -797,4 +799,14 @@ void RentManagerMainWindow::on_actionZoom_In_triggered()
 void RentManagerMainWindow::on_actionZoom_Out_triggered()
 {
 	ui->printPreviewWidget->zoomOut();
+}
+
+void RentManagerMainWindow::fitPage()
+{
+	ui->printPreviewWidget->setZoomMode(QPrintPreviewWidget::FitInView);
+}
+
+void RentManagerMainWindow::fitWidth()
+{
+	ui->printPreviewWidget->setZoomMode(QPrintPreviewWidget::FitToWidth);
 }

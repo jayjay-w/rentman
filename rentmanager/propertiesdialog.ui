@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
+    <width>723</width>
     <height>445</height>
    </rect>
   </property>
@@ -61,6 +61,12 @@
        </item>
        <item>
         <widget class="QTreeWidget" name="trvProperties">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
          <column>
           <property name="text">
            <string>Properties</string>
@@ -195,6 +201,12 @@
        <horstretch>0</horstretch>
        <verstretch>10</verstretch>
       </sizepolicy>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
      </property>
      <column>
       <property name="text">
