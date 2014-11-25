@@ -608,6 +608,9 @@ void RentManagerMainWindow::showReportPreview(QString reportName)
 	if (reportName == "Contact List")
 		reportName = "contact_list";
 
+	if (reportName == "Vacant Units")
+		reportName = "vacant_units";
+
 	printer = new QPrinter(QPrinter::HighResolution);
 	m_reportName = reportName;
 	QFile fl(":/reports/reports/" + reportName + ".xml");

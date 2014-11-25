@@ -220,6 +220,11 @@
           <string>Contact List</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Vacant Units</string>
+         </property>
+        </item>
        </widget>
       </widget>
      </widget>
@@ -531,7 +536,7 @@
   </action>
   <action name="actionChange_Password">
    <property name="text">
-    <string>Change Password</string>
+    <string>&amp;Change Password</string>
    </property>
   </action>
  </widget>
