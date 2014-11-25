@@ -11,7 +11,7 @@ echo "We are building at: $BUILD_DIR"
 echo "Our code is located here: $CODE_PATH"
 
 #remove any files in out output dir
-#rm $OUT_PATH -r -f
+rm $OUT_PATH -r -f
 
 #create needed folders
 mkdir $OUT_PATH
@@ -21,7 +21,7 @@ mkdir $OUT_PATH/printsupport
 
 #compile the app
 cd $OUT_PATH
-MINGW=/opt/mingw32
+MINGW=/opt/mxe/usr
 export PATH=$PATH:$MINGW/bin
 export CFLAGS=""
 export CXXFLAGS="$CFLAGS"
