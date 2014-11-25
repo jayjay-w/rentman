@@ -25,6 +25,7 @@
 #include <QPrintDialog>
 #include <QInputDialog>
 #include "companyfilepassword.h"
+#include "simplecrypt.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -198,6 +199,8 @@ void RentManagerMainWindow::loadFile(const QString &fileName)
 	if (pass.length() > 1) {
 		//This file has a valid password
 		QString userPass = QInputDialog::getText(this, "User Login", "Enter your password to open this file:", QLineEdit::Password);
+		SimpleCrypt crypt(Q_UINT64_C(0x0c2ad4a4acb9f023));
+		pass = crypt.decryptToString(pass);
 		if (userPass != pass) {
 			Publics::showError("The password you entered is invalid. Please try again.");
 			closeFile();

@@ -60,6 +60,7 @@ set(rentManagerSources ${rc} ${uis} ${qrcs}
     createmultiinvoice.cpp
 smartpaymentdialog.cpp
 companyfilepassword.cpp
+simplecrypt.cpp
 )
 
 

@@ -29,6 +29,8 @@ find_package(Qt5PrintSupport REQUIRED)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
+set(MAKE_TESTS ON)
+
 if(MAKE_TESTS)
 add_subdirectory(testapp)
 endif(MAKE_TESTS)
