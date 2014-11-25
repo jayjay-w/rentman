@@ -4,6 +4,6 @@ PROJECT(openrpt)
 
 add_subdirectory(common)
 add_subdirectory(OpenRPT/renderer)
-#add_subdirectory(OpenRPT/wrtembed)
-#add_subdirectory(OpenRPT/writer)
+add_subdirectory(OpenRPT/wrtembed)
+add_subdirectory(OpenRPT/writer)
 

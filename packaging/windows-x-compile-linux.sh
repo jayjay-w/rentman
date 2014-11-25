@@ -21,11 +21,11 @@ mkdir $OUT_PATH/printsupport
 
 #compile the app
 cd $OUT_PATH
-MINGW=/opt/mxe/usr/i686-pc-mingw32
+MINGW=/opt/mingw32
 export PATH=$PATH:$MINGW/bin
 export CFLAGS=""
 export CXXFLAGS="$CFLAGS"
-#cmake $CODE_PATH -DCMAKE_TOOLCHAIN_FILE=$CODE_PATH/packaging/cmake-modules/Win32Tool1chainchain.cmake -DCMAKE_MODULE_PATH=$CODE_PATH/packaging/cmake-modules
+cmake $CODE_PATH -DCMAKE_TOOLCHAIN_FILE=$CODE_PATH/packaging/cmake-modules/Win32Tool1chainchain.cmake -DCMAKE_MODULE_PATH=$CODE_PATH/packaging/cmake-modules
 
-cmake $CODE_PATH -DCMAKE_TOOLCHAIN_FILE=/opt/mxe/usr/i686-pc-mingw32/share/cmake/mxe-conf.cmake
+#cmake $CODE_PATH -DCMAKE_TOOLCHAIN_FILE=/opt/mxe/usr/i686-pc-mingw32/share/cmake/mxe-conf.cmake
 make

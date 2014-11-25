@@ -2,6 +2,9 @@ project (rentmanager)
  
 cmake_minimum_required(VERSION 2.8.7)
 
+if(MINGW)
+message('Building for windows')
+endif(MINGW)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -26,5 +29,8 @@ find_package(Qt5PrintSupport REQUIRED)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
+if(MAKE_TESTS)
+add_subdirectory(testapp)
+endif(MAKE_TESTS)
 add_subdirectory(openrpt)
 add_subdirectory(rentmanager)
