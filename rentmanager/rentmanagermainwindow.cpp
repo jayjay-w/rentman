@@ -70,8 +70,9 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	actionsToDisable->addAction(ui->actionReceive_Payments);
 	actionsToDisable->addAction(ui->actionView_Payments);
 	actionsToDisable->addAction(ui->actionContact_List);
+	actionsToDisable->addAction(ui->actionChange_Password);
 
-
+	ui->menuReports->setVisible(false);
 	closeFile();
 	ui->actionAbout_Qt->setVisible(false);
 	actionsToDisable->setDisabled(true);
