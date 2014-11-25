@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QtSql>
 #include <QtXml>
+#include <QDateEdit>
+#include <QComboBox>
+#include <QPushButton>
 
 class QTreeWidgetItem;
 
@@ -71,7 +74,16 @@ private:
 
 	QPrinter *printer;
 	QString m_reportName;
+	QString rptName;
 	QString m_xml;
+	QStringList m_paramsToReplace;
+	QStringList m_paramReplacements;
+	QDateEdit *rpt_dtpReportQuery;
+	QComboBox *rpt_cboCompany;
+	QComboBox *rpt_cboProperty;
+	QComboBox *rpt_cboTenant;
+	QPushButton   *rpt_cmdSelectUnit;
+	QPushButton *rpt_refresh;
 protected:
 	QDomDocument m_doc;
 private slots:
@@ -97,11 +109,15 @@ private slots:
 	void on_actionQuit_triggered();
 	void on_lstReports_itemClicked(QListWidgetItem *item);
 
-	void showReportPreview(QString reportName);
+	void showReportPreview();
 	void previewRequested(QPrinter *p);
 	void on_actionPrint_triggered();
 	void on_actionExport_To_Excel_triggered();
 	void on_actionChange_Password_triggered();
+
+
+	void on_actionZoom_In_triggered();
+	void on_actionZoom_Out_triggered();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

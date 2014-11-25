@@ -99,16 +99,47 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	connect (ui->printPreviewWidget, SIGNAL(paintRequested(QPrinter*)), SLOT(previewRequested(QPrinter*)));
 	//ui->printPreviewWidget = new QPrintPreviewWidget(printer);
 
-	ui->menuPrint->setVisible(false);
 	QHBoxLayout *tab2Layout = new QHBoxLayout(this);
 	tab2Layout->addWidget(ui->lstReports);
 
 	QVBoxLayout *printLayout = new QVBoxLayout(this);
+
+	QToolBar *tblQuery = new QToolBar("Report Query Toolbar", this);
 	printLayout->addWidget(ui->printToolBar);
+	printLayout->addWidget(tblQuery);
 	printLayout->addWidget(ui->printPreviewWidget);
 	tab2Layout->addLayout(printLayout);
 
 	ui->tab_2->setLayout(tab2Layout);
+
+	rpt_dtpReportQuery = new QDateEdit(this);
+	rpt_dtpReportQuery->setCalendarPopup(true);
+	rpt_dtpReportQuery->setDisplayFormat("dd-MMM-yyyy");
+	rpt_dtpReportQuery->setDate(QDate::currentDate());
+	rpt_refresh = new QPushButton("Refresh", this);
+	QLabel *lbl = new QLabel(this);
+	lbl->setText("Select Date");
+	tblQuery->addWidget(lbl);
+	tblQuery->addWidget(rpt_dtpReportQuery);
+	tblQuery->addSeparator();
+
+	rpt_cboCompany = new QComboBox(this);
+	rpt_cboProperty = new QComboBox(this);
+	rpt_cboTenant = new QComboBox(this);
+	tblQuery->addWidget(new QLabel("Company:", this));
+	tblQuery->addWidget(rpt_cboCompany);
+	tblQuery->addWidget(new QLabel("Property:", this));
+	tblQuery->addWidget(rpt_cboProperty);
+	tblQuery->addWidget(new QLabel("Tenant:", this));
+	tblQuery->addWidget(rpt_cboTenant);
+	tblQuery->addSeparator();
+	tblQuery->addWidget(rpt_refresh);
+	connect (rpt_refresh, SIGNAL(clicked()), SLOT(showReportPreview()));
+	//connect (rpt_dtpReportQuery, SIGNAL(dateChanged(QDate)), SLOT(showReportPreview()));
+	ui->printPreviewWidget->zoomIn();
+	ui->printPreviewWidget->zoomIn();
+	ui->printPreviewWidget->zoomIn();
+	ui->printPreviewWidget->zoomIn();
 }
 
 RentManagerMainWindow::~RentManagerMainWindow()
@@ -171,6 +202,31 @@ void RentManagerMainWindow::reloadBrowser()
 			propIt->setText(98, "property");
 		}
 	}
+
+	QString currentCompany = rpt_cboCompany->currentText();
+	QString currentProperty = rpt_cboProperty->currentText();
+	QString currentTenane = rpt_cboTenant->currentText();
+
+	Publics::loadQueryToCombo("SELECT * FROM company", "Code", rpt_cboCompany);
+	Publics::loadQueryToCombo("SELECT * FROM property", "PropertyCode", rpt_cboProperty);
+	Publics::loadQueryToCombo("SELECT * FROM tenant", "Name", rpt_cboTenant);
+
+	rpt_cboCompany->insertItem(0, "--ALL--");
+	rpt_cboProperty->insertItem(0, "--ALL--");
+	rpt_cboTenant->insertItem(0, "--ALL--");
+
+	rpt_cboCompany->setCurrentIndex(0);
+	rpt_cboProperty->setCurrentIndex(0);
+	rpt_cboTenant->setCurrentIndex(0);
+
+	if (currentCompany.length() > 0)
+		Publics::setComboBoxText(rpt_cboCompany, currentCompany);
+
+	if (currentProperty.length() > 0)
+		Publics::setComboBoxText(rpt_cboProperty, currentCompany);
+
+	if (currentTenane.length() > 0)
+		Publics::setComboBoxText(rpt_cboTenant, currentCompany);
 }
 
 void RentManagerMainWindow::loadFile(const QString &fileName)
@@ -526,64 +582,7 @@ void RentManagerMainWindow::on_cboYear_currentIndexChanged(int index)
 
 void RentManagerMainWindow::on_actionContact_List_triggered()
 {
-	QSqlDatabase::database().exec("DELETE FROM report_contact_list");
-	QSqlQuery tenantQu = QSqlDatabase::database().exec("SELECT * FROM tenant");
-	while (tenantQu.next()) {
-		QString tenantName, tenantTel, tenantEmail;
-		tenantName = tenantQu.record().value("Name").toString();
-		tenantTel = tenantQu.record().value("Tel").toString();
-		tenantEmail = tenantQu.record().value("Email").toString();
 
-		QSqlQuery leasesQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE IsOngoing = 'Yes' AND TenantID = '" +
-								   tenantQu.record().value("TenantID").toString() + "'"
-								   );
-		int leaseCount = 0;
-
-		while (leasesQu.next()) {
-			leaseCount++;
-			QString unitID = leasesQu.record().value("UnitID").toString();
-			QString rent = leasesQu.record().value("MonthlyRent").toString();
-			QString balance = "0";
-			QString asOfDate = QDate::currentDate().toString("dd-MMM-yyyy");
-			QString unitNo, propertyID, companyID, propertyCode, companyCode;
-			unitNo = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "UnitNo").toString();
-			propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "PropertyID").toString();
-			companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
-			propertyCode = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyCode").toString();
-			companyCode = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "Code").toString();
-
-			if (leaseCount > 1) {
-				tenantName = "";
-				tenantEmail = "";
-				tenantTel = "";
-			}
-
-			QSqlDatabase::database().exec("INSERT INTO report_contact_list (Name, Tel, Email, Company, Property, Unit, Rent)"
-						      " VALUES ('"
-						      + tenantName + "', '"
-						      + tenantTel + "', '"
-						      + tenantEmail + "', '"
-						      + companyCode + "', '"
-						      + propertyCode + "', '"
-						      + unitNo + "', '"
-						      + rent + "')");
-		}
-
-		if (leaseCount == 0) {
-			//this tenant has no leases
-			QString dash = "-";
-			QSqlDatabase::database().exec("INSERT INTO report_contact_list (Name, Tel, Email, Company, Property, Unit, Rent)"
-						      " VALUES ('"
-						      + tenantName + "', '"
-						      + tenantTel + "', '"
-						      + tenantEmail + "', '"
-						      + dash + "', '"
-						      + dash + "', '"
-						      + dash + "', '"
-						      + dash + "')");
-		}
-
-	}
 	m_printer->qtPreview("contact_list", QStringList("param_where"), QStringList(""));
 }
 
@@ -600,16 +599,134 @@ void RentManagerMainWindow::on_actionQuit_triggered()
 
 void RentManagerMainWindow::on_lstReports_itemClicked(QListWidgetItem *item)
 {
-	showReportPreview(item->text());
+	rptName = item->text();
+	showReportPreview();
 }
 
-void RentManagerMainWindow::showReportPreview(QString reportName)
+void RentManagerMainWindow::showReportPreview()
 {
-	if (reportName == "Contact List")
+	m_paramReplacements.clear();
+	m_paramsToReplace.clear();
+	QString reportName = rptName;
+	if (reportName == "Contact List") {
 		reportName = "contact_list";
+		QSqlDatabase::database().exec("DELETE FROM report_contact_list");
+		QSqlQuery tenantQu = QSqlDatabase::database().exec("SELECT * FROM tenant");
+		while (tenantQu.next()) {
+			QString tenantName, tenantTel, tenantEmail;
+			tenantName = tenantQu.record().value("Name").toString();
+			tenantTel = tenantQu.record().value("Tel").toString();
+			tenantEmail = tenantQu.record().value("Email").toString();
+			QString tenantID = tenantQu.record().value("TenantID").toString();
+
+			QSqlQuery leasesQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE IsOngoing = 'Yes' AND TenantID = '" +
+									   tenantQu.record().value("TenantID").toString() + "'"
+									   );
+			int leaseCount = 0;
+
+			while (leasesQu.next()) {
+				bool toAdd = true;
+				leaseCount++;
+				QString unitID = leasesQu.record().value("UnitID").toString();
+				QString rent = leasesQu.record().value("MonthlyRent").toString();
+				QString balance = "0";
+				QString unitNo, propertyID, companyID, propertyCode, companyCode;
+				unitNo = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "UnitNo").toString();
+				propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "PropertyID").toString();
+				companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
+				propertyCode = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyCode").toString();
+				companyCode = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "Code").toString();
+
+				if (rpt_cboCompany->currentIndex() != 0) {
+					if (companyCode != rpt_cboCompany->currentText())
+						toAdd = false;
+				}
+
+				if (rpt_cboProperty->currentIndex() != 0) {
+					if (propertyCode != rpt_cboProperty->currentText())
+						toAdd = false;
+				}
+
+				if (rpt_cboTenant->currentIndex() != 0) {
+					if (tenantName != rpt_cboTenant->currentText())
+						toAdd = false;
+				}
+
+				if (leaseCount > 1) {
+					tenantName = "";
+					tenantEmail = "";
+					tenantTel = "";
+				}
+
+				QSqlQuery inv = QSqlDatabase::database().exec("SELECT * FROM invoice_master WHERE TenantID = '" + tenantID + "' "
+																	     " AND UnitID = '" + unitID + "'");
+
+				double bal = 0;
+				while (inv.next()) {
+					QString invDueDate = inv.record().value("InvoiceDate").toString();
+					QDate dInvoiceDate = QDate::fromString(invDueDate, "dd-MMM-yyyy");
+					dInvoiceDate = QDate(dInvoiceDate.year(), dInvoiceDate.month(), 28);
+					if (dInvoiceDate < rpt_dtpReportQuery->date().addDays(1)) {
+						QString invID = inv.record().value("InvoiceNO").toString();
+						QString paidSoFar = Publics::getDbValue("SELECT SUM(Amount) as 'Paid' FROM payment_allocation WHERE InvoiceID = '" + invID + "'", "Paid").toString();
+						QString invDue = inv.record().value("InvoiceTotal").toString();
+						double m_bal = invDue.toDouble() - paidSoFar.toDouble();
+						bal = bal + m_bal;
+					}
+				}
+
+				balance = QString::number(bal);
+				if (toAdd)
+					QSqlDatabase::database().exec("INSERT INTO report_contact_list (Name, Tel, Email, Company, Property, Unit, Balance, Rent)"
+								      " VALUES ('"
+								      + tenantName + "', '"
+								      + tenantTel + "', '"
+								      + tenantEmail + "', '"
+								      + companyCode + "', '"
+								      + propertyCode + "', '"
+								      + unitNo + "', '"
+								      + balance + "', '"
+								      + rent + "')");
+			}
+
+			bool showBlanks = true;
+			if (rpt_cboCompany->currentIndex() != 0) {
+				showBlanks = false;
+			}
+			if (rpt_cboProperty->currentIndex() != 0) {
+				showBlanks = false;
+			}
+			if (rpt_cboTenant->currentIndex() != 0) {
+				showBlanks = false;
+			}
+			if (showBlanks)
+				if (leaseCount == 0) {
+					//this tenant has no leases
+					QString dash = "-";
+					QSqlDatabase::database().exec("INSERT INTO report_contact_list (Name, Tel, Email, Company, Property, Unit, Rent)"
+								      " VALUES ('"
+								      + tenantName + "', '"
+								      + tenantTel + "', '"
+								      + tenantEmail + "', '"
+								      + dash + "', '"
+								      + dash + "', '"
+								      + dash + "', '"
+								      + dash + "')");
+				}
+
+		}
+	}
 
 	if (reportName == "Vacant Units")
 		reportName = "vacant_units";
+
+	if (reportName == "Occupied Units") {
+		reportName = "occupied_units";
+		if (rpt_cboCompany->currentIndex() != 0) {
+			m_paramsToReplace.append("company_code");
+			m_paramReplacements.append(rpt_cboCompany->currentText());
+		}
+	}
 
 	printer = new QPrinter(QPrinter::HighResolution);
 	m_reportName = reportName;
@@ -625,7 +742,6 @@ void RentManagerMainWindow::showReportPreview(QString reportName)
 	fl.close();
 
 	ui->printPreviewWidget->updatePreview();
-	ui->printPreviewWidget->setZoomMode(QPrintPreviewWidget::FitToWidth);
 }
 
 void RentManagerMainWindow::previewRequested(QPrinter *p)
@@ -633,6 +749,12 @@ void RentManagerMainWindow::previewRequested(QPrinter *p)
 	ORPreRender pre;
 	pre.setDatabase(QSqlDatabase::database());
 	pre.setDom(m_doc);
+	ParameterList params = ParameterList();
+	for (int i = 0; i < m_paramsToReplace.count(); i++) {
+		Parameter param(m_paramsToReplace.at(i), m_paramReplacements.at(i));
+		params.append(param);
+	}
+	pre.setParamList(params);
 	ORODocument *oDoc = pre.generate();
 
 	if (oDoc) {
@@ -664,4 +786,15 @@ void RentManagerMainWindow::on_actionChange_Password_triggered()
 {
 	CompanyFilePassword *pass = new CompanyFilePassword(this, false);
 	pass->exec() ;
+}
+
+
+void RentManagerMainWindow::on_actionZoom_In_triggered()
+{
+	ui->printPreviewWidget->zoomIn();
+}
+
+void RentManagerMainWindow::on_actionZoom_Out_triggered()
+{
+	ui->printPreviewWidget->zoomOut();
 }

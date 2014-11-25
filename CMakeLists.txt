@@ -17,7 +17,7 @@ IF(VERSION_SUFFIX)
 	SET (VERSION "${VERSION}-${VERSION_SUFFIX}")
 ENDIF(VERSION_SUFFIX)
 
-set(QT5 OFF)
+set(QT5 ON)
 
 if(QT5)
 message(STATUS "Using Qt5")
@@ -41,10 +41,10 @@ endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-set(MAKE_TESTS ON)
+set(MAKE_TESTS OFF)
 
 if(MAKE_TESTS)
 add_subdirectory(testapp)
 endif(MAKE_TESTS)
-#add_subdirectory(openrpt)
-#add_subdirectory(rentmanager)
+add_subdirectory(openrpt)
+add_subdirectory(rentmanager)

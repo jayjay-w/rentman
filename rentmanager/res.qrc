@@ -18,5 +18,6 @@
         <file>reports/units.xml</file>
         <file>reports/contact_list.xml</file>
         <file>reports/vacant_units.xml</file>
+        <file>reports/occupied_units.xml</file>
     </qresource>
 </RCC>
