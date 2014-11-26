@@ -6,21 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>733</width>
-    <height>461</height>
+    <width>738</width>
+    <height>464</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Terminate Lease</string>
+   <string>Remove Tenant from Unit</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Active Leases:</string>
-     </property>
-    </widget>
-   </item>
    <item>
     <widget class="QTreeWidget" name="trvLeases">
      <property name="alternatingRowColors">

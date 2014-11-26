@@ -561,7 +561,7 @@
   </action>
   <action name="actionTerminate_Lease">
    <property name="text">
-    <string>Terminate Lease</string>
+    <string>Remove Tenant from Unit</string>
    </property>
   </action>
  </widget>
