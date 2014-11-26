@@ -27,6 +27,7 @@
 #include "companyfilepassword.h"
 #include "simplecrypt.h"
 #include "depositdialog.h"
+#include "customeraccountdialog.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -43,6 +44,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	m_multiInvoice(0),
 	m_smartPayment(0),
 	m_deposits(0),
+	m_custAccount(0),
 	ui(new Ui::RentManagerMainWindow)
 {
 	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -66,7 +68,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	actionsToDisable->addAction(ui->actionReceive_Payments);
 	actionsToDisable->addAction(ui->actionTenants);
 	actionsToDisable->addAction(ui->actionUnites);
-	actionsToDisable->addAction(ui->actionView_Tenan_Accounts);
+	actionsToDisable->addAction(ui->actionView_Tenant_Accounts);
 	actionsToDisable->addAction(ui->action_Save);
 	actionsToDisable->addAction(ui->actionSave_As);
 	actionsToDisable->addAction(ui->actionReceive_Payments);
@@ -820,4 +822,13 @@ void RentManagerMainWindow::on_actionDeposit_List_triggered()
 
 	m_deposits->startNew();
 	m_deposits->exec();
+}
+
+void RentManagerMainWindow::on_actionView_Tenant_Accounts_triggered()
+{
+    if (!m_custAccount)
+	    m_custAccount = new CustomerAccountDialog(this);
+
+    m_custAccount->startNew();
+    m_custAccount->exec();
 }

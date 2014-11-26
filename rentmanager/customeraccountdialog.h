@@ -14,7 +14,7 @@ class CustomerAccountDialog : public QDialog
 public:
 	explicit CustomerAccountDialog(QWidget *parent = 0);
 	~CustomerAccountDialog();
-
+	void startNew();
 private:
 	Ui::CustomerAccountDialog *ui;
 };

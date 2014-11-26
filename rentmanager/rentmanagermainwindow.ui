@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>711</width>
-    <height>510</height>
+    <width>760</width>
+    <height>465</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -253,7 +253,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>711</width>
+     <width>760</width>
      <height>24</height>
     </rect>
    </property>
@@ -286,7 +286,7 @@
     <property name="title">
      <string>Acco&amp;unting</string>
     </property>
-    <addaction name="actionView_Tenan_Accounts"/>
+    <addaction name="actionView_Tenant_Accounts"/>
     <addaction name="actionDeposit_List"/>
     <addaction name="separator"/>
     <addaction name="actionCreate_Invoice"/>
@@ -394,9 +394,9 @@
     <string>&amp;Quit</string>
    </property>
   </action>
-  <action name="actionView_Tenan_Accounts">
+  <action name="actionView_Tenant_Accounts">
    <property name="text">
-    <string>&amp;View Tenan Accounts</string>
+    <string>&amp;View Tenant Accounts</string>
    </property>
   </action>
   <action name="actionCreate_Invoice">
@@ -555,7 +555,7 @@
   </action>
   <action name="actionDeposit_List">
    <property name="text">
-    <string>Deposit List</string>
+    <string>&amp;Deposit List</string>
    </property>
   </action>
  </widget>
