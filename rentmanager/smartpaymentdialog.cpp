@@ -29,6 +29,7 @@ SmartPaymentDialog::~SmartPaymentDialog()
 
 void SmartPaymentDialog::startNew()
 {
+	ui->tabWidget->setVisible(true);
 	ui->spAmountReceived->setValue(0);
 	ui->trvPaymentAllocation->invisibleRootItem()->takeChildren();
 
@@ -38,17 +39,18 @@ void SmartPaymentDialog::startNew()
 	ui->spAmountReceived->setEnabled(true);
 	ui->cboPaidVia->setCurrentIndex(0);
 	ui->cboPaidVia->setEnabled(true);
-	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit WHERE Occupied = 'Yes'");
+	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE LeaseActive = 'Yes'");
 	while (qu.next()) {
 		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits->invisibleRootItem());
-		it->setText(0, qu.record().value("UnitNo").toString());
-		QString s_unitID, propertyID, companyID, propertyCode, companyCode;
-		s_unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + qu.record().value("UnitNo").toString() + "'", "UnitID").toString();
+		QString s_unitID, unitNo, propertyID, companyID, propertyCode, companyCode;
+		s_unitID = qu.record().value("UnitID").toString();
+		unitNo = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + s_unitID + "'", "UnitNo").toString();
 		propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + s_unitID + "'", "PropertyID").toString();
 		companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
 		propertyCode = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyCode").toString();
 		companyCode = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "Code").toString();
 
+		it->setText(0, unitNo);
 		it->setText(99, s_unitID);
 		it->setText(100, "Unit");
 		it->setText(1, companyCode);
@@ -57,13 +59,9 @@ void SmartPaymentDialog::startNew()
 		//tenant name, rent
 		it->setText(3, "-");
 		//it->setText(4, "-");
-		QSqlQuery unitQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE UnitID = '" + it->text(99) + "'");
-		while (unitQu.next()) {
-			QString tenantID = unitQu.record().value("TenantID").toString();
-			QString tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
-			it->setText(3, tenantName);
-			//it->setText(4, unitQu.record().value("MonthlyRent").toString());
-		}
+		QString tenantID = qu.record().value("TenantID").toString();
+		QString tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
+		it->setText(3, tenantName);
 	}
 
 	qu = QSqlDatabase::database().exec("SELECT * FROM tenant");
@@ -74,7 +72,7 @@ void SmartPaymentDialog::startNew()
 		tenant->setText(0, tenantName);
 		tenant->setText(99, tenantID);
 		tenant->setText(100, "Tenant");
-		QSqlQuery leaseQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE TenantID = '" + tenantID + "'");
+		QSqlQuery leaseQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE LeaseActive = 'Yes' AND TenantID = '" + tenantID + "'");
 		while (leaseQu.next()) {
 			QString lease_unitID = leaseQu.record().value("UnitID").toString();
 			QString unitNO, companyID, propertyID, companyName, propertyName;

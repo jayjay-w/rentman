@@ -20,10 +20,13 @@ set(ui_files rentmanagermainwindow.ui
     createinvoicedialog.ui
     additemtoinvoicedialog.ui
     createmultiinvoice.ui
-smartpaymentdialog.ui
-companyfilepassword.ui
-customeraccountdialog.ui
-depositdialog.ui)
+    smartpaymentdialog.ui
+    companyfilepassword.ui
+    customeraccountdialog.ui
+    depositdialog.ui
+    tenantaccountrebuilddialog.ui
+    terminateleasedialog.ui
+)
 
 set(qrc_files res.qrc)
 
@@ -43,11 +46,13 @@ set(h_files
     createinvoicedialog.h
     additemtoinvoicedialog.h
     createmultiinvoice.h
-smartpaymentdialog.h
-companyfilepassword.h
-simplecrypt.h
-customeraccountdialog.h
-depositdialog.h
+    smartpaymentdialog.h
+    companyfilepassword.h
+    simplecrypt.h
+    customeraccountdialog.h
+    depositdialog.h
+    tenantaccountrebuilddialog.h
+    terminateleasedialog.h
 )
 
 set(cpp_files main.cpp
@@ -66,11 +71,14 @@ set(cpp_files main.cpp
     createinvoicedialog.cpp
     additemtoinvoicedialog.cpp
     createmultiinvoice.cpp
-smartpaymentdialog.cpp
-companyfilepassword.cpp
-simplecrypt.cpp
-customeraccountdialog.cpp
-depositdialog.cpp)
+    smartpaymentdialog.cpp
+    companyfilepassword.cpp
+    simplecrypt.cpp
+    customeraccountdialog.cpp
+    depositdialog.cpp
+    tenantaccountrebuilddialog.cpp
+    terminateleasedialog.cpp
+)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} 
   ../openrpt/common/ ../openrpt/OpenRPT/common/ ../openrpt/OpenRPT/renderer/

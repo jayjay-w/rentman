@@ -14,7 +14,7 @@
    <string>Rent Manager</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="res.qrc">
+   <iconset>
     <normaloff>:/images/cottage.png</normaloff>:/images/cottage.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -300,6 +300,7 @@
      <string>&amp;Management</string>
     </property>
     <addaction name="actionAssign_Unit_To_Tenant"/>
+    <addaction name="actionTerminate_Lease"/>
     <addaction name="separator"/>
     <addaction name="actionChange_Password"/>
    </widget>
@@ -359,7 +360,7 @@
   </widget>
   <action name="actionCompanies">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/images/company-building-icon.png</normaloff>:/images/company-building-icon.png</iconset>
    </property>
    <property name="text">
@@ -368,7 +369,7 @@
   </action>
   <action name="actionProperties">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/images/Home-icon.png</normaloff>:/images/Home-icon.png</iconset>
    </property>
    <property name="text">
@@ -382,7 +383,7 @@
   </action>
   <action name="actionTenants">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/images/Preppy-icon.png</normaloff>:/images/Preppy-icon.png</iconset>
    </property>
    <property name="text">
@@ -401,7 +402,7 @@
   </action>
   <action name="actionCreate_Invoice">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/images/invoice-icon.png</normaloff>:/images/invoice-icon.png</iconset>
    </property>
    <property name="text">
@@ -410,7 +411,7 @@
   </action>
   <action name="actionMulti_Invoicing">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/images/invoice-icon.png</normaloff>:/images/invoice-icon.png</iconset>
    </property>
    <property name="text">
@@ -419,7 +420,7 @@
   </action>
   <action name="actionReceive_Payments">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/images/Sales-by-payment-method-icon.png</normaloff>:/images/Sales-by-payment-method-icon.png</iconset>
    </property>
    <property name="text">
@@ -433,7 +434,7 @@
   </action>
   <action name="action_New">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/images/Files-New-File-icon.png</normaloff>:/images/Files-New-File-icon.png</iconset>
    </property>
    <property name="text">
@@ -442,7 +443,7 @@
   </action>
   <action name="action_Open">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/images/open-file-icon.png</normaloff>:/images/open-file-icon.png</iconset>
    </property>
    <property name="text">
@@ -451,7 +452,7 @@
   </action>
   <action name="action_Save">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/images/Save-icon.png</normaloff>:/images/Save-icon.png</iconset>
    </property>
    <property name="text">
@@ -465,7 +466,7 @@
   </action>
   <action name="actionView_Payments">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset>
      <normaloff>:/images/Sales-by-payment-method-icon.png</normaloff>:/images/Sales-by-payment-method-icon.png</iconset>
    </property>
    <property name="text">
@@ -558,6 +559,11 @@
     <string>&amp;Deposit List</string>
    </property>
   </action>
+  <action name="actionTerminate_Lease">
+   <property name="text">
+    <string>Terminate Lease</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -568,8 +574,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="res.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

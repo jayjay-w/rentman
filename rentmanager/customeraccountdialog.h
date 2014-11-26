@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+class QTreeWidgetItem;
+
 namespace Ui {
 class CustomerAccountDialog;
 }
@@ -15,6 +17,9 @@ public:
 	explicit CustomerAccountDialog(QWidget *parent = 0);
 	~CustomerAccountDialog();
 	void startNew();
+private slots:
+	void on_trvTenants_itemClicked(QTreeWidgetItem *item, int column);
+
 private:
 	Ui::CustomerAccountDialog *ui;
 };

@@ -28,6 +28,7 @@
 #include "simplecrypt.h"
 #include "depositdialog.h"
 #include "customeraccountdialog.h"
+#include "terminateleasedialog.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -45,6 +46,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	m_smartPayment(0),
 	m_deposits(0),
 	m_custAccount(0),
+	m_terminateLease(0),
 	ui(new Ui::RentManagerMainWindow)
 {
 	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -76,6 +78,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	actionsToDisable->addAction(ui->actionContact_List);
 	actionsToDisable->addAction(ui->actionChange_Password);
 	actionsToDisable->addAction(ui->actionDeposit_List);
+	actionsToDisable->addAction(ui->actionTerminate_Lease);
 
 	closeFile();
 	ui->actionAbout_Qt->setVisible(false);
@@ -142,6 +145,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	tblQuery->addWidget(rpt_refresh);
 	connect (rpt_refresh, SIGNAL(clicked()), SLOT(showReportPreview()));
 	//connect (rpt_dtpReportQuery, SIGNAL(dateChanged(QDate)), SLOT(showReportPreview()));
+	connect (rpt_cboCompany, SIGNAL(currentIndexChanged(QString)), SLOT(reportCompanyChanged()));
 	ui->printPreviewWidget->zoomIn();
 	ui->printPreviewWidget->zoomIn();
 	ui->printPreviewWidget->zoomIn();
@@ -233,6 +237,9 @@ void RentManagerMainWindow::reloadBrowser()
 
 	if (currentTenane.length() > 0)
 		Publics::setComboBoxText(rpt_cboTenant, currentCompany);
+
+	if (m_currentCompany.length() > 0)
+		reportCompanyChanged();
 }
 
 void RentManagerMainWindow::loadFile(const QString &fileName)
@@ -826,9 +833,36 @@ void RentManagerMainWindow::on_actionDeposit_List_triggered()
 
 void RentManagerMainWindow::on_actionView_Tenant_Accounts_triggered()
 {
-    if (!m_custAccount)
-	    m_custAccount = new CustomerAccountDialog(this);
+	if (!m_custAccount)
+		m_custAccount = new CustomerAccountDialog(this);
 
-    m_custAccount->startNew();
-    m_custAccount->exec();
+	m_custAccount->startNew();
+	m_custAccount->exec();
+}
+
+void RentManagerMainWindow::on_actionTerminate_Lease_triggered()
+{
+	if (!m_terminateLease)
+		m_terminateLease = new TerminateLeaseDialog(this);
+
+	m_terminateLease->startNew();
+	m_terminateLease->exec();
+}
+
+void RentManagerMainWindow::reportCompanyChanged()
+{
+	if (rpt_cboCompany->currentIndex() != 0) {
+		m_currentCompany = rpt_cboCompany->currentText();
+		QString compID = Publics::getDbValue("SELECT * FROM company WHERE Code = '" + m_currentCompany + "'", "CompanyID").toString();
+		Publics::loadQueryToCombo("SELECT * FROM property WHERE CompanyID = '" + compID + "'", "PropertyCode", rpt_cboProperty);
+
+		rpt_cboProperty->insertItem(0, "--ALL--");
+
+		rpt_cboProperty->setCurrentIndex(0);
+	} else {
+		m_currentCompany = "";
+		Publics::loadQueryToCombo("SELECT * FROM property", "PropertyCode", rpt_cboProperty);
+
+		rpt_cboProperty->insertItem(0, "--ALL--");
+	}
 }

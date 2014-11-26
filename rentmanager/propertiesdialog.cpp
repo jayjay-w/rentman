@@ -155,7 +155,7 @@ void PropertiesDialog::reloadUnits()
 		it->setText(3, "No");
 		it->setText(4, "-");
 		it->setText(5, "-");
-		QSqlQuery unitQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE UnitID = '" + it->text(99) + "'");
+		QSqlQuery unitQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE LeaseActive = 'Yes' AND UnitID = '" + it->text(99) + "'");
 		while (unitQu.next()) {
 			it->setText(3, "Yes");
 			QString tenantID = unitQu.record().value("TenantID").toString();

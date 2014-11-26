@@ -24,6 +24,7 @@ class QPrinter;
 class QListWidgetItem;
 class DepositDialog;
 class CustomerAccountDialog;
+class TerminateLeaseDialog;
 
 namespace Ui {
 class RentManagerMainWindow;
@@ -51,6 +52,7 @@ public:
 	SmartPaymentDialog *m_smartPayment;
 	DepositDialog	 *m_deposits;
 	CustomerAccountDialog *m_custAccount;
+	TerminateLeaseDialog *m_terminateLease;
 
 	MyPrinter *m_printer;
 public slots:
@@ -88,6 +90,9 @@ private:
 	QComboBox *rpt_cboTenant;
 	QPushButton   *rpt_cmdSelectUnit;
 	QPushButton *rpt_refresh;
+
+	QString m_currentCompany;
+
 protected:
 	QDomDocument m_doc;
 private slots:
@@ -127,6 +132,9 @@ private slots:
 	void fitWidth();
 	void on_actionDeposit_List_triggered();
 	void on_actionView_Tenant_Accounts_triggered();
+	void on_actionTerminate_Lease_triggered();
+
+	void reportCompanyChanged();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

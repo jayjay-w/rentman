@@ -23,20 +23,24 @@ void AssignUnitToTenantDialog::reloadLists()
 {
 	Publics::loadQueryToCombo("SELECT * FROM tenant", "Name", ui->cboTenant);
 	ui->trvUnits->invisibleRootItem()->takeChildren();
-	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit WHERE Occupied = 'No'");
+	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit");
 	while (qu.next()) {
-		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits->invisibleRootItem());
-		it->setText(0, qu.record().value("UnitNo").toString());
+		//Search and see if this unit is in an active lease
 		QString s_unitID, propertyID, companyID, propertyCode, companyCode;
-		s_unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + qu.record().value("UnitNo").toString() + "'", "UnitID").toString();
-		propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + s_unitID + "'", "PropertyID").toString();
-		companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
-		propertyCode = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyCode").toString();
-		companyCode = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "Code").toString();
+		s_unitID = qu.record().value("UnitID").toString();
+		QString cnt = Publics::getDbValue("SELECT Count(EntryID) as 'cnt' FROM leases WHERE LeaseActive = 'Yes' AND UnitID = '" + s_unitID + "'", "cnt").toString();
+		if (cnt.toDouble() < 1) {
+			QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits->invisibleRootItem());
+			it->setText(0, qu.record().value("UnitNo").toString());
+			propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + s_unitID + "'", "PropertyID").toString();
+			companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
+			propertyCode = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyCode").toString();
+			companyCode = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "Code").toString();
 
-		it->setText(99, s_unitID);
-		it->setText(1, companyCode);
-		it->setText(2, propertyCode);
+			it->setText(99, s_unitID);
+			it->setText(1, companyCode);
+			it->setText(2, propertyCode);
+		}
 	}
 }
 
@@ -99,11 +103,11 @@ void AssignUnitToTenantDialog::calculateVAT()
 
 void AssignUnitToTenantDialog::on_chkVAT_toggled(bool checked)
 {
-    calculateVAT();
+	calculateVAT();
 }
 
 void AssignUnitToTenantDialog::on_trvUnits_itemClicked(QTreeWidgetItem *item, int column)
 {
-    Q_UNUSED(column);
+	Q_UNUSED(column);
 	unitID = item->text(99);
 }

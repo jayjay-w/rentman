@@ -57,6 +57,15 @@ void TenantsDialog::editTenant()
 	ui->txtTel->setText(qu.record().value("Tel").toString());
 	Publics::setComboBoxText(ui->cboIsActive, qu.record().value("IsActive").toString());
 	ui->txtName->setFocus();
+
+	Publics::setComboBoxText(ui->cboIsActive, "No");
+	QSqlQuery qu2 = QSqlDatabase::database().exec("SELECT * FROM leases WHERE LeaseActive = 'Yes' AND TenantID = '" + m_tenantID + "'");
+	while (qu2.next()) {
+		QString yes = qu2.record().value("LeaseActive").toString();
+		if (yes == "Yes")
+			Publics::setComboBoxText(ui->cboIsActive, "Yes");
+	}
+	ui->cboIsActive->setEnabled(false);
 }
 
 void TenantsDialog::newTenant()
@@ -74,10 +83,10 @@ void TenantsDialog::saveChanges()
 {
 	QString sql = "UPDATE tenant SET "
 		      "Name = '" + ui->txtName->text() + "', "
-		"Sex = '" + ui->cboSex->currentText() + "', "
-		"Email = '" + ui->txtEmail->text() + "', "
-		"Tel = '" + ui->txtTel->text() + "' WHERE "
-		"TenantID = '" + m_tenantID + "'";
+							 "Sex = '" + ui->cboSex->currentText() + "', "
+												 "Email = '" + ui->txtEmail->text() + "', "
+																      "Tel = '" + ui->txtTel->text() + "' WHERE "
+																				       "TenantID = '" + m_tenantID + "'";
 
 	QSqlDatabase::database().exec(sql);
 	reloadTenants();
@@ -85,6 +94,18 @@ void TenantsDialog::saveChanges()
 
 void TenantsDialog::deleteTenant()
 {
+	bool hasLeases = false;
+	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE LeaseActive = 'Yes' AND TenantID = '" + m_tenantID + "'");
+	while (qu.next()) {
+		QString yes = qu.record().value("LeaseActive").toString();
+		if (yes == "Yes")
+			hasLeases = true;
+	}
+	if (hasLeases) {
+		QMessageBox::information(this, "Information", "The selected customer currently has active leases.\n\nYou will not be able to remove this tenant until all leases are terminated.");
+		return;
+	}
+
 	if (QMessageBox::question(this, "Confirm Delete", "Are you sure you want to delete this tenant?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
 		QSqlDatabase::database().exec("DELETE FROM tenant WHERE TenantID = '" + m_tenantID + "'");
 		m_tenantID = "";

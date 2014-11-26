@@ -28,27 +28,37 @@ void UnitsDialog::edit(QString id)
 				);
 	qu.first();
 
-	ui->txtOccupied->setText(qu.record().value("Occupied").toString());
+	QSqlQuery leaseQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE LeaseActive = 'Yes' AND UnitID = '" + id + "'");
+	bool hasLease = false;
+	ui->txtOccupied->setText("No");
+	QString tenantID;
+	while (leaseQu.next()) {
+		qDebug() << "Has lease" << tenantID;
+		tenantID = leaseQu.record().value("TenantID").toString();
+		hasLease = true;
+		ui->txtOccupied->setText("Yes");
+	}
 
 	if (ui->txtOccupied->text() != "Yes") {
 		ui->cmdEndOccupation->setVisible(false);
 		ui->lblTenant->setVisible(false);
 		ui->txtTenantName->setVisible(false);
 	} else {
-		ui->cmdEndOccupation->setVisible(true);
+		ui->cmdEndOccupation->setVisible(false);
 		ui->lblTenant->setVisible(true);
 		//QString rent = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + id + "'", "MonthlyRent").toString();
 		//ui->txtMonthlyRent->setText(rent);
 		ui->txtTenantName->setVisible(true);
+		QString tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
+		if (tenantName.length() > 0) {
+			ui->txtTenantName->setText(tenantName);
+		}
 	}
 
 	ui->spNoOfRooms->setValue(0);
 	ui->spNoOfRooms->setValue(0);
 
-	QString tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + qu.record().value("CurrentTenantID").toString() + "'", "Name").toString();
-	if (tenantName.length() > 0) {
-		ui->txtTenantName->setText(tenantName);
-	}
+
 
 	ui->txtUnitNo->setText(qu.record().value("UnitNo").toString());
 	ui->txtElecBillAcc->setText(qu.record().value("ElecBillAcc").toString());

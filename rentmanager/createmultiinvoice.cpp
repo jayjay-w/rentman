@@ -28,25 +28,28 @@ CreateMultiInvoice::~CreateMultiInvoice()
 void CreateMultiInvoice::startNew()
 {
 	ui->trvUnits->invisibleRootItem()->takeChildren();
-	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit WHERE Occupied = 'Yes'");
+	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE LeaseActive = 'Yes'");
 	while (qu.next()) {
 		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits->invisibleRootItem());
-		it->setText(0, qu.record().value("UnitNo").toString());
-		QString s_unitID, propertyID, companyID, propertyCode, companyCode;
-		s_unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + qu.record().value("UnitNo").toString() + "'", "UnitID").toString();
+		QString s_unitID, unitNo, propertyID, companyID, propertyCode, companyCode;
+		s_unitID = qu.record().value("UnitID").toString();
+		QString leaseID = qu.record().value("EntryID").toString();
+		unitNo = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + s_unitID + "'", "UnitNo").toString();
+		it->setText(0, unitNo);
 		propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + s_unitID + "'", "PropertyID").toString();
 		companyID = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "CompanyID").toString();
 		propertyCode = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + propertyID + "'", "PropertyCode").toString();
 		companyCode = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyID + "'", "Code").toString();
 
 		it->setText(99, s_unitID);
+		it->setText(999, leaseID);
 		it->setText(1, companyCode);
 		it->setText(2, propertyCode);
 
 		//tenant name, rent
 		it->setText(3, "-");
 		it->setText(4, "-");
-		QSqlQuery unitQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE UnitID = '" + it->text(99) + "'");
+		QSqlQuery unitQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE EntryID = '" + leaseID + "'");
 		while (unitQu.next()) {
 			QString tenantID = unitQu.record().value("TenantID").toString();
 			QString tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
@@ -66,11 +69,12 @@ void CreateMultiInvoice::startNew()
 
 void CreateMultiInvoice::currentUnitChanged(const QString &arg1)
 {
-	QString unitNo = arg1;
-	unitID = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitNo + "'", "UnitID").toString();
-	QString leaseID = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + unitID + "'", "EntryID").toString();
+	QString leaseID = arg1;
+	unitID = Publics::getDbValue("SELECT * FROM leases WHERE EntryID = '" + leaseID + "'", "UnitID").toString();
+	//QString unitNo = Publics::getDbValue("SELECT * FROM unit WHERE UnitNo = '" + unitID + "'", "UnitID").toString();
+	//QString leaseID = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + unitID + "'", "EntryID").toString();
 	QString rent = Publics::getDbValue("SELECT * FROM leases WHERE EntryID = '" + leaseID + "'", "MonthlyRent").toString();
-	tenantID = Publics::getDbValue("SELECT * FROM leases WHERE UnitID = '" + unitID + "'", "TenantID").toString();
+	tenantID = Publics::getDbValue("SELECT * FROM leases WHERE EntryID = '" + leaseID + "'", "TenantID").toString();
 	tenantName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
 	tenantTel = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Tel").toString();
 	tenantEmail = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Email").toString();
@@ -193,6 +197,6 @@ void CreateMultiInvoice::on_cmdSave_clicked()
 void CreateMultiInvoice::on_trvUnits_itemClicked(QTreeWidgetItem *item, int column)
 {
 	Q_UNUSED(column);
-	QString unitNo = item->text(0);
+	QString unitNo = item->text(999);
 	currentUnitChanged(unitNo);
 }
