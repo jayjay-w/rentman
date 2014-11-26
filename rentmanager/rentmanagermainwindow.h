@@ -135,6 +135,7 @@ private slots:
 	void on_actionTerminate_Lease_triggered();
 
 	void reportCompanyChanged();
+	void on_cmdPrintCalendar_clicked();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

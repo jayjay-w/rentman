@@ -102,7 +102,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	QSettings sett(qApp->organizationName(), qApp->applicationName());
 	qDebug() << sett.value("MainWindowSplitter").toString();
 	ui->splitter->restoreState(sett.value("MainWindowSplitter",
-					      ui->splitter_2->saveState()).toByteArray());
+					      ui->splitter->saveState()).toByteArray());
 
 	printer = new QPrinter(QPrinter::HighResolution);
 	connect (ui->printPreviewWidget, SIGNAL(paintRequested(QPrinter*)), SLOT(previewRequested(QPrinter*)));
@@ -116,7 +116,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	QToolBar *tblQuery = new QToolBar("Report Query Toolbar", this);
 	printLayout->addWidget(ui->printToolBar);
 	printLayout->addWidget(tblQuery);
-	printLayout->addWidget(ui->printPreviewWidget);
+	printLayout->addWidget(ui->tabReport);
 	tab2Layout->addLayout(printLayout);
 
 	ui->tab_2->setLayout(tab2Layout);
@@ -156,7 +156,7 @@ RentManagerMainWindow::~RentManagerMainWindow()
 {
 	//ui save state
 	QSettings sett(qApp->organizationName(), qApp->applicationName());
-	sett.setValue("MainWindowSplitter", ui->splitter_2->saveState());
+	sett.setValue("MainWindowSplitter", ui->splitter->saveState());
 	delete ui;
 }
 
@@ -509,7 +509,22 @@ void RentManagerMainWindow::reloadCalendar()
 	QString html = "";
 	QSqlQuery unitQu = db.exec("SELECT * FROM unit WHERE PropertyID = '" + currentProperty + "'");
 	QString propertyName = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + currentProperty + "'", "PropertyName").toString();
-	html += "<h2>Payment calendar for " + propertyName + "</h2><br/>";
+	QString companyId = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + currentProperty + "'", "CompanyID").toString();
+	QString companyName = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyId + "'", "CompanyName").toString();
+	QString physical = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyId + "'", "PhysicalAddress").toString();
+	QString postal = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyId + "'", "PostalAddress").toString();
+	QString headerTable;
+
+
+	headerTable += "<table width=100% border=0 cellspacing=0>";
+	headerTable += QString("<tr><td align=center><b>%1</b><br/><b>%2</b><br/>%3<br/>%4</td></tr>")
+			.arg(companyName, propertyName, physical, postal);
+	headerTable += "</table>";
+	headerTable += "<table width=100% border=0 cellspacing=0>";
+	headerTable += QString("<tr><td>Payment Calendar</td><td align=right>%1</td></tr>").arg(QDate::currentDate().toString("dd-MMM-yyyy"));
+	headerTable += "</table>";
+
+	html += headerTable;
 
 	html += "<table border=1 width=100%>";
 	html += "<tr><td></td>"
@@ -571,9 +586,12 @@ void RentManagerMainWindow::reloadCalendar()
 
 			if (balance )
 				colText = "";
-			colText += "Due: " + QString::number(due);
-			colText += "<br/>Paid: " + QString::number(paid);
-			colText += "<br/>Balance: " + QString::number(balance);
+
+
+				colText += "<b>Due:</b> " + QString::number(due);
+				colText += "<br/><b>Pd:</b> " + QString::number(paid);
+				colText += "<br/><b>Bal:</b> " + QString::number(balance);
+
 
 			html += "<td bgcolor=" + bgColor + ">";
 			html += colText;
@@ -728,6 +746,7 @@ void RentManagerMainWindow::showReportPreview()
 				}
 
 		}
+
 	}
 
 	if (reportName == "Vacant Units")
@@ -865,4 +884,13 @@ void RentManagerMainWindow::reportCompanyChanged()
 
 		rpt_cboProperty->insertItem(0, "--ALL--");
 	}
+}
+
+
+void RentManagerMainWindow::on_cmdPrintCalendar_clicked()
+{
+    QPrinter *prnt = new QPrinter(QPrinter::HighResolution);
+    QPrintDialog *dlg = new QPrintDialog(prnt, this);
+    if (dlg->exec() == QDialog::Accepted)
+	    ui->txtCalendar->print(prnt);
 }
