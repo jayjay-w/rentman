@@ -8,9 +8,10 @@
 !define QT_DLLS "/usr/i686-w64-mingw32/bin"
 !define QT_PLUGINS "/usr/i686-w64-mingw32/lib/qt/plugins"
 #--------------------------------
-# Include Modern UI
+# Include Modern UI and file association
 
     !include "MUI2.nsh"
+    !include "FileAssociation.nsh"
 
 #--------------------------------
 # General
@@ -152,6 +153,15 @@ Section
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\RentManager" \
         "DisplayVersion" ${RENTMANAGER_VERSION}
 
+    #register file extension and icon
+    #WriteRegStr HKCR ".rmf" "" "RentManager.File"
+    #WriteRegStr HKCR "RentManager.File" "" "Rent Manager File"
+    #WriteRegStr HKCR "RentManager.File\DefaultIcon" "" "$INSTDIR\RentManager.exe,1"
+    #WriteRegStr HKCR "RentManager.File\shell\open\command" "" "$INSTDIR\RentManager.exe,1"
+
+
+;File association
+${registerExtension} "$INSTDIR\RentManager.exe" ".rmf" "RentManager File"
 SectionEnd
 #--------------------------------
 # Uninstaller section
@@ -179,4 +189,6 @@ Section "Uninstall"
     DeleteRegKey /ifempty HKCU "Software\RentManager"
     DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\megvel"
 
+;remove file association
+${unregisterExtension} ".rmf" "RentManager Files"
 SectionEnd

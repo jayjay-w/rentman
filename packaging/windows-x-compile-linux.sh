@@ -9,6 +9,7 @@ cp $CODE_PATH/packaging/licence.txt .
 cp $CODE_PATH/rentmanager/cottage.ico ./rentman.ico
 rm ./rentmanager.nsi
 cp $CODE_PATH/rentmanager.nsi .
+cp $CODE_PATH/FileAssociation.nsh .
 export PATH=$PATH:$MINGW/bin
 export CFLAGS=""
 export CXXFLAGS="$CFLAGS"
