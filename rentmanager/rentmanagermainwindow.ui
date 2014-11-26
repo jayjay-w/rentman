@@ -254,7 +254,7 @@
      <x>0</x>
      <y>0</y>
      <width>711</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -287,6 +287,7 @@
      <string>Acco&amp;unting</string>
     </property>
     <addaction name="actionView_Tenan_Accounts"/>
+    <addaction name="actionDeposit_List"/>
     <addaction name="separator"/>
     <addaction name="actionCreate_Invoice"/>
     <addaction name="actionMulti_Invoicing"/>
@@ -302,17 +303,6 @@
     <addaction name="separator"/>
     <addaction name="actionChange_Password"/>
    </widget>
-   <widget class="QMenu" name="menuReports">
-    <property name="title">
-     <string>&amp;Reports</string>
-    </property>
-    <addaction name="actionCompanies_Properties"/>
-    <addaction name="actionAll_Units"/>
-    <addaction name="actionVacan_Units"/>
-    <addaction name="actionOccupied_Units"/>
-    <addaction name="separator"/>
-    <addaction name="actionContact_List"/>
-   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
@@ -323,7 +313,6 @@
    <addaction name="menuFile"/>
    <addaction name="menuManagement"/>
    <addaction name="menuAccounting"/>
-   <addaction name="menuReports"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -562,6 +551,11 @@
    </property>
    <property name="shortcut">
     <string>-</string>
+   </property>
+  </action>
+  <action name="actionDeposit_List">
+   <property name="text">
+    <string>Deposit List</string>
    </property>
   </action>
  </widget>

@@ -70,6 +70,11 @@ void DatabaseInitThread::run()
 			db.exec("INSERT INTO invoice_item (ItemName, Description) VALUES ('Security Fee', 'Property Security')");
 		}
 	}
+
+	//Sustained table changes
+	db.exec("ALTER table leases ADD COLUMN 'DepositBalance' TEXT DEFAULT('0')");
+	db.exec("ALTER table leases ADD COLUMN 'DepositUsed' TEXT DEFAULT('0')");
+	db.exec("ALTER table leases ADD COLUMN 'LeaseActive' TEXT DEFAULT('Yes')");
 }
 
 void DatabaseInitThread::executeInitSql(QString sql)

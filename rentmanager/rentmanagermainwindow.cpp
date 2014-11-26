@@ -26,6 +26,7 @@
 #include <QInputDialog>
 #include "companyfilepassword.h"
 #include "simplecrypt.h"
+#include "depositdialog.h"
 
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
@@ -41,6 +42,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	m_singleInvoice(0),
 	m_multiInvoice(0),
 	m_smartPayment(0),
+	m_deposits(0),
 	ui(new Ui::RentManagerMainWindow)
 {
 	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -71,8 +73,8 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	actionsToDisable->addAction(ui->actionView_Payments);
 	actionsToDisable->addAction(ui->actionContact_List);
 	actionsToDisable->addAction(ui->actionChange_Password);
+	actionsToDisable->addAction(ui->actionDeposit_List);
 
-	ui->menuReports->setVisible(false);
 	closeFile();
 	ui->actionAbout_Qt->setVisible(false);
 	actionsToDisable->setDisabled(true);
@@ -809,4 +811,13 @@ void RentManagerMainWindow::fitPage()
 void RentManagerMainWindow::fitWidth()
 {
 	ui->printPreviewWidget->setZoomMode(QPrintPreviewWidget::FitToWidth);
+}
+
+void RentManagerMainWindow::on_actionDeposit_List_triggered()
+{
+	if (!m_deposits)
+		m_deposits = new DepositDialog(this);
+
+	m_deposits->startNew();
+	m_deposits->exec();
 }

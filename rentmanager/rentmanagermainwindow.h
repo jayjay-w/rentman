@@ -22,6 +22,7 @@ class CreateMultiInvoice;
 class SmartPaymentDialog;
 class QPrinter;
 class QListWidgetItem;
+class DepositDialog;
 
 namespace Ui {
 class RentManagerMainWindow;
@@ -47,6 +48,7 @@ public:
 	CreateInvoiceDialog *m_singleInvoice;
 	CreateMultiInvoice *m_multiInvoice;
 	SmartPaymentDialog *m_smartPayment;
+	DepositDialog	 *m_deposits;
 
 	MyPrinter *m_printer;
 public slots:
@@ -121,6 +123,7 @@ private slots:
 
 	void fitPage();
 	void fitWidth();
+	void on_actionDeposit_List_triggered();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H
