@@ -98,7 +98,7 @@ endif(MINGW)
 
 if(QT5)
 qt5_wrap_ui(uis ${ui_files})
-qt5_add_resources(qrc ${qrc_files})
+qt5_add_resources(qrcs ${qrc_files})
 set(moc )
 else()
 qt4_wrap_ui(uis ${ui_files})
@@ -134,12 +134,6 @@ IF( APPLE )
         COMMAND mkdir ARGS -p ${RentManagerResourceDIR}
         COMMAND cp ARGS -f ${CMAKE_CURRENT_SOURCE_DIR}/cottage.icns ${RentManagerResourceDIR} )
 ENDIF( APPLE )
-
-if(QT5)
-set(libs Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
-else()
-set(libs ${QT_LIBRARIES})
-endif()
 
 target_link_libraries(${ExecutableName} renderer common ${libs})
 
