@@ -17,6 +17,8 @@ public:
 	explicit SmartPaymentDialog(QWidget *parent = 0);
 	~SmartPaymentDialog();
 	void startNew();
+	void startNewWithPayment(QString unitID, QString paymentAmount, QString narration = "", bool deposit = false);
+	double amt_paid;
 private slots:
 
 	void on_cmdAutoAllocate_clicked();

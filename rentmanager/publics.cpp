@@ -142,6 +142,11 @@ QString Publics::getSql(SQL_STRING sqlString)
 				"'Company' TEXT, 'Property' TEXT, 'Units' TEXT"
 				")";
 
+	case SQL_TENANT_ACCOUNT:
+		return "CREATE TABLE IF NOT EXISTS 'tenant_account' ('EntryID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+				"'TenantID' TEXT, 'Name' TEXT, 'Tel' TEXT, "
+				"'ItemName' TEXT, 'ItemNo' TEXT, 'Amount' TEXT DEFAULT('0'), 'Balance' TEXT DEFAULT('0'))";
+
 	default:
 		return "SELECT NOW()";
 	}

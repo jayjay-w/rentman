@@ -55,6 +55,8 @@ void DatabaseInitThread::run()
 	executeInitSql(Publics::getSql(Publics::SQL_REPORT_OCCUPIED_UNITS));
 	executeInitSql(Publics::getSql(Publics::SQL_REPORT_PROPERTIES));
 	executeInitSql(Publics::getSql(Publics::SQL_REPORT_VACANT_UNITS));
+	db.exec("DROP TABLE tenant_account");
+	executeInitSql(Publics::getSql(Publics::SQL_TENANT_ACCOUNT));
 	db.exec("CREATE TABLE IF NOT EXISTS 'password' ('Password' TEXT)");
 	emit progress(100);
 
@@ -71,10 +73,15 @@ void DatabaseInitThread::run()
 		}
 	}
 
-	//Sustained table changes
+	//Sustained table changes (db v1)
 	db.exec("ALTER table leases ADD COLUMN 'DepositBalance' TEXT DEFAULT('0')");
 	db.exec("ALTER table leases ADD COLUMN 'DepositUsed' TEXT DEFAULT('0')");
 	db.exec("ALTER table leases ADD COLUMN 'LeaseActive' TEXT DEFAULT('Yes')");
+	db.exec("ALTER table payments ADD COLUMN 'Narration' TEXT");
+	db.exec("ALTER table tenant ADD COLUMN 'Balance' TEXT Default('0')");
+
+	db.exec("DELETE FROM version");
+	db.exec("INSERT INTO version('DbVersion') VALUES ('2')");
 }
 
 void DatabaseInitThread::executeInitSql(QString sql)

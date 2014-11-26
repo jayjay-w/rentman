@@ -34,7 +34,10 @@ void SmartPaymentDialog::startNew()
 
 	ui->trvTenants->invisibleRootItem()->takeChildren();
 	ui->trvUnits->invisibleRootItem()->takeChildren();
-
+	ui->txtNotes->setText("");
+	ui->spAmountReceived->setEnabled(true);
+	ui->cboPaidVia->setCurrentIndex(0);
+	ui->cboPaidVia->setEnabled(true);
 	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit WHERE Occupied = 'Yes'");
 	while (qu.next()) {
 		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits->invisibleRootItem());
@@ -92,6 +95,31 @@ void SmartPaymentDialog::startNew()
 
 	ui->trvTenants->resizeColumnToContents(-1);
 	ui->trvUnits->resizeColumnToContents(-1);
+}
+
+void SmartPaymentDialog::startNewWithPayment(QString unitID, QString paymentAmount, QString narration, bool deposit)
+{
+	ui->spAmountReceived->setValue(0);
+	ui->trvPaymentAllocation->invisibleRootItem()->takeChildren();
+
+	ui->trvTenants->invisibleRootItem()->takeChildren();
+	ui->trvUnits->invisibleRootItem()->takeChildren();
+	ui->spAmountReceived->setEnabled(true);
+	ui->cboPaidVia->setCurrentIndex(0);
+	ui->cboPaidVia->setEnabled(true);
+
+	ui->tabWidget->setVisible(false);
+	ui->spAmountReceived->setValue(paymentAmount.toDouble());
+	ui->spAmountReceived->setEnabled(false);
+
+	showInvoices("Unit", unitID);
+	ui->txtNotes->setText("");
+	if (deposit) {
+		Publics::setComboBoxText(ui->cboPaidVia, "Rent Deposit");
+		ui->cboPaidVia->setEnabled(false);
+	}
+
+	ui->txtNotes->setText(narration);
 }
 
 void SmartPaymentDialog::on_cmdAutoAllocate_clicked()
@@ -212,6 +240,13 @@ void SmartPaymentDialog::on_cmdSave_clicked()
 		return;
 	}
 
+	if (ui->cboPaidVia->currentText() == "Rent Deposit")
+		ui->spAmountReceived->setValue(assigned);
+
+	received = assigned;
+	balance = 0;
+	amt_paid = assigned;
+
 	//All ok
 	QString unique = QUuid::createUuid().toString();
 	unique  = unique.left(unique.length() - 1);
@@ -219,7 +254,7 @@ void SmartPaymentDialog::on_cmdSave_clicked()
 	QString unitNo = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + unitID + "'", "UnitNo").toString();
 	QString master_sql = "INSERT INTO payments (UniqueID, "
 			     "UnitID,  TenantID, CompanyID, CompanyName, ReceiptNo, DateReceived, UnitName, TenantName, "
-			     "AmountReceived, PaymentFor, PayMode, ChequeNo, Allocated, Balance) "
+			     "AmountReceived, PaymentFor, PayMode, ChequeNo, Narration, Allocated, Balance) "
 			     "VALUES ('"
 			+ unique + "', '"
 			+ unitID + "', '"
@@ -234,6 +269,7 @@ void SmartPaymentDialog::on_cmdSave_clicked()
 						      "Rent', '"
 			+ ui->cboPaidVia->currentText() + "', '"
 			+ ui->txtChequeNo->text() + "', '"
+			+ ui->txtNotes->text() + "', '"
 			+ QString::number(assigned) + "', '"
 			+ QString::number(balance) + "')"
 			+ "";

@@ -3,12 +3,16 @@
 #include <QtSql>
 #include <QTreeWidgetItem>
 #include "publics.h"
+#include "smartpaymentdialog.h"
+#include "rentmanagermainwindow.h"
 
 DepositDialog::DepositDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DepositDialog)
 {
 	ui->setupUi(this);
+
+	ui->cmdRefundDeposit->setEnabled(false);
 }
 
 DepositDialog::~DepositDialog()
@@ -18,6 +22,9 @@ DepositDialog::~DepositDialog()
 
 void DepositDialog::startNew()
 {
+	ui->trvUnits->invisibleRootItem()->takeChildren();
+	unitID = "";
+	deposit_available = "0";
 	QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM unit WHERE Occupied = 'Yes'");
 	while (qu.next()) {
 		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvUnits->invisibleRootItem());
@@ -42,6 +49,9 @@ void DepositDialog::startNew()
 		it->setText(5, deposit_used);
 		deposit_balance = QString::number(deposit.toDouble() - deposit_used.toDouble());
 		it->setText(6, deposit_balance);
+
+		it->setText(99, s_unitID);
+		it->setText(100, leaseID);
 	}
 
 	ui->trvUnits->resizeColumnToContents(0);
@@ -50,4 +60,29 @@ void DepositDialog::startNew()
 	ui->trvUnits->resizeColumnToContents(3);
 	ui->trvUnits->resizeColumnToContents(4);
 	ui->trvUnits->resizeColumnToContents(5);
+}
+
+void DepositDialog::on_cmdUseDepositToPayInvoice_clicked()
+{
+	if (unitID.length() < 1) {
+		Publics::showError("Select a unit to proceed");
+		return;
+	}
+	if (!RentManagerMainWindow::instance()->m_smartPayment)
+		RentManagerMainWindow::instance()->m_smartPayment = new SmartPaymentDialog(RentManagerMainWindow::instance());
+
+	RentManagerMainWindow::instance()->m_smartPayment->startNewWithPayment(unitID, deposit_available, "Payment transferred from deposit.", true);
+	if (RentManagerMainWindow::instance()->m_smartPayment->exec() == QDialog::Accepted) {
+		double usedAmount = RentManagerMainWindow::instance()->m_smartPayment->amt_paid;
+		QSqlDatabase::database().exec("UPDATE leases SET DepositUsed = DepositUsed + '" + QString::number(usedAmount) + "' WHERE EntryID = '" + m_leaseID + "'");
+		startNew();
+	}
+}
+
+void DepositDialog::on_trvUnits_itemClicked(QTreeWidgetItem *item, int column)
+{
+	Q_UNUSED(column);
+	unitID = item->text(99);
+	m_leaseID = item->text(100);
+	deposit_available = item->text(6);
 }

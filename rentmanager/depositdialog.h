@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+class QTreeWidgetItem;
+
 namespace Ui {
 class DepositDialog;
 }
@@ -16,8 +18,16 @@ public:
 	~DepositDialog();
 
 	void startNew();
+private slots:
+	void on_cmdUseDepositToPayInvoice_clicked();
+
+	void on_trvUnits_itemClicked(QTreeWidgetItem *item, int column);
+
 private:
 	Ui::DepositDialog *ui;
+	QString unitID;
+	QString deposit_available;
+	QString m_leaseID;
 };
 
 #endif // DEPOSITDIALOG_H
