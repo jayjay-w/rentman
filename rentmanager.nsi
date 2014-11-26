@@ -20,11 +20,14 @@
 
     # VIProductVersion requires version in x.x.x.x format
     !define RENTMANAGER_VIPRODUCTVERSION "1.0.5.0"
+    !define BUILD_DATE ${__DATE__}-${__TIME__}
+    !searchreplace BUILD_DATE ${BUILD_DATE} "/" ""
+    !searchreplace BUILD_DATE ${BUILD_DATE} ":" ""
 
     # Installer name and filename
     Name "Rent Manager"
     Caption "Rent Manager ${RENTMANAGER_VERSION} Setup"
-    OutFile "Rent Manager-${RENTMANAGER_VERSION}.exe"
+    OutFile "RentManager-win32-${RENTMANAGER_VERSION}-${BUILD_DATE}.exe"
 
     # Icon to use for the installer
     !define MUI_ICON "rentman.ico"
