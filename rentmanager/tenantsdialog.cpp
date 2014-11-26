@@ -124,10 +124,46 @@ void TenantsDialog::tenantChanged(QTreeWidgetItem *item, int col)
 	m_tenantID = c_id;
 	editTenant();
 
-	QString leaseSQL = "SELECT unit.UnitNo as 'Unit Number', leases.MonthlyRent as 'Rent Per Month' FROM leases,unit WHERE leases.UnitID = unit.UnitID AND leases.TenantID = '" + m_tenantID + "'";
-	qDebug() << leaseSQL;
-	QSqlQuery qu = QSqlDatabase::database().exec(leaseSQL);
-	QSqlQueryModel *model = new QSqlQueryModel(this);
-	model->setQuery(qu);
-	ui->tblLeases->setModel(model);
+	//Load current leases
+	QSqlQuery currentLeases = QSqlDatabase::database().exec(""
+								"SELECT "
+								"unit.unitNo as 'Unit No', property.PropertyCode  as 'Property', company.code as  'Company', leases.deposit as  'Deposit Paid', leases.monthlyrent as  'Monthly Rent', leases.dateofoccupation as 'Date Occupied' "
+								"FROM leases, unit, property, company "
+								"WHERE unit.UnitID = leases.UnitID "
+								"AND property.PropertyID = unit.PropertyID "
+								"AND company.CompanyID = property.CompanyID "
+								" AND LeaseActive = 'Yes'"
+								" AND leases.TenantID = '" + m_tenantID + "'"
+								);
+	QSqlQueryModel *currentLeasesModel = new QSqlQueryModel(this);
+	currentLeasesModel->setQuery(currentLeases);
+	ui->trvCurrentUnits->setModel(currentLeasesModel);
+
+	//Load past leases
+	QSqlQuery oldLeases = QSqlDatabase::database().exec(" "
+							    "SELECT "
+							    "unit.unitNo as 'Unit No', property.PropertyCode  as 'Property', company.code as  'Company', leases.deposit as  'Deposit Paid', leases.monthlyrent as  'Monthly Rent', leases.dateofoccupation as 'Date Occupied', leases.ExitDate as 'Date Left' "
+							    "FROM leases, unit, property, company "
+							    "WHERE unit.UnitID = leases.UnitID "
+							    "AND property.PropertyID = unit.PropertyID "
+							    "AND company.CompanyID = property.CompanyID "
+							    " AND LeaseActive = 'No'"
+							    " AND leases.TenantID = '" + m_tenantID + "'"
+							    );
+	QSqlQueryModel *oldLeasesModel = new QSqlQueryModel(this);
+	oldLeasesModel->setQuery(oldLeases);
+	ui->trvOldUnits->setModel(oldLeasesModel);
+
+	ui->trvCurrentUnits->resizeColumnToContents(0);
+	ui->trvCurrentUnits->resizeColumnToContents(1);
+	ui->trvCurrentUnits->resizeColumnToContents(2);
+	ui->trvCurrentUnits->resizeColumnToContents(3);
+	ui->trvCurrentUnits->resizeColumnToContents(4);
+
+	ui->trvOldUnits->resizeColumnToContents(0);
+	ui->trvOldUnits->resizeColumnToContents(1);
+	ui->trvOldUnits->resizeColumnToContents(2);
+	ui->trvOldUnits->resizeColumnToContents(3);
+	ui->trvOldUnits->resizeColumnToContents(4);
+	ui->trvOldUnits->resizeColumnToContents(5);
 }

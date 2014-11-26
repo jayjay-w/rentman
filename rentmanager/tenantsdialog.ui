@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>619</width>
-    <height>420</height>
+    <width>774</width>
+    <height>506</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,30 +37,6 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Tel:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="txtTel"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Name:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Is Active:</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="1">
       <widget class="QComboBox" name="cboIsActive">
        <item>
@@ -75,15 +51,6 @@
        </item>
       </widget>
      </item>
-     <item row="6" column="0" colspan="2">
-      <widget class="QTableView" name="tblLeases"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="txtName"/>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="txtEmail"/>
-     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
@@ -91,12 +58,15 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_4">
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Email:</string>
+        <string>Tel:</string>
        </property>
       </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="txtEmail"/>
      </item>
      <item row="1" column="1">
       <widget class="QComboBox" name="cboSex">
@@ -112,11 +82,102 @@
        </item>
       </widget>
      </item>
-     <item row="5" column="0" colspan="2">
-      <widget class="QLabel" name="label_5">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Leases:</string>
+        <string>Is Active:</string>
        </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="txtName"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Email:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="txtTel"/>
+     </item>
+     <item row="5" column="0" colspan="2">
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_3">
+        <attribute name="title">
+         <string>Current Units</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>4</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QTreeView" name="trvCurrentUnits">
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_4">
+        <attribute name="title">
+         <string>Old Units</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QTreeView" name="trvOldUnits">
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -181,7 +242,6 @@
   <tabstop>cmdAddNew</tabstop>
   <tabstop>cmdSave</tabstop>
   <tabstop>cmdDelete</tabstop>
-  <tabstop>tblLeases</tabstop>
   <tabstop>cmdExit</tabstop>
  </tabstops>
  <resources/>
