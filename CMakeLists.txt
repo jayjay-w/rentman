@@ -48,3 +48,8 @@ add_subdirectory(testapp)
 endif(MAKE_TESTS)
 add_subdirectory(openrpt)
 add_subdirectory(rentmanager)
+
+ADD_CUSTOM_TARGET(win-nsi
+                        COMMAND make
+                        COMMAND makensis rentmanager.nsi
+                )

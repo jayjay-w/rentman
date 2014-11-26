@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(rentmanager)
 
-#IF(COMMAND cmake_policy)
-# CMAKE_POLICY(SET CMP0003 NEW)
-# CMAKE_POLICY(SET CMP0005 OLD)   # remove this and the quoted arguments in
-#                                 # ADD_DEFINITONS() once CMake 2.6 is used
-#ENDIF(COMMAND cmake_policy)
+IF(COMMAND cmake_policy)
+ CMAKE_POLICY(SET CMP0003 NEW)
+ CMAKE_POLICY(SET CMP0005 OLD)   # remove this and the quoted arguments in
+                                 # ADD_DEFINITONS() once CMake 2.6 is used
+ENDIF(COMMAND cmake_policy)
 
 QT5_WRAP_UI(uis 
     rentmanagermainwindow.ui  
@@ -23,6 +23,8 @@ QT5_WRAP_UI(uis
     createmultiinvoice.ui
 smartpaymentdialog.ui
 companyfilepassword.ui
+customeraccountdialog.ui
+depositdialog.ui
 )
 
 QT5_ADD_RESOURCES(qrcs res.qrc)
@@ -31,10 +33,11 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
   ../openrpt/common/ ../openrpt/OpenRPT/common/ ../openrpt/OpenRPT/renderer/
   ${CMAKE_CURRENT_BINARY_DIR})
 
+
 if(MINGW)
     #MinGW resource compilation
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/windows.o
-    COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_CURRENT_SOURCE_DIR}/windows.rc
+    COMMAND i686-w64-mingw32-windres -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_CURRENT_SOURCE_DIR}/Windows.rc
             -o ${CMAKE_CURRENT_BINARY_DIR}/windows.o )
     set(rc ${CMAKE_CURRENT_BINARY_DIR}/windows.o )
 else(MINGW)
@@ -61,6 +64,8 @@ set(rentManagerSources ${rc} ${uis} ${qrcs}
 smartpaymentdialog.cpp
 companyfilepassword.cpp
 simplecrypt.cpp
+customeraccountdialog.cpp
+depositdialog.cpp
 )
 
 
@@ -94,7 +99,7 @@ ENDIF( APPLE )
 
 
 target_link_libraries(${ExecutableName} renderer common
-    )#Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
+    Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
 
 if(APPLE)
     set(plistPath ${CMAKE_CURRENT_SOURCE_DIR}/rentman.plist.in)

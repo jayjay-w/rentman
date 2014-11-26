@@ -4,7 +4,9 @@
 # This installer creator needs to be run with:
 # makensis erp.nsi
 #
-
+!define USR_BIN "/usr/bin"
+!define QT_DLLS "/usr/i686-w64-mingw32/bin"
+!define QT_PLUGINS "/usr/i686-w64-mingw32/lib/qt/plugins"
 #--------------------------------
 # Include Modern UI
 
@@ -14,10 +16,10 @@
 # General
 
     # Program version
-    !define RENTMANAGER_VERSION "1.0.0"
+    !define RENTMANAGER_VERSION "1.0.5"
 
     # VIProductVersion requires version in x.x.x.x format
-    !define RENTMANAGER_VIPRODUCTVERSION "1.0.0.0"
+    !define RENTMANAGER_VIPRODUCTVERSION "1.0.5.0"
 
     # Installer name and filename
     Name "Rent Manager"
@@ -96,12 +98,28 @@ Section
     Delete "$INSTDIR\*.dll"
 
     # Files to include in installer
-    #File /r build\imageformats
-    File /r build\platforms
-    File /r build\printsupport
-    File /r build\sqldrivers
-    File build\*.dll
-    File build\rentmanager.exe
+    File /r "${QT_PLUGINS}\platforms"
+    File /r "${QT_PLUGINS}\printsupport"
+    File /r "${QT_PLUGINS}\sqldrivers"
+    File "${QT_DLLS}\libEGL.dll"
+    File "${QT_DLLS}\libwinpthread-1.dll"
+    File "${QT_DLLS}\libgcc_s_sjlj-1.dll"
+    File "${QT_DLLS}\libGLESv2.dll"
+    File "${QT_DLLS}\libpcre16-0.dll"
+    File "${QT_DLLS}\libpng16-16.dll"
+    File "${QT_DLLS}\libsqlite3-0.dll"
+    File "${QT_DLLS}\libstdc++-6.dll"
+    File "${QT_DLLS}\Qt5Sql.dll"
+    File "${QT_DLLS}\Qt5Core.dll"
+    File "${QT_DLLS}\Qt5Gui.dll"
+    File "${QT_DLLS}\Qt5Network.dll"
+    File "${QT_DLLS}\Qt5PrintSupport.dll"
+    File "${QT_DLLS}\Qt5Widgets.dll"
+    File "${QT_DLLS}\Qt5Xml.dll"
+    File "${QT_DLLS}\zlib1.dll"
+    File bin\rentmanager.exe
+    File bin\libcommon.dll
+    File bin\librenderer.dll
     File licence.txt
     File rentman.ico
 
@@ -159,6 +177,3 @@ Section "Uninstall"
     DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\megvel"
 
 SectionEnd
-
-
-
