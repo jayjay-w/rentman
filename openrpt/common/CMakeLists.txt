@@ -4,16 +4,31 @@ PROJECT(common)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-
-QT5_WRAP_UI(uis parameterproperties.ui 
+set(ui_files parameterproperties.ui 
            paramlistedit.ui 
            login.ui 
            loginOptions.ui 
            parameteredit.ui)
 
-QT5_ADD_RESOURCES (qrc ../OpenRPT/images/OpenRPTCommon.qrc)
+set(qrc_files ../OpenRPT/images/OpenRPTCommon.qrc)
 
-add_library(common ${uis} ${qrc} data.cpp 
+set(h_files data.h 
+          parameter.h 
+          dbtools.h 
+          xsqlquery.h 
+          quuencode.h 
+          loginOptions.h 
+          xvariant.h 
+          languageoptions.h 
+          parameterproperties.h 
+          paramlistedit.h 
+          parameteredit.h 
+          parsexmlutils.h 
+          querysource.h 
+          reportpageoptions.h 
+          memdbloader.h)
+
+set(cpp_files data.cpp 
           parameter.cpp 
           dbtools.cpp 
           xsqlquery.cpp 
@@ -30,6 +45,18 @@ add_library(common ${uis} ${qrc} data.cpp
           reportpageoptions.cpp 
           memdbloader.cpp)
 
+if(QT5)
+QT5_WRAP_UI(uis ${ui_files})
+QT5_ADD_RESOURCES (qrc ${qrc_files})
+add_library(common ${uis} ${qrc} ${cpp_files})
+target_link_libraries(common ${libs})
+else()
+qt4_wrap_cpp(hdrs_moc ${h_files})
+qt4_add_resources (qrc ${qrc_files})
+qt4_wrap_ui(uis ${ui_files})
+qt4_wrap_cpp(moc ${h_files})
+add_library(common ${uis} ${qrc} ${cpp_files} ${moc})
+target_link_libraries(common ${QT_LIBRARIES})
+endif()
           
-target_link_libraries(common Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
 

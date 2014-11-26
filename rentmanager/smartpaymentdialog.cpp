@@ -76,7 +76,7 @@ void SmartPaymentDialog::startNew()
 		tenant->setText(100, "Tenant");
 		QSqlQuery leaseQu = QSqlDatabase::database().exec("SELECT * FROM leases WHERE TenantID = '" + tenantID + "'");
 		while (leaseQu.next()) {
-			QString lease_unitID = leaseQu.value("UnitID").toString();
+			QString lease_unitID = leaseQu.record().value("UnitID").toString();
 			QString unitNO, companyID, propertyID, companyName, propertyName;
 			unitNO = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + lease_unitID + "'", "UnitNo").toString();
 			propertyID = Publics::getDbValue("SELECT * FROM unit WHERE UnitID = '" + lease_unitID + "'", "PropertyID").toString();

@@ -2,9 +2,16 @@ project (rentmanager)
  
 cmake_minimum_required(VERSION 2.8.7)
 
+set(QT5 OFF)
+set(MAKE_TESTS OFF)
+
 if(MINGW)
-message('Building for windows')
-endif(MINGW)
+set(QT5 ON)
+endif()
+
+if(APPLE)
+set(QT5 ON)
+endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -16,8 +23,6 @@ SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 IF(VERSION_SUFFIX)
 	SET (VERSION "${VERSION}-${VERSION_SUFFIX}")
 ENDIF(VERSION_SUFFIX)
-
-set(QT5 OFF)
 
 if(QT5)
 message(STATUS "Using Qt5")
@@ -31,17 +36,22 @@ set(CMAKE_AUTOMOC ON)
 else()
 message(STATUS "Using Qt4")
 find_package(Qt4 REQUIRED)
-include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
-#SET(QT_USE_QTXML 1)
-SET(QT_USE_QTNETWORK 1)
-SET(QT_USE_QTSQL 1)
+SET(QT_USE_QTXML TRUE)
+SET(QT_USE_QTNETWORK TRUE)
+SET(QT_USE_QTSQL TRUE)
+include(${QT_USE_FILE})
 endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-set(MAKE_TESTS ON)
+
+if(QT5)
+set(libs Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
+else()
+set(libs ${QT_LIBRARIES})
+endif()
 
 if(MAKE_TESTS)
 add_subdirectory(testapp)

@@ -75,9 +75,6 @@
        <property name="readOnly">
         <bool>true</bool>
        </property>
-       <property name="clearButtonEnabled">
-        <bool>false</bool>
-       </property>
       </widget>
      </item>
      <item row="0" column="1">

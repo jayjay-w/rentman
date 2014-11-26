@@ -7,8 +7,7 @@ IF(COMMAND cmake_policy)
                                  # ADD_DEFINITONS() once CMake 2.6 is used
 ENDIF(COMMAND cmake_policy)
 
-QT5_WRAP_UI(uis 
-    rentmanagermainwindow.ui  
+set(ui_files rentmanagermainwindow.ui  
     companyinitializationdialog.ui  
     companiesdialog.ui  
     propertiesdialog.ui  
@@ -24,28 +23,34 @@ QT5_WRAP_UI(uis
 smartpaymentdialog.ui
 companyfilepassword.ui
 customeraccountdialog.ui
-depositdialog.ui
+depositdialog.ui)
+
+set(qrc_files res.qrc)
+
+set(h_files
+    rentmanagermainwindow.h
+    publics.h
+    companyinitializationdialog.h
+    companiesdialog.h
+    propertiesdialog.h
+    unitsdialog.h
+    tenantsdialog.h
+    assignunittotenantdialog.h
+    terminateoccupationdialog.h
+    receivepaymentdialog.h
+    paymentsdialog.h
+    myprinter.h
+    createinvoicedialog.h
+    additemtoinvoicedialog.h
+    createmultiinvoice.h
+smartpaymentdialog.h
+companyfilepassword.h
+simplecrypt.h
+customeraccountdialog.h
+depositdialog.h
 )
 
-QT5_ADD_RESOURCES(qrcs res.qrc)
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} 
-  ../openrpt/common/ ../openrpt/OpenRPT/common/ ../openrpt/OpenRPT/renderer/
-  ${CMAKE_CURRENT_BINARY_DIR})
-
-
-if(MINGW)
-    #MinGW resource compilation
-    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/windows.o
-    COMMAND i686-w64-mingw32-windres -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_CURRENT_SOURCE_DIR}/Windows.rc
-            -o ${CMAKE_CURRENT_BINARY_DIR}/windows.o )
-    set(rc ${CMAKE_CURRENT_BINARY_DIR}/windows.o )
-else(MINGW)
-    #set(rc windows.rc)
-endif(MINGW)
-
-set(rentManagerSources ${rc} ${uis} ${qrcs}
-    main.cpp
+set(cpp_files main.cpp
     rentmanagermainwindow.cpp
     publics.cpp
     companyinitializationdialog.cpp
@@ -65,10 +70,35 @@ smartpaymentdialog.cpp
 companyfilepassword.cpp
 simplecrypt.cpp
 customeraccountdialog.cpp
-depositdialog.cpp
-)
+depositdialog.cpp)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} 
+  ../openrpt/common/ ../openrpt/OpenRPT/common/ ../openrpt/OpenRPT/renderer/
+  ${CMAKE_CURRENT_BINARY_DIR})
 
 
+if(MINGW)
+    #MinGW resource compilation
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/windows.o
+    COMMAND i686-w64-mingw32-windres -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_CURRENT_SOURCE_DIR}/Windows.rc
+            -o ${CMAKE_CURRENT_BINARY_DIR}/windows.o )
+    set(rc ${CMAKE_CURRENT_BINARY_DIR}/windows.o )
+    ADD_DEFINITIONS( -D__USE_MINGW_ANSI_STDIO=1 )
+else(MINGW)
+    #set(rc windows.rc)
+endif(MINGW)
+
+if(QT5)
+qt5_wrap_ui(uis ${ui_files})
+qt5_add_resources(qrc ${qrc_files})
+set(moc )
+else()
+qt4_wrap_ui(uis ${ui_files})
+qt4_add_resources(qrcs ${qrc_files})
+qt4_wrap_cpp(moc ${h_files})
+endif()
+
+set(rentManagerSources ${rc} ${uis} ${qrcs} ${cpp_files} ${moc})
 
 if (APPLE)
       set (ExecutableName RentManager )
@@ -97,9 +127,13 @@ IF( APPLE )
         COMMAND cp ARGS -f ${CMAKE_CURRENT_SOURCE_DIR}/cottage.icns ${RentManagerResourceDIR} )
 ENDIF( APPLE )
 
+if(QT5)
+set(libs Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
+else()
+set(libs ${QT_LIBRARIES})
+endif()
 
-target_link_libraries(${ExecutableName} renderer common
-    Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
+target_link_libraries(${ExecutableName} renderer common ${libs})
 
 if(APPLE)
     set(plistPath ${CMAKE_CURRENT_SOURCE_DIR}/rentman.plist.in)

@@ -36,4 +36,4 @@ add_library(renderer openreports.cpp
           ../common/pagesizeinfo.cpp 
           datamatrix.cpp )
 
-target_link_libraries(renderer common Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
+target_link_libraries(renderer common ${libs})
