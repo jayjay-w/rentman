@@ -14,7 +14,7 @@
    <string>Rent Manager</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="res.qrc">
     <normaloff>:/images/cottage.png</normaloff>:/images/cottage.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -87,7 +87,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout">
@@ -174,21 +174,11 @@
              </layout>
             </item>
             <item>
-             <widget class="QTextEdit" name="txtCalendar">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                <horstretch>53</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>500</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
+             <widget class="QWebView" name="calendarWebView">
+              <property name="url">
+               <url>
+                <string>about:blank</string>
+               </url>
               </property>
              </widget>
             </item>
@@ -202,104 +192,58 @@
        <attribute name="title">
         <string>Reports</string>
        </attribute>
-       <widget class="QListWidget" name="lstReports">
+       <widget class="QSplitter" name="reportSplitter">
         <property name="geometry">
          <rect>
-          <x>70</x>
-          <y>100</y>
-          <width>120</width>
-          <height>192</height>
+          <x>30</x>
+          <y>20</y>
+          <width>1056</width>
+          <height>600</height>
          </rect>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>120</width>
-          <height>16777215</height>
-         </size>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
-        <property name="selectionRectVisible">
-         <bool>true</bool>
-        </property>
-        <item>
-         <property name="text">
-          <string>Contact List</string>
+        <widget class="QListWidget" name="lstReports">
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>16777215</height>
+          </size>
          </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Vacant Units</string>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
          </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Occupied Units</string>
+         <property name="selectionRectVisible">
+          <bool>true</bool>
          </property>
-        </item>
-       </widget>
-       <widget class="QTabWidget" name="tabReport">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>40</y>
-          <width>278</width>
-          <height>245</height>
-         </rect>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="QWidget" name="tab_3">
-         <attribute name="title">
-          <string/>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <property name="spacing">
-           <number>0</number>
+         <item>
+          <property name="text">
+           <string>Contact List</string>
           </property>
-          <property name="leftMargin">
-           <number>0</number>
+         </item>
+         <item>
+          <property name="text">
+           <string>Vacant Units</string>
           </property>
-          <property name="topMargin">
-           <number>0</number>
+         </item>
+         <item>
+          <property name="text">
+           <string>Occupied Units</string>
           </property>
-          <property name="rightMargin">
-           <number>0</number>
+         </item>
+         <item>
+          <property name="text">
+           <string>Companies / Properties</string>
           </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QPrintPreviewWidget" name="printPreviewWidget" native="true"/>
-          </item>
-         </layout>
+         </item>
         </widget>
-        <widget class="QWidget" name="tab_4">
-         <attribute name="title">
-          <string/>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_6">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QTextEdit" name="txtReport"/>
-          </item>
-         </layout>
+        <widget class="QWebView" name="reportWebView">
+         <property name="url">
+          <url>
+           <string>about:blank</string>
+          </url>
+         </property>
         </widget>
        </widget>
       </widget>
@@ -406,20 +350,16 @@
     <bool>true</bool>
    </attribute>
    <addaction name="actionExport_To_Excel"/>
+   <addaction name="separator"/>
+   <addaction name="actionPrint_Preview"/>
    <addaction name="actionPrint"/>
    <addaction name="separator"/>
-   <addaction name="actionZoom_In"/>
-   <addaction name="actionZoom_Out"/>
-   <addaction name="separator"/>
    <addaction name="actionPage_Setup"/>
-   <addaction name="separator"/>
-   <addaction name="actionFit_Width"/>
-   <addaction name="actionFit_Page"/>
    <addaction name="separator"/>
   </widget>
   <action name="actionCompanies">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/images/company-building-icon.png</normaloff>:/images/company-building-icon.png</iconset>
    </property>
    <property name="text">
@@ -428,7 +368,7 @@
   </action>
   <action name="actionProperties">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/images/Home-icon.png</normaloff>:/images/Home-icon.png</iconset>
    </property>
    <property name="text">
@@ -442,7 +382,7 @@
   </action>
   <action name="actionTenants">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/images/Preppy-icon.png</normaloff>:/images/Preppy-icon.png</iconset>
    </property>
    <property name="text">
@@ -461,7 +401,7 @@
   </action>
   <action name="actionCreate_Invoice">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/images/invoice-icon.png</normaloff>:/images/invoice-icon.png</iconset>
    </property>
    <property name="text">
@@ -470,7 +410,7 @@
   </action>
   <action name="actionMulti_Invoicing">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/images/invoice-icon.png</normaloff>:/images/invoice-icon.png</iconset>
    </property>
    <property name="text">
@@ -479,7 +419,7 @@
   </action>
   <action name="actionReceive_Payments">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/images/Sales-by-payment-method-icon.png</normaloff>:/images/Sales-by-payment-method-icon.png</iconset>
    </property>
    <property name="text">
@@ -493,7 +433,7 @@
   </action>
   <action name="action_New">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/images/Files-New-File-icon.png</normaloff>:/images/Files-New-File-icon.png</iconset>
    </property>
    <property name="text">
@@ -502,7 +442,7 @@
   </action>
   <action name="action_Open">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/images/open-file-icon.png</normaloff>:/images/open-file-icon.png</iconset>
    </property>
    <property name="text">
@@ -511,7 +451,7 @@
   </action>
   <action name="action_Save">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/images/Save-icon.png</normaloff>:/images/Save-icon.png</iconset>
    </property>
    <property name="text">
@@ -525,7 +465,7 @@
   </action>
   <action name="actionView_Payments">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/images/Sales-by-payment-method-icon.png</normaloff>:/images/Sales-by-payment-method-icon.png</iconset>
    </property>
    <property name="text">
@@ -623,16 +563,22 @@
     <string>&amp;Remove Tenant from Unit</string>
    </property>
   </action>
+  <action name="actionPrint_Preview">
+   <property name="text">
+    <string>Print Preview</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QPrintPreviewWidget</class>
+   <class>QWebView</class>
    <extends>QWidget</extends>
-   <header>qprintpreviewwidget.h</header>
-   <container>1</container>
+   <header>QtWebKitWidgets/QWebView</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

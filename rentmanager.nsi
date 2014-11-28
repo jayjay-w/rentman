@@ -6,7 +6,7 @@
 #
 !define USR_BIN "/usr/bin"
 !define QT_DLLS "/usr/i686-w64-mingw32/bin"
-!define QT_PLUGINS "/usr/i686-w64-mingw32/lib/qt/plugins"
+!define QT_PLUGINS "/usr/i686-w64-mingw32/lib/qt4/plugins"
 #--------------------------------
 # Include Modern UI and file association
 
@@ -102,8 +102,6 @@ Section
     Delete "$INSTDIR\*.dll"
 
     # Files to include in installer
-    File /r "${QT_PLUGINS}\platforms"
-    File /r "${QT_PLUGINS}\printsupport"
     File /r "${QT_PLUGINS}\sqldrivers"
     File "${QT_DLLS}\libEGL.dll"
     File "${QT_DLLS}\libwinpthread-1.dll"
@@ -113,17 +111,13 @@ Section
     File "${QT_DLLS}\libpng16-16.dll"
     File "${QT_DLLS}\libsqlite3-0.dll"
     File "${QT_DLLS}\libstdc++-6.dll"
-    File "${QT_DLLS}\Qt5Sql.dll"
-    File "${QT_DLLS}\Qt5Core.dll"
-    File "${QT_DLLS}\Qt5Gui.dll"
-    File "${QT_DLLS}\Qt5Network.dll"
-    File "${QT_DLLS}\Qt5PrintSupport.dll"
-    File "${QT_DLLS}\Qt5Widgets.dll"
-    File "${QT_DLLS}\Qt5Xml.dll"
+    File "${QT_DLLS}\QtSql4.dll"
+    File "${QT_DLLS}\QtCore4.dll"
+    File "${QT_DLLS}\QtGui4.dll"
+    File "${QT_DLLS}\QtNetwork4.dll"
+    File "${QT_DLLS}\QtWebkit4.dll"
     File "${QT_DLLS}\zlib1.dll"
     File bin\rentmanager.exe
-    File bin\libcommon.dll
-    File bin\librenderer.dll
     File licence.txt
     File rentman.ico
 

@@ -82,6 +82,15 @@ void DatabaseInitThread::run()
 
 	db.exec("DELETE FROM version");
 	db.exec("INSERT INTO version('DbVersion') VALUES ('2')");
+
+	//Reload unit status
+	db.exec("UPDATE unit SET CurrentTenantID = '', Occupied='No'");
+	QSqlQuery leaseQu = db.exec("SELECT * FROM leases WHERE LeaseActive='Yes'");
+	while (leaseQu.next()) {
+		QString unitID = leaseQu.record().value("UnitID").toString();
+		QString tenantID = leaseQu.record().value("TenantID").toString();
+		db.exec("UPDATE unit SET Occupied = 'Yes', CurrentTenantID = '" + tenantID + "' WHERE UnitID = '" + unitID + "'");
+	}
 }
 
 void DatabaseInitThread::executeInitSql(QString sql)

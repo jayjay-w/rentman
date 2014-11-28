@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(rentmanager)
 
-IF(COMMAND cmake_policy)
- CMAKE_POLICY(SET CMP0003 NEW)
- CMAKE_POLICY(SET CMP0005 OLD)   # remove this and the quoted arguments in
-                                 # ADD_DEFINITONS() once CMake 2.6 is used
-ENDIF(COMMAND cmake_policy)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}
+../xlslib
+${Qt4Gui_PRIVATE_INCLUDE_DIRS}
+  ${CMAKE_CURRENT_BINARY_DIR}
+)
 
 set(ui_files rentmanagermainwindow.ui  
     companyinitializationdialog.ui  
@@ -30,6 +31,7 @@ set(ui_files rentmanagermainwindow.ui
 
 set(qrc_files res.qrc)
 
+
 set(h_files
     rentmanagermainwindow.h
     publics.h
@@ -42,7 +44,6 @@ set(h_files
     terminateoccupationdialog.h
     receivepaymentdialog.h
     paymentsdialog.h
-    myprinter.h
     createinvoicedialog.h
     additemtoinvoicedialog.h
     createmultiinvoice.h
@@ -67,7 +68,6 @@ set(cpp_files main.cpp
     terminateoccupationdialog.cpp
     receivepaymentdialog.cpp
     paymentsdialog.cpp
-    myprinter.cpp
     createinvoicedialog.cpp
     additemtoinvoicedialog.cpp
     createmultiinvoice.cpp
@@ -80,9 +80,6 @@ set(cpp_files main.cpp
     terminateleasedialog.cpp
 )
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} 
-  ../openrpt/common/ ../openrpt/OpenRPT/common/ ../openrpt/OpenRPT/renderer/
-  ${CMAKE_CURRENT_BINARY_DIR})
 
 
 if(MINGW)
@@ -135,7 +132,7 @@ IF( APPLE )
         COMMAND cp ARGS -f ${CMAKE_CURRENT_SOURCE_DIR}/cottage.icns ${RentManagerResourceDIR} )
 ENDIF( APPLE )
 
-target_link_libraries(${ExecutableName} renderer common ${libs})
+target_link_libraries(${ExecutableName} xlslib ${libs})
 
 if(APPLE)
     set(plistPath ${CMAKE_CURRENT_SOURCE_DIR}/rentman.plist.in)

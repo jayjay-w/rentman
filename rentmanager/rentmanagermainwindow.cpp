@@ -11,19 +11,16 @@
 #include "receivepaymentdialog.h"
 #include "paymentsdialog.h"
 #include <QTableWidgetItem>
-#include "myprinter.h"
+
 #include "createinvoicedialog.h"
 #include "createmultiinvoice.h"
 #include "smartpaymentdialog.h"
-#include "renderobjects.h"
-#include "orprerender.h"
-#include "previewdialog.h"
-#include "orprintrender.h"
-#include "parameter.h"
-#include <QDomDocument>
+
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QInputDialog>
+#include <QPageSetupDialog>
+#include <QPrintPreviewDialog>
 #include "companyfilepassword.h"
 #include "simplecrypt.h"
 #include "depositdialog.h"
@@ -40,7 +37,6 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	m_tenants(0),
 	m_assign(0),
 	m_payDiag(0),
-	m_printer(0),
 	m_singleInvoice(0),
 	m_multiInvoice(0),
 	m_smartPayment(0),
@@ -58,7 +54,6 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	if (!actionsToDisable)
 		actionsToDisable = new QActionGroup(this);
 
-	m_printer = new MyPrinter(this);
 
 
 
@@ -105,8 +100,6 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 					      ui->splitter->saveState()).toByteArray());
 
 	printer = new QPrinter(QPrinter::HighResolution);
-	connect (ui->printPreviewWidget, SIGNAL(paintRequested(QPrinter*)), SLOT(previewRequested(QPrinter*)));
-	//ui->printPreviewWidget = new QPrintPreviewWidget(printer);
 
 	QHBoxLayout *tab2Layout = new QHBoxLayout(this);
 	tab2Layout->addWidget(ui->lstReports);
@@ -116,7 +109,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	QToolBar *tblQuery = new QToolBar("Report Query Toolbar", this);
 	printLayout->addWidget(ui->printToolBar);
 	printLayout->addWidget(tblQuery);
-	printLayout->addWidget(ui->tabReport);
+	printLayout->addWidget(ui->reportSplitter);
 	tab2Layout->addLayout(printLayout);
 
 	ui->tab_2->setLayout(tab2Layout);
@@ -144,12 +137,7 @@ RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
 	tblQuery->addSeparator();
 	tblQuery->addWidget(rpt_refresh);
 	connect (rpt_refresh, SIGNAL(clicked()), SLOT(showReportPreview()));
-	//connect (rpt_dtpReportQuery, SIGNAL(dateChanged(QDate)), SLOT(showReportPreview()));
 	connect (rpt_cboCompany, SIGNAL(currentIndexChanged(QString)), SLOT(reportCompanyChanged()));
-	ui->printPreviewWidget->zoomIn();
-	ui->printPreviewWidget->zoomIn();
-	ui->printPreviewWidget->zoomIn();
-	ui->printPreviewWidget->zoomIn();
 }
 
 RentManagerMainWindow::~RentManagerMainWindow()
@@ -183,7 +171,7 @@ void RentManagerMainWindow::closeFile()
 	actionsToDisable->setEnabled(false);
 
 	ui->trvBrowser->invisibleRootItem()->takeChildren();
-	ui->txtCalendar->setText("");
+	ui->calendarWebView->setHtml("");
 	ui->tabWidget->setCurrentIndex(0);
 	ui->tabWidget->setEnabled(false);
 
@@ -457,7 +445,7 @@ void RentManagerMainWindow::on_trvBrowser_itemClicked(QTreeWidgetItem *item, int
 		reloadCalendar();
 	} else {
 		html = "<h3>Select a property to see its' payment schedule</h3>";
-		ui->txtCalendar->setHtml(html);
+		ui->calendarWebView->setHtml(html);
 	}
 
 }
@@ -474,7 +462,7 @@ void RentManagerMainWindow::on_actionView_Payments_triggered()
 
 void RentManagerMainWindow::on_actionAll_Units_triggered()
 {
-	m_printer->qtPreview("units", QStringList("param_where"), QStringList(""));
+
 }
 
 void RentManagerMainWindow::aboutQt()
@@ -507,6 +495,13 @@ void RentManagerMainWindow::on_actionMulti_Invoicing_triggered()
 void RentManagerMainWindow::reloadCalendar()
 {
 	QString html = "";
+	QFile fl(":/reports/reports/html_pretext");
+	if (!fl.open(QIODevice::ReadOnly)) {
+		Publics::showError("Could not open report source.\n" + fl.errorString());
+		return;
+	}
+	//File open
+	html += fl.readAll();
 	QSqlQuery unitQu = db.exec("SELECT * FROM unit WHERE PropertyID = '" + currentProperty + "'");
 	QString propertyName = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + currentProperty + "'", "PropertyName").toString();
 	QString companyId = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + currentProperty + "'", "CompanyID").toString();
@@ -516,37 +511,44 @@ void RentManagerMainWindow::reloadCalendar()
 	QString headerTable;
 
 
-	headerTable += "<table width=100% border=0 cellspacing=0>";
-	headerTable += QString("<tr><td align=center><b>%1</b><br/><b>%2</b><br/>%3<br/>%4</td></tr>")
+	headerTable += "<table class='reference' style='width:90%' align='center'>";
+	headerTable += QString("<tr style='font-face:verdana'><td align=center><b>%1</b><br/><b>%2</b><br/>%3<br/>%4</td></tr>")
 			.arg(companyName, propertyName, physical, postal);
 	headerTable += "</table>";
-	headerTable += "<table width=100% border=0 cellspacing=0>";
-	headerTable += QString("<tr><td>Payment Calendar</td><td align=right>%1</td></tr>").arg(QDate::currentDate().toString("dd-MMM-yyyy"));
+	headerTable += "<table class='reference' border=0 style='width:90%' align='center'>";
+	headerTable += QString("<tr style='font-face:verdana'><td>Payment Calendar</td><td align=right>%1</td></tr>").arg(QDate::currentDate().toString("dd-MMM-yyyy"));
 	headerTable += "</table>";
 
 	html += headerTable;
+	QStringList months;
+	months << "" << "Jan"
+	       << "Feb"
+	       << "Mar"
+	       << "Apr"
+	       << "May"
+	       << "Jun"
+	       << "Jul"
+	       << "Aug"
+	       << "Sep"
+	       << "Oct"
+	       << "Nov"
+	       << "Dec";
 
-	html += "<table border=1 width=100%>";
-	html += "<tr><td></td>"
-		"<td><b>Jan</b></td>"
-		"<td><b>Feb</b></td>"
-		"<td><b>Mar</b></td>"
-		"<td><b>Apr</b></td>"
-		"<td><b>May</b></td>"
-		"<td><b>Jun</b></td>"
-		"<td><b>Jul</b></td>"
-		"<td><b>Aug</b></td>"
-		"<td><b>Sep</b></td>"
-		"<td><b>Oct</b></td>"
-		"<td><b>Nov</b></td>"
-		"<td><b>Dec</b></td></tr>";
+	html += "<body><table class='reference' style='width:90%' align='center'>\n";
+	html += "<tr>";
+
+	for (int i = 0; i < months.count(); i++)
+	{
+		html += QString("<th><font face='verdana'>%1</font></th>").arg(months.at(i));
+	}
+	html += "</tr>";
 
 	while (unitQu.next()) {
 		QString unitNo = unitQu.record().value("UnitNo").toString();
 		QString unitID = unitQu.record().value("UnitID").toString();
 		html += "<tr>"; //start or unit row
 		//first col is the unit name
-		html += "<td><b>" + unitNo + "</b></td>";
+		html += "<th>" + unitNo + "</th>";
 		for (int i = 1; i < 13; i++) {
 			QDate dat(ui->cboYear->currentText().toInt(), i, 1);
 			QString monthYear = dat.toString("MMM-yy");
@@ -588,21 +590,21 @@ void RentManagerMainWindow::reloadCalendar()
 				colText = "";
 
 
-				colText += "<b>Due:</b> " + QString::number(due);
-				colText += "<br/><b>Pd:</b> " + QString::number(paid);
-				colText += "<br/><b>Bal:</b> " + QString::number(balance);
+			colText += "<b>Due:</b> " + QString::number(due);
+			colText += "<br/><b>Pd:</b> " + QString::number(paid);
+			colText += "<br/><b>Bal:</b> " + QString::number(balance);
 
 
-			html += "<td bgcolor=" + bgColor + ">";
+			html += "<td bgcolor=" + bgColor + " style='font-size:11px'><font face='verdana'>";
 			html += colText;
-			html += "</td>";
+			html += "</font></td>";
 		}
 		html += "</tr>"; //end of unit row
 	}
 
 	html += "</table>";
 
-	ui->txtCalendar->setHtml(html);
+	ui->calendarWebView->setHtml(html);
 }
 
 void RentManagerMainWindow::on_cboYear_currentIndexChanged(int index)
@@ -614,7 +616,7 @@ void RentManagerMainWindow::on_cboYear_currentIndexChanged(int index)
 void RentManagerMainWindow::on_actionContact_List_triggered()
 {
 
-	m_printer->qtPreview("contact_list", QStringList("param_where"), QStringList(""));
+
 }
 
 void RentManagerMainWindow::on_actionAbout_triggered()
@@ -760,44 +762,7 @@ void RentManagerMainWindow::showReportPreview()
 		}
 	}
 
-	printer = new QPrinter(QPrinter::HighResolution);
-	m_reportName = reportName;
-	QFile fl(":/reports/reports/" + reportName + ".xml");
-	if (!fl.open(QIODevice::ReadOnly)) {
-		Publics::showError("Could not open report source.\n" + fl.errorString());
-		return;
-	}
-	//File open
-	QString xml = fl.readAll();
-	m_xml = xml;
-	m_doc.setContent(m_xml);
-	fl.close();
-
-	ui->printPreviewWidget->updatePreview();
-}
-
-void RentManagerMainWindow::previewRequested(QPrinter *p)
-{
-	ORPreRender pre;
-	pre.setDatabase(QSqlDatabase::database());
-	pre.setDom(m_doc);
-	ParameterList params = ParameterList();
-	for (int i = 0; i < m_paramsToReplace.count(); i++) {
-		Parameter param(m_paramsToReplace.at(i), m_paramReplacements.at(i));
-		params.append(param);
-	}
-	pre.setParamList(params);
-	ORODocument *oDoc = pre.generate();
-
-	if (oDoc) {
-		ORPrintRender render;
-		render.setPrinter(p);
-		render.render(oDoc);
-		render.setupPrinter(oDoc, p);
-	} else {
-		if (currentFilePath.length() > 0)
-			Publics::showError("Printer Error");
-	}
+	showHtmlReport();
 }
 
 void RentManagerMainWindow::on_actionPrint_triggered()
@@ -805,7 +770,7 @@ void RentManagerMainWindow::on_actionPrint_triggered()
 	printer = new QPrinter(QPrinter::HighResolution);
 	QPrintDialog *prnt = new QPrintDialog(printer, this);
 	if (prnt->exec() == QDialog::Accepted) {
-		previewRequested(printer);
+		ui->reportWebView->print(printer);
 	}
 }
 
@@ -820,26 +785,6 @@ void RentManagerMainWindow::on_actionChange_Password_triggered()
 	pass->exec() ;
 }
 
-
-void RentManagerMainWindow::on_actionZoom_In_triggered()
-{
-	ui->printPreviewWidget->zoomIn();
-}
-
-void RentManagerMainWindow::on_actionZoom_Out_triggered()
-{
-	ui->printPreviewWidget->zoomOut();
-}
-
-void RentManagerMainWindow::fitPage()
-{
-	ui->printPreviewWidget->setZoomMode(QPrintPreviewWidget::FitInView);
-}
-
-void RentManagerMainWindow::fitWidth()
-{
-	ui->printPreviewWidget->setZoomMode(QPrintPreviewWidget::FitToWidth);
-}
 
 void RentManagerMainWindow::on_actionDeposit_List_triggered()
 {
@@ -889,8 +834,136 @@ void RentManagerMainWindow::reportCompanyChanged()
 
 void RentManagerMainWindow::on_cmdPrintCalendar_clicked()
 {
-    QPrinter *prnt = new QPrinter(QPrinter::HighResolution);
-    QPrintDialog *dlg = new QPrintDialog(prnt, this);
-    if (dlg->exec() == QDialog::Accepted)
-	    ui->txtCalendar->print(prnt);
+	QPrinter *prnt = new QPrinter(QPrinter::HighResolution);
+	QPrintDialog *dlg = new QPrintDialog(prnt, this);
+	if (dlg->exec() == QDialog::Accepted)
+		ui->calendarWebView->print(prnt);
+}
+
+void RentManagerMainWindow::showHtmlReport()
+{
+	QString html;
+	QString manualHtml;
+	QString reportTitle;
+	QFile fl(":/reports/reports/html_pretext");
+	if (!fl.open(QIODevice::ReadOnly)) {
+		Publics::showError("Could not open report source.\n" + fl.errorString());
+		return;
+	}
+	//File open
+	html += fl.readAll();
+	QString sql;
+
+	bool autoSql = true;
+
+	if (rptName == "Vacant Units") {
+		sql = "SELECT company.Code as'Company', property.propertyCode as 'Property',unit.UnitNo as 'Unit No' FROM unit, property,company WHERE unit.PropertyID = property.PropertyID AND property.CompanyID = company.CompanyID AND Unit.Occupied = 'No' ";
+		if (rpt_cboCompany->currentIndex() > 0)
+			sql += " AND company.Code = '" + rpt_cboCompany->currentText() + "' ";
+
+		if (rpt_cboProperty->currentIndex() > 0)
+			sql += " AND property.PropertyCode = '" + rpt_cboProperty->currentText() + "'";
+
+		reportTitle = "Vacant Units";
+	}
+
+	if (rptName == "Occupied Units") {
+		sql = 	"SELECT company.Code as 'Company',  property.PropertyCode as 'Property', unit.UnitNo as 'Unit No.' , tenant.Name  as 'Tenant Name', leases.MonthlyRent as 'Rent Per Month'"
+			"	FROM leases, unit, tenant, property, company WHERE LeaseActive='Yes'"
+			"	AND leases.UnitID = unit.UnitID"
+			"	AND leases.TenantID = tenant.TenantID"
+			"	AND unit.PropertyID = property.PropertyID"
+			"	AND property.CompanyID = company.CompanyID";
+
+		if (rpt_cboCompany->currentIndex() > 0)
+			sql += " AND company.Code = '" + rpt_cboCompany->currentText() + "' ";
+
+		if (rpt_cboProperty->currentIndex() > 0)
+			sql += " AND property.PropertyCode = '" + rpt_cboProperty->currentText() + "'";
+
+
+		reportTitle = "Occupied Units";
+	}
+
+
+	if (rptName == "Contact List") {
+		sql = "SELECT * FROM report_contact_list";
+		reportTitle  = "Contact List";
+	}
+
+	if (rptName == "Companies / Properties") {
+		reportTitle = "Companies / Properties";
+		autoSql = false;
+		QSqlQuery companiesQu = QSqlDatabase::database().exec("SELECT * FROM company");
+		while (companiesQu.next()) {
+			QString companyName = companiesQu.record().value("Code").toString();
+			QString companyID = companiesQu.record().value("CompanyID").toString();
+			manualHtml += "<br/><table class='reference' style='width:90%' align='center'>\n";
+			//Append table headers
+			manualHtml += QString("<tr><th align='left'><font face='verdana'>%1</font></th></tr>\n").arg(companyName);
+			QSqlQuery propQu = QSqlDatabase::database().exec("SELECT * FROM property WHERE CompanyID = '" + companyID + "'");
+			while (propQu.next()) {
+				QString propName = propQu.record().value("PropertyCode").toString();
+				manualHtml += "<tr><td style='font-size:11px'><font face='verdana'>" + propName + "</font></td></tr>\n";
+
+			}
+			manualHtml += "</table><br/>\n";
+		}
+	}
+	html += "<body><h1 align=center><font face='verdana'>" + reportTitle + "</font></h1>";
+	if (autoSql) {
+		QSqlQuery qu = db.exec(sql);
+		QStringList headers;
+
+		QSqlQueryModel *rptModel = new QSqlQueryModel(this);
+		rptModel->setQuery(sql, QSqlDatabase::database());
+
+		int col_nums =rptModel->columnCount();
+
+		for (int c = 0; c < col_nums; c++) {
+			headers.append(rptModel->headerData(c, Qt::Horizontal, Qt::DisplayRole).toString());
+		}
+		html += "<table class='reference' style='width:90%' align='center'>\n";
+		html += QString("<tr><td align='right' style='font-size:11px'><font face='verdana'>%1</font></td></tr>\n").arg(QDate::currentDate().toString("dd-MMM-yyyy"));
+		html += "</table>\n";
+		html += "<table class='reference' style='width:90%' align='center'>\n";
+		//Append table headers
+		html += "<tr>\n";
+		for (int c = 0; c < col_nums; c++) {
+			html += "<th><font face='verdana'>" + headers.at(c) + "</font></th>\n";
+		}
+		html += "</tr>\n";
+		//Add table data
+		while (qu.next()) {
+			html += "<tr>\n";
+			for (int c = 0; c < col_nums; c++) {
+				html += "<td style='font-size:11px'><font face='verdana'>" + qu.record().value(c).toString() + "</font></td>\n";
+			}
+			html += "</tr>\n";
+		}
+		//Add html footer
+		html += "</table>\n";
+	} else {
+		html += manualHtml;
+	}
+	html += "</body></html>";
+	ui->reportWebView->setHtml(html);
+}
+
+void RentManagerMainWindow::on_actionPrint_Preview_triggered()
+{
+	QPrintPreviewDialog *prev = new QPrintPreviewDialog(printer, this);
+	connect (prev, SIGNAL(paintRequested(QPrinter*)), SLOT(printReport(QPrinter*)));
+	prev->exec();
+}
+
+void RentManagerMainWindow::printReport(QPrinter *prnt)
+{
+	ui->reportWebView->print(prnt);
+}
+
+void RentManagerMainWindow::on_actionPage_Setup_triggered()
+{
+	QPageSetupDialog *pg = new QPageSetupDialog(printer, this);
+	pg->exec();
 }

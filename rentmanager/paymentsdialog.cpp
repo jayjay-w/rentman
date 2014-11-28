@@ -1,7 +1,6 @@
 #include "paymentsdialog.h"
 #include "ui_paymentsdialog.h"
 
-#include "myprinter.h"
 #include "publics.h"
 #include <QtSql>
 #include <QSqlQueryModel>
@@ -58,5 +57,4 @@ void PaymentsDialog::on_trvPayments_doubleClicked(const QModelIndex &index)
 	QStringList stringsToUse;
 	stringsToReplace << "PaymentID" << "CompanyID" << "ReportDate";
 	stringsToUse << paymentID << companyID << QDate::currentDate().toString("dd-MMM-yyyy");
-	RentManagerMainWindow::instance()->m_printer->qtPreview("receipt", stringsToReplace, stringsToUse);
 }

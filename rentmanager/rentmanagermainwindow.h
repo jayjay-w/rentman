@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QtSql>
-#include <QtXml>
 #include <QDateEdit>
 #include <QComboBox>
 #include <QPushButton>
@@ -16,7 +15,6 @@ class PropertiesDialog;
 class TenantsDialog;
 class AssignUnitToTenantDialog;
 class PaymentsDialog;
-class MyPrinter;
 class CreateInvoiceDialog;
 class CreateMultiInvoice;
 class SmartPaymentDialog;
@@ -54,7 +52,6 @@ public:
 	CustomerAccountDialog *m_custAccount;
 	TerminateLeaseDialog *m_terminateLease;
 
-	MyPrinter *m_printer;
 public slots:
 	void startOpenFile();
 	void closeFile();
@@ -93,8 +90,6 @@ private:
 
 	QString m_currentCompany;
 
-protected:
-	QDomDocument m_doc;
 private slots:
 	void openRecentFile();
 	void startNewFile();
@@ -119,23 +114,21 @@ private slots:
 	void on_lstReports_itemClicked(QListWidgetItem *item);
 
 	void showReportPreview();
-	void previewRequested(QPrinter *p);
 	void on_actionPrint_triggered();
 	void on_actionExport_To_Excel_triggered();
 	void on_actionChange_Password_triggered();
 
-
-	void on_actionZoom_In_triggered();
-	void on_actionZoom_Out_triggered();
-
-	void fitPage();
-	void fitWidth();
 	void on_actionDeposit_List_triggered();
 	void on_actionView_Tenant_Accounts_triggered();
 	void on_actionTerminate_Lease_triggered();
 
 	void reportCompanyChanged();
 	void on_cmdPrintCalendar_clicked();
+
+	void showHtmlReport();
+	void on_actionPrint_Preview_triggered();
+	void printReport(QPrinter *prnt);
+	void on_actionPage_Setup_triggered();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

@@ -2,11 +2,18 @@ project (rentmanager)
  
 cmake_minimum_required(VERSION 2.8.7)
 
+IF(COMMAND cmake_policy)
+ CMAKE_POLICY(SET CMP0003 NEW)
+CMAKE_POLICY(SET CMP0020 NEW)
+ CMAKE_POLICY(SET CMP0005 OLD)   # remove this and the quoted arguments in
+                                 # ADD_DEFINITONS() once CMake 2.6 is used
+ENDIF(COMMAND cmake_policy)
+
 set(QT5 OFF)
 set(MAKE_TESTS OFF)
 
 if(MINGW)
-set(QT5 ON)
+set(QT5 OFF)
 endif()
 
 if(APPLE)
@@ -29,17 +36,15 @@ message(STATUS "Using Qt5")
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
-find_package(Qt5Xml REQUIRED)
-find_package(Qt5Network REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
+find_package(Qt5WebKitWidgets REQUIRED)
 set(CMAKE_AUTOMOC ON)
 else()
 message(STATUS "Using Qt4")
 find_package(Qt4 REQUIRED)
 add_definitions(${QT_DEFINITIONS})
-SET(QT_USE_QTXML TRUE)
-SET(QT_USE_QTNETWORK TRUE)
 SET(QT_USE_QTSQL TRUE)
+SET(QT_USE_QTWEBKIT TRUE)
 include(${QT_USE_FILE})
 endif()
 
@@ -48,7 +53,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 
 if(QT5)
-set(libs Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Sql Qt5::PrintSupport)
+set(libs Qt5::Widgets Qt5::Sql Qt5::PrintSupport Qt5::WebKitWidgets)
 else()
 set(libs ${QT_LIBRARIES})
 endif()
@@ -56,8 +61,8 @@ endif()
 if(MAKE_TESTS)
 add_subdirectory(testapp)
 endif(MAKE_TESTS)
-add_subdirectory(openrpt)
 add_subdirectory(rentmanager)
+add_subdirectory(xlslib)
 
 ADD_CUSTOM_TARGET(win-nsi
                         COMMAND make
