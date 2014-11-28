@@ -16,5 +16,10 @@ int main(int argc, char *argv[])
 	RentManagerMainWindow w;
 	w.showMaximized();
 
+	if (argc > 1) {
+		QString fileName = qApp->arguments().at(1);
+		w.loadFile(fileName);
+	}
+
 	return a.exec();
 }

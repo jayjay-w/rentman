@@ -56,11 +56,11 @@ public slots:
 	void startOpenFile();
 	void closeFile();
 	void reloadBrowser();
+	void loadFile(const QString &fileName);
 private:
 	Ui::RentManagerMainWindow *ui;
 	QSqlDatabase db;
 	QString currentFilePath;
-	void loadFile(const QString &fileName);
 	bool saveFile(const QString &fileName);
 	void setCurrentFile(const QString &fileName);
 	QString strippedName(const QString &fullFileName);
