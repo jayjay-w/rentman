@@ -27,6 +27,11 @@
 #include "customeraccountdialog.h"
 #include "terminateleasedialog.h"
 
+#include "xlslib.h"
+
+using namespace xlslib_core;
+using namespace std;
+
 RentManagerMainWindow *RentManagerMainWindow::m_instance = NULL;
 
 RentManagerMainWindow::RentManagerMainWindow(QWidget *parent) :
@@ -776,7 +781,68 @@ void RentManagerMainWindow::on_actionPrint_triggered()
 
 void RentManagerMainWindow::on_actionExport_To_Excel_triggered()
 {
+	QString sql;
+	if (rptName == "Contact List") {
+		sql = "SELECT * FROM report_contact_list";
+	}
+	if (rptName == "Vacant Units") {
+		sql = "SELECT company.Code as'Company', property.propertyCode as 'Property',unit.UnitNo as 'Unit No' FROM unit, property,company WHERE unit.PropertyID = property.PropertyID AND property.CompanyID = company.CompanyID AND Unit.Occupied = 'No' ";
+		if (rpt_cboCompany->currentIndex() > 0)
+			sql += " AND company.Code = '" + rpt_cboCompany->currentText() + "' ";
 
+		if (rpt_cboProperty->currentIndex() > 0)
+			sql += " AND property.PropertyCode = '" + rpt_cboProperty->currentText() + "'";
+
+	}
+
+	if (rptName == "Occupied Units") {
+		sql = 	"SELECT company.Code as 'Company',  property.PropertyCode as 'Property', unit.UnitNo as 'Unit No.' , tenant.Name  as 'Tenant Name', leases.MonthlyRent as 'Rent Per Month'"
+			"	FROM leases, unit, tenant, property, company WHERE LeaseActive='Yes'"
+			"	AND leases.UnitID = unit.UnitID"
+			"	AND leases.TenantID = tenant.TenantID"
+			"	AND unit.PropertyID = property.PropertyID"
+			"	AND property.CompanyID = company.CompanyID";
+
+		if (rpt_cboCompany->currentIndex() > 0)
+			sql += " AND company.Code = '" + rpt_cboCompany->currentText() + "' ";
+
+		if (rpt_cboProperty->currentIndex() > 0)
+			sql += " AND property.PropertyCode = '" + rpt_cboProperty->currentText() + "'";
+
+	}
+
+	QSqlQuery qu = db.exec(sql);
+
+	QSqlQueryModel *rptModel = new QSqlQueryModel(this);
+	rptModel->setQuery(sql, QSqlDatabase::database());
+
+	int col_nums =rptModel->columnCount();
+
+
+
+	workbook wb;
+	worksheet *sh = wb.sheet(rptName.toStdString());
+
+	sh->label(0, 0, rptName.toStdString());
+	sh->label(1, 0, QDateTime::currentDateTime().toString("hh:mm:ss dd-MMM-yyyy").toStdString());
+
+
+	int rowStart = 4;
+	for (int c = 0; c < col_nums; c++) {
+		sh->label(rowStart, c, rptModel->headerData(c, Qt::Horizontal, Qt::DisplayRole).toString().toStdString());
+	}
+
+	int r = rowStart + 1;
+	while (qu.next()) {
+		for (int c = 0; c < col_nums; c++) {
+			sh->label(r, c, qu.record().value(c).toString().toStdString());
+		}
+		r++;
+	}
+
+	QString exportFileName = QFileDialog::getSaveFileName(this, "Excel File Name", QDir::homePath(), "Excel Files (*.xls)");
+	if (exportFileName.length() > 0)
+		wb.Dump(exportFileName.toStdString());
 }
 
 void RentManagerMainWindow::on_actionChange_Password_triggered()
