@@ -118,6 +118,7 @@ Section
     File "${QT_DLLS}\QtWebkit4.dll"
     File "${QT_DLLS}\zlib1.dll"
     File bin\rentmanager.exe
+    File bin\libxlslib.dll
     File licence.txt
     File rentman.ico
 
