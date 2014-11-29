@@ -79,6 +79,18 @@ void DatabaseInitThread::run()
 	db.exec("ALTER table leases ADD COLUMN 'LeaseActive' TEXT DEFAULT('Yes')");
 	db.exec("ALTER table payments ADD COLUMN 'Narration' TEXT");
 	db.exec("ALTER table tenant ADD COLUMN 'Balance' TEXT Default('0')");
+	db.exec("ALTER table invoice_master ADD COLUMN 'SpecialDate' TEXT");
+
+	QSqlQuery invQu = db.exec("SELECT * FROM invoice_master");
+	while (invQu.next()) {
+		QString specialDate = invQu.record().value("SpecialDate").toString();
+		if (specialDate.length() < 1) {
+			QString dt = invQu.record().value("InvoiceDate").toString();
+			QDate d_dt = QDate::fromString(dt, "dd-MMM-yyyy");
+			QString specialDate = d_dt.toString("yyyy-MM-dd");
+			db.exec("UPDATE invoice_master SET SpecialDate = '" + specialDate + "' WHERE EntryID = '" + invQu.record().value("EntryID").toString() + "'");
+		}
+	}
 
 	db.exec("DELETE FROM version");
 	db.exec("INSERT INTO version('DbVersion') VALUES ('2')");
