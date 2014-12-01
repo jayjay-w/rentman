@@ -129,6 +129,7 @@ private slots:
 	void on_actionPrint_Preview_triggered();
 	void printReport(QPrinter *prnt);
 	void on_actionPage_Setup_triggered();
+	void on_cmdExportCalendar_clicked();
 };
 
 #endif // RENTMANAGERMAINWINDOW_H

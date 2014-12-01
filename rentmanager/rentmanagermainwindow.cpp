@@ -516,11 +516,11 @@ void RentManagerMainWindow::reloadCalendar()
 	QString headerTable;
 
 
-	headerTable += "<table class='reference' style='width:90%' align='center'>";
+	headerTable += "<table class='reference' style='width:100%' align='center'>";
 	headerTable += QString("<tr style='font-face:verdana'><td align=center><b>%1</b><br/><b>%2</b><br/>%3<br/>%4</td></tr>")
 			.arg(companyName, propertyName, physical, postal);
 	headerTable += "</table>";
-	headerTable += "<table class='reference' border=0 style='width:90%' align='center'>";
+	headerTable += "<table class='reference' border=0 style='width:100%' align='center'>";
 	headerTable += QString("<tr style='font-face:verdana'><td>Payment Calendar</td><td align=right>%1</td></tr>").arg(QDate::currentDate().toString("dd-MMM-yyyy"));
 	headerTable += "</table>";
 
@@ -539,7 +539,7 @@ void RentManagerMainWindow::reloadCalendar()
 	       << "Nov"
 	       << "Dec";
 
-	html += "<body><table class='reference' style='width:90%' align='center'>\n";
+	html += "<body><table class='reference' style='width:100%' align='center'>\n";
 	html += "<tr>";
 
 	for (int i = 0; i < months.count(); i++)
@@ -553,7 +553,14 @@ void RentManagerMainWindow::reloadCalendar()
 		QString unitID = unitQu.record().value("UnitID").toString();
 		html += "<tr>"; //start or unit row
 		//first col is the unit name
-		html += "<th>" + unitNo + "</th>";
+		QSqlQuery leaseQu = db.exec("SELECT * FROM leases WHERE UnitID = '" + unitID + "' AND DateOfOccupation LIKE '%" + ui->cboYear->currentText() + "%'");
+		QString names = "";
+		while (leaseQu.next()) {
+			QString tenantID = leaseQu.record().value("TenantID").toString();
+			QString userName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
+			names += userName;
+		}
+		html += "<th>" + unitNo + "<br/>" + names + "</th>";
 		for (int i = 1; i < 13; i++) {
 			QDate dat(ui->cboYear->currentText().toInt(), i, 1);
 			QString monthYear = dat.toString("MMM-yy");
@@ -1032,4 +1039,127 @@ void RentManagerMainWindow::on_actionPage_Setup_triggered()
 {
 	QPageSetupDialog *pg = new QPageSetupDialog(printer, this);
 	pg->exec();
+}
+
+void RentManagerMainWindow::on_cmdExportCalendar_clicked()
+{
+	workbook wb;
+
+	worksheet *sheet = wb.sheet(QString("Payment Calendar").toStdString());
+
+
+	QSqlQuery unitQu = db.exec("SELECT * FROM unit WHERE PropertyID = '" + currentProperty + "'");
+	QString propertyName = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + currentProperty + "'", "PropertyName").toString();
+	QString companyId = Publics::getDbValue("SELECT * FROM property WHERE PropertyID = '" + currentProperty + "'", "CompanyID").toString();
+	QString companyName = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyId + "'", "CompanyName").toString();
+	QString physical = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyId + "'", "PhysicalAddress").toString();
+	QString postal = Publics::getDbValue("SELECT * FROM company WHERE CompanyID = '" + companyId + "'", "PostalAddress").toString();
+	QString headerTable;
+
+
+	headerTable += "<table class='reference' style='width:100%' align='center'>";
+	headerTable += QString("<tr style='font-face:verdana'><td align=center><b>%1</b><br/><b>%2</b><br/>%3<br/>%4</td></tr>")
+			.arg(companyName, propertyName, physical, postal);
+	headerTable += "</table>";
+	headerTable += "<table class='reference' border=0 style='width:100%' align='center'>";
+	headerTable += QString("<tr style='font-face:verdana'><td>Payment Calendar</td><td align=right>%1</td></tr>").arg(QDate::currentDate().toString("dd-MMM-yyyy"));
+	headerTable += "</table>";
+
+	sheet->label(0 , 0, companyName.toStdString());
+	sheet->label(1, 0, propertyName.toStdString());
+	sheet->label(2, 0, physical.toStdString());
+	sheet->label(3, 0, postal.toStdString());
+
+
+
+	QStringList months;
+	months << "" << "Jan"
+	       << "Feb"
+	       << "Mar"
+	       << "Apr"
+	       << "May"
+	       << "Jun"
+	       << "Jul"
+	       << "Aug"
+	       << "Sep"
+	       << "Oct"
+	       << "Nov"
+	       << "Dec";
+
+
+	for (int i = 0; i < months.count(); i++)
+	{
+		sheet->label(5, i, months.at(i).toStdString());
+	}
+
+	int row = 5;
+	while (unitQu.next()) {
+		row ++;
+		QString unitNo = unitQu.record().value("UnitNo").toString();
+		QString unitID = unitQu.record().value("UnitID").toString();
+		//first col is the unit name
+		QSqlQuery leaseQu = db.exec("SELECT * FROM leases WHERE UnitID = '" + unitID + "' AND DateOfOccupation LIKE '%" + ui->cboYear->currentText() + "%'");
+		QString names = "";
+		while (leaseQu.next()) {
+			QString tenantID = leaseQu.record().value("TenantID").toString();
+			QString userName = Publics::getDbValue("SELECT * FROM tenant WHERE TenantID = '" + tenantID + "'", "Name").toString();
+			names += userName;
+		}
+		QString fName = unitNo + "\n" + names;
+		sheet->label(row, 0, fName.toStdString());
+		for (int i = 1; i < 13; i++) {
+			QDate dat(ui->cboYear->currentText().toInt(), i, 1);
+			QString monthYear = dat.toString("MMM-yy");
+			QSqlQuery invQu = QSqlDatabase::database().exec("SELECT * FROM invoice_master "
+									" WHERE InvoiceMonthYear = '" + monthYear + "' AND UnitID = '" + unitID + "'");
+
+			//QString invoiceNos;
+			double paid = 0;
+			double due = 0;
+			double balance = 0;
+
+			QString colText, bgColor = "LightGreen";
+			while (invQu.next()) {
+				QString invoiceID = invQu.record().value("InvoiceNo").toString();
+				QSqlQuery allocQu = QSqlDatabase::database().exec("SELECT * FROM payment_allocation WHERE InvoiceID = '" + invoiceID + "'");
+				while (allocQu.next()) {
+					paid = paid + allocQu.record().value("Amount").toDouble();
+				}
+				due = due + invQu.record().value("InvoiceTotal").toDouble();
+				balance = due - paid;
+			}
+			if (balance > 0) {
+				bgColor = "Salmon";
+			}
+
+			if (balance == due) {
+				bgColor = "Red";
+			}
+
+			if (balance < 1) {
+				bgColor = "LightGreen";
+			}
+
+			if (due == 0) {
+				bgColor = "LightBlue";
+			}
+
+			if (balance )
+				colText = "";
+
+
+			colText += "Due: " + QString::number(due);
+			colText += "\nPd: " + QString::number(paid);
+			colText += "\nBal: " + QString::number(balance);
+
+			sheet->label(row, i, colText.toStdString());
+		}
+		sheet->rowheight(row, 820);
+		//end of unit row
+	}
+
+
+	QString fileName = QFileDialog::getSaveFileName(this, "Export Calendar", QDir::homePath(), "Excel FIles (*.xls)");
+	if (fileName.length() > 0)
+		wb.Dump(fileName.toStdString());
 }

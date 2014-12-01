@@ -37,7 +37,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -95,6 +95,13 @@
                <widget class="QPushButton" name="cmdPrintCalendar">
                 <property name="text">
                  <string>Print</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="cmdExportCalendar">
+                <property name="text">
+                 <string>Export</string>
                 </property>
                </widget>
               </item>
@@ -257,7 +264,7 @@
      <x>0</x>
      <y>0</y>
      <width>760</width>
-     <height>24</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
