@@ -181,12 +181,17 @@
              </layout>
             </item>
             <item>
-             <widget class="QWebView" name="calendarWebView">
-              <property name="url">
-               <url>
-                <string>about:blank</string>
-               </url>
+             <widget class="QSplitter" name="splitter23">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
               </property>
+              <widget class="QWebView" name="calendarWebView">
+               <property name="url">
+                <url>
+                 <string>about:blank</string>
+                </url>
+               </property>
+              </widget>
              </widget>
             </item>
            </layout>

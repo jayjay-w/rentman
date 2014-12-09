@@ -10,7 +10,7 @@ CMAKE_POLICY(SET CMP0020 NEW)
 ENDIF(COMMAND cmake_policy)
 
 set(QT5 OFF)
-set(MAKE_TESTS OFF)
+set(MAKE_TESTS ON)
 
 if(MINGW)
 set(QT5 OFF)
@@ -59,7 +59,7 @@ set(libs ${QT_LIBRARIES})
 endif()
 
 if(MAKE_TESTS)
-add_subdirectory(testapp)
+add_subdirectory(tests/qgraphics)
 endif(MAKE_TESTS)
 add_subdirectory(rentmanager)
 add_subdirectory(xlslib)

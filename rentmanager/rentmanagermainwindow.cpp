@@ -616,7 +616,7 @@ void RentManagerMainWindow::reloadCalendar()
 
 	html += "</table>";
 
-	ui->calendarWebView->setHtml(html);
+    ui->calendarWebView->setHtml(html);
 }
 
 void RentManagerMainWindow::on_cboYear_currentIndexChanged(int index)
