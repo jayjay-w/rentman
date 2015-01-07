@@ -64,7 +64,7 @@ endif(MAKE_TESTS)
 add_subdirectory(rentmanager)
 add_subdirectory(xlslib)
 
-ADD_CUSTOM_TARGET(win-nsi
+ADD_CUSTOM_TARGET(win-nsi-qt4
                         COMMAND make
-                        COMMAND makensis rentmanager.nsi
+                        COMMAND makensis rentmanager-qt4.nsi
                 )

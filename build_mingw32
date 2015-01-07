@@ -1,0 +1,13 @@
+rm cmake -rf
+mkdir cmake
+mkdir cmake/modules
+cp ../rentman/cmake/modules/* cmake/modules
+cp ../rentman/*.nsi .
+cp ../rentman/*.nsh .
+cp ../rentman/rentmanager/cottage.ico .
+cp ../rentman/packaging/licence.txt .
+MINGW=/opt/mingw32
+export PATH=$PATH:$MINGW/bin
+export CFLAGS=""
+export CXXFLAGS="$CFLAGS"
+cmake ../rentman -DCMAKE_TOOLCHAIN_FILE=cmake/modules/Win32Toolchain.cmake -DCMAKE_MODULE_PATH=`pwd`/cmake/modules/
