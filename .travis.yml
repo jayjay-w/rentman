@@ -12,7 +12,7 @@ before_install:
  - "sudo apt-get install -qq wget make ant curl cmake"
  - "sudo apt-get install -qq libegl1-mesa-dev libegl1-mesa"
  - "mkdir qt5"
- - "wget -q -O qt5.zip http://ftp.osuosl.org/pub/musescore/utils/qt531.zip"
+ - "wget -q -O qt5.zip http://ftp.osuosl.org/pub/musescore/utils/qt542.zip"
  - "unzip -qq qt5.zip -d qt5"
  - "export PATH=`pwd`/qt5/bin:$PATH"
  - "export QT_PLUGIN_PATH=`pwd`/qt5/plugins"
