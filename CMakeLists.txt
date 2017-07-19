@@ -9,11 +9,11 @@ CMAKE_POLICY(SET CMP0020 NEW)
                                  # ADD_DEFINITONS() once CMake 2.6 is used
 ENDIF(COMMAND cmake_policy)
 
-set(QT5 OFF)
+set(QT5 ON)
 set(MAKE_TESTS ON)
 
 if(MINGW)
-set(QT5 OFF)
+set(QT5 ON)
 endif()
 
 if(APPLE)
