@@ -176,7 +176,7 @@ void RentManagerMainWindow::closeFile()
 	actionsToDisable->setEnabled(false);
 
 	ui->trvBrowser->invisibleRootItem()->takeChildren();
-	ui->calendarWebView->setHtml("");
+    ui->calendarTextView->setText("");
 	ui->tabWidget->setCurrentIndex(0);
 	ui->tabWidget->setEnabled(false);
 
@@ -450,7 +450,7 @@ void RentManagerMainWindow::on_trvBrowser_itemClicked(QTreeWidgetItem *item, int
 		reloadCalendar();
 	} else {
 		html = "<h3>Select a property to see its' payment schedule</h3>";
-		ui->calendarWebView->setHtml(html);
+        ui->calendarTextView->setText(html);
 	}
 
 }
@@ -616,7 +616,7 @@ void RentManagerMainWindow::reloadCalendar()
 
 	html += "</table>";
 
-    ui->calendarWebView->setHtml(html);
+    ui->calendarTextView->setText(html);
 }
 
 void RentManagerMainWindow::on_cboYear_currentIndexChanged(int index)
@@ -782,7 +782,7 @@ void RentManagerMainWindow::on_actionPrint_triggered()
 	printer = new QPrinter(QPrinter::HighResolution);
 	QPrintDialog *prnt = new QPrintDialog(printer, this);
 	if (prnt->exec() == QDialog::Accepted) {
-		ui->reportWebView->print(printer);
+        ui->reportTextView->print(printer);
 	}
 }
 
@@ -910,7 +910,7 @@ void RentManagerMainWindow::on_cmdPrintCalendar_clicked()
 	QPrinter *prnt = new QPrinter(QPrinter::HighResolution);
 	QPrintDialog *dlg = new QPrintDialog(prnt, this);
 	if (dlg->exec() == QDialog::Accepted)
-		ui->calendarWebView->print(prnt);
+        ui->calendarTextView->print(prnt);
 }
 
 void RentManagerMainWindow::showHtmlReport()
@@ -1020,7 +1020,7 @@ void RentManagerMainWindow::showHtmlReport()
 		html += manualHtml;
 	}
 	html += "</body></html>";
-	ui->reportWebView->setHtml(html);
+    ui->reportTextView->setText(html);
 }
 
 void RentManagerMainWindow::on_actionPrint_Preview_triggered()
@@ -1032,7 +1032,7 @@ void RentManagerMainWindow::on_actionPrint_Preview_triggered()
 
 void RentManagerMainWindow::printReport(QPrinter *prnt)
 {
-	ui->reportWebView->print(prnt);
+    ui->reportTextView->print(prnt);
 }
 
 void RentManagerMainWindow::on_actionPage_Setup_triggered()
